@@ -289,12 +289,10 @@ function generateIndexSearch({ posts }) {
     };
   });
 
-  const indexJson = JSON.stringify({
+  return JSON.stringify({
     generated: Date.now(),
     posts: index,
   });
-
-  return indexJson;
 }
 
 /**
@@ -333,12 +331,10 @@ function generateSitemap({ posts = [], pages = [] }, nextConfig = {}) {
     </urlset>
     `;
 
-  const sitemapFormatted = prettier.format(sitemap, {
+  return prettier.format(sitemap, {
     printWidth: 120,
     parser: 'html',
   });
-
-  return sitemapFormatted;
 }
 
 /**

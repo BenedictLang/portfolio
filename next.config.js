@@ -1,7 +1,7 @@
 const indexSearch = require('./plugins/search-index');
 const feed = require('./plugins/feed');
 const sitemap = require('./plugins/sitemap');
-// const socialImages = require('./plugins/socialImages'); TODO: failing to run on Netlify
+// const socialImages = require('./plugins/socialImages'); //TODO: failing to run on Netlify
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -15,7 +15,7 @@ const nextConfig = {
   trailingSlash: true,
 
   // By enabling verbose logging, it will provide additional output details for
-  // diagnostic purposes. By default is set to false.
+  // diagnostic purposes. By default, it is set to false.
   // verbose: true,
 
   env: {

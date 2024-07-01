@@ -29,7 +29,7 @@ module.exports = function sitemap(nextConfig = {}) {
           plugin,
           verbose,
           nextConfig,
-        })
+        }),
       );
 
       if (typeof nextConfig.webpack === 'function') {

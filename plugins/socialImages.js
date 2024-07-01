@@ -44,7 +44,7 @@ module.exports = function socialImages(nextConfig = {}) {
           await page.setContent(html);
           await page.screenshot({ path: `${outputDirectory}/${slug}.png` });
           await page.close();
-        })
+        }),
       );
 
       await browser.close();
@@ -66,7 +66,7 @@ module.exports = function socialImages(nextConfig = {}) {
           url: WORDPRESS_GRAPHQL_ENDPOINT,
           plugin,
           verbose,
-        })
+        }),
       );
 
       if (typeof nextConfig.webpack === 'function') {

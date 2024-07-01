@@ -243,7 +243,7 @@ export function sanitizeExcerpt(excerpt) {
 
   // If the theme includes [...] as the more indication, clean it up to just ...
 
-  sanitized = sanitized.replace(/\s?\[&hellip;\]/, '&hellip;');
+  sanitized = sanitized.replace(/\s?\[&hellip;]/, '&hellip;');
 
   // If after the above replacement, the ellipsis includes 4 dots, it's
   // the end of a setence
@@ -353,7 +353,7 @@ export async function getPostsPerPage() {
   //If POST_PER_PAGE is defined at next.config.js
   if (process.env.POSTS_PER_PAGE) {
     console.warn(
-      'You are using the deprecated POST_PER_PAGE variable. Use your WordPress instance instead to set this value ("Settings" > "Reading" > "Blog pages show at most").'
+      'You are using the deprecated POST_PER_PAGE variable. Use your WordPress instance instead to set this value ("Settings" > "Reading" > "Blog pages show at most").',
     );
     return Number(process.env.POSTS_PER_PAGE);
   }

@@ -27,7 +27,7 @@ module.exports = function indexSearch(nextConfig = {}) {
           url: WORDPRESS_GRAPHQL_ENDPOINT,
           plugin,
           verbose,
-        })
+        }),
       );
 
       if (typeof nextConfig.webpack === 'function') {

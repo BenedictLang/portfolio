@@ -137,6 +137,5 @@ export async function getCategories({ count } = {}) {
  */
 
 export function mapCategoryData(category = {}) {
-  const data = { ...category };
-  return data;
+  return { ...category };
 }

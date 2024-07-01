@@ -41,9 +41,7 @@ const Metadata = ({ className, author, date, categories, options = DEFAULT_METAD
       )}
       {date && (
         <li>
-          <time pubdate="pubdate" dateTime={date}>
-            {formatDate(date)}
-          </time>
+          <time dateTime={date}>{formatDate(date)}</time>
         </li>
       )}
       {Array.isArray(categories) && categories[0] && (
