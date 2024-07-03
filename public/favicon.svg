@@ -1,8 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 53.4923 41.4281">
     <defs>
         <style>
-            path{
-                fill:#282826;
+            @media (prefers-color-scheme: light) {
+                path {
+                    fill: #282826;
+                }
             }
             @media (prefers-color-scheme: dark) {
                 path {

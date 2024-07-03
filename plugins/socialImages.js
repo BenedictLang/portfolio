@@ -1,5 +1,4 @@
 const fs = require('fs').promises;
-const path = require('path');
 const { chromium } = require('playwright');
 
 const { getAllPosts, mkdirp } = require('./util');
@@ -57,10 +56,6 @@ module.exports = function socialImages(nextConfig = {}) {
 
   return Object.assign({}, nextConfig, {
     webpack(config, options) {
-      if (config.watchOptions) {
-        config.watchOptions.ignored.push(path.join('**', plugin.outputDirectory, plugin.outputName));
-      }
-
       config.plugins.push(
         new WebpackPluginCompiler({
           url: WORDPRESS_GRAPHQL_ENDPOINT,

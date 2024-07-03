@@ -114,6 +114,7 @@ export function constructPageMetadata(defaultMetadata = {}, pageMetadata = {}, o
       url,
     },
     twitter: {},
+    favicon: '/favicon.svg',
   };
 
   // Static Properties
@@ -209,6 +210,11 @@ export function helmetSettingsFromMetadata(metadata = {}, options = {}) {
     {
       rel: 'canonical',
       href: metadata.canonical,
+    },
+    {
+      rel: 'icon',
+      type: 'image/svg+xml',
+      href: metadata.favicon,
     },
   ].filter(({ href } = {}) => !!href);
 

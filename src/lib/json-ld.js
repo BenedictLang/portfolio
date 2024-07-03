@@ -7,7 +7,7 @@ import { pagePathBySlug } from 'lib/pages';
 import config from '../../package.json';
 
 export function ArticleJsonLd({ post = {}, siteTitle = '' }) {
-  const { homepage = '', faviconPath = '/favicon.ico' } = config;
+  const { homepage = '', faviconPath = '/favicon.svg' } = config;
   const { title, slug, excerpt, date, author, categories, modified, featuredImage } = post;
   const path = postPathBySlug(slug);
   const datePublished = !!date && new Date(date);
@@ -121,7 +121,7 @@ export function AuthorJsonLd({ author = {} }) {
 }
 
 export function LogoJsonLd() {
-  const { homepage = '', faviconPath = '/favicon.ico' } = config;
+  const { homepage = '', faviconPath = '/favicon.svg' } = config;
 
   const jsonLd = {
     '@context': 'https://schema.org',
