@@ -5,30 +5,30 @@ import { getPaginatedPosts } from 'lib/posts';
 import TemplateArchive from 'templates/archive';
 
 export default function Posts({ posts, pagination }) {
-  const title = 'All Posts';
-  const slug = 'posts';
+	const title = 'All Posts';
+	const slug = 'posts';
 
-  const { metadata } = usePageMetadata({
-    metadata: {
-      title,
-      description: false,
-    },
-  });
+	const { metadata } = usePageMetadata({
+		metadata: {
+			title,
+			description: false,
+		},
+	});
 
-  return <TemplateArchive title={title} posts={posts} slug={slug} pagination={pagination} metadata={metadata} />;
+	return <TemplateArchive title={title} posts={posts} slug={slug} pagination={pagination} metadata={metadata} />;
 }
 
 export async function getStaticProps() {
-  const { posts, pagination } = await getPaginatedPosts({
-    queryIncludes: 'archive',
-  });
-  return {
-    props: {
-      posts,
-      pagination: {
-        ...pagination,
-        basePath: '/posts',
-      },
-    },
-  };
+	const { posts, pagination } = await getPaginatedPosts({
+		queryIncludes: 'archive',
+	});
+	return {
+		props: {
+			posts,
+			pagination: {
+				...pagination,
+				basePath: '/posts',
+			},
+		},
+	};
 }

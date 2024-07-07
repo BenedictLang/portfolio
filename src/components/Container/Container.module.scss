@@ -1,7 +1,7 @@
-@import "styles/settings/__settings";
+@import '../../styles/settings/__settings';
 
 .container {
-  max-width: 60rem;
-  padding: 0 2rem;
-  margin: 0 auto;
+	max-width: 60rem;
+	padding: 0 $space-small;
+	margin: 0 auto;
 }

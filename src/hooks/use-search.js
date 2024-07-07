@@ -13,96 +13,96 @@ export const SEARCH_STATE_LOADED = 'LOADED';
 export const SearchContext = createContext();
 
 export const SearchProvider = (props) => {
-  const search = useSearchState();
-  return <SearchContext.Provider value={search} {...props} />;
+	const search = useSearchState();
+	return <SearchContext.Provider value={search} {...props} />;
 };
 
 export function useSearchState() {
-  const [state, setState] = useState(SEARCH_STATE_READY);
-  const [data, setData] = useState(null);
+	const [state, setState] = useState(SEARCH_STATE_READY);
+	const [data, setData] = useState(null);
 
-  let client;
+	let client;
 
-  if (data) {
-    client = new Fuse(data.posts, {
-      keys: SEARCH_KEYS,
-      isCaseSensitive: false,
-    });
-  }
+	if (data) {
+		client = new Fuse(data.posts, {
+			keys: SEARCH_KEYS,
+			isCaseSensitive: false,
+		});
+	}
 
-  // On load, we want to immediately pull in the search index, which we're
-  // storing clientside and gets built at compile time
+	// On load, we want to immediately pull in the search index, which we're
+	// storing clientside and gets built at compile time
 
-  useEffect(() => {
-    (async function getData() {
-      setState(SEARCH_STATE_LOADING);
+	useEffect(() => {
+		(async function getData() {
+			setState(SEARCH_STATE_LOADING);
 
-      let searchData;
+			let searchData;
 
-      try {
-        searchData = await getSearchData();
-      } catch (e) {
-        setState(SEARCH_STATE_ERROR);
-        return;
-      }
+			try {
+				searchData = await getSearchData();
+			} catch (e) {
+				setState(SEARCH_STATE_ERROR);
+				return;
+			}
 
-      setData(searchData);
-      setState(SEARCH_STATE_LOADED);
-    })();
-  }, []);
+			setData(searchData);
+			setState(SEARCH_STATE_LOADED);
+		})();
+	}, []);
 
-  return {
-    state,
-    data,
-    client,
-  };
+	return {
+		state,
+		data,
+		client,
+	};
 }
 
 export default function useSearch({ defaultQuery = null, maxResults } = {}) {
-  const search = useContext(SearchContext);
-  const { client } = search;
+	const search = useContext(SearchContext);
+	const { client } = search;
 
-  const [query, setQuery] = useState(defaultQuery);
+	const [query, setQuery] = useState(defaultQuery);
 
-  let results = [];
+	let results = [];
 
-  // If we have a query, make a search. Otherwise, don't modify the
-  // results to avoid passing back empty results
+	// If we have a query, make a search. Otherwise, don't modify the
+	// results to avoid passing back empty results
 
-  if (client && query) {
-    results = client.search(query).map(({ item }) => item);
-  }
+	if (client && query) {
+		results = client.search(query).map(({ item }) => item);
+	}
 
-  if (maxResults && results.length > maxResults) {
-    results = results.slice(0, maxResults);
-  }
+	if (maxResults && results.length > maxResults) {
+		results = results.slice(0, maxResults);
+	}
 
-  // If the defaultQuery argument changes, the hook should reflect
-  // that update and set that as the new state
+	// If the defaultQuery argument changes, the hook should reflect
+	// that update and set that as the new state
 
-  useEffect(() => setQuery(defaultQuery), [defaultQuery]);
+	useEffect(() => setQuery(defaultQuery), [defaultQuery]);
 
-  /**
-   * handleSearch
-   */
+	/**
+	 * handleSearch
+	 */
 
-  function handleSearch({ query }) {
-    setQuery(query);
-  }
+	function handleSearch({ query }) {
+		setQuery(query);
+	}
 
-  /**
-   * handleClearSearch
-   */
+	/**
+	 * handleClearSearch
+	 */
 
-  function handleClearSearch() {
-    setQuery(null);
-  }
+	function handleClearSearch() {
+		setQuery(null);
+	}
 
-  return {
-    ...search,
-    query,
-    results,
-    search: handleSearch,
-    clearSearch: handleClearSearch,
-  };
+	return {
+		...search,
+		query,
+		results,
+		search: handleSearch,
+		clearSearch: handleClearSearch,
+	};
 }

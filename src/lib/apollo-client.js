@@ -8,10 +8,10 @@ let client;
  */
 
 export function getApolloClient() {
-  if (!client) {
-    client = _createApolloClient();
-  }
-  return client;
+	if (!client) {
+		client = _createApolloClient();
+	}
+	return client;
 }
 
 /**
@@ -19,19 +19,19 @@ export function getApolloClient() {
  */
 
 export function _createApolloClient() {
-  return new ApolloClient({
-    link: new HttpLink({
-      uri: removeLastTrailingSlash(process.env.WORDPRESS_GRAPHQL_ENDPOINT),
-    }),
-    cache: new InMemoryCache({
-      typePolicies: {
-        RootQuery: {
-          queryType: true,
-        },
-        RootMutation: {
-          mutationType: true,
-        },
-      },
-    }),
-  });
+	return new ApolloClient({
+		link: new HttpLink({
+			uri: removeLastTrailingSlash(process.env.WORDPRESS_GRAPHQL_ENDPOINT),
+		}),
+		cache: new InMemoryCache({
+			typePolicies: {
+				RootQuery: {
+					queryType: true,
+				},
+				RootMutation: {
+					mutationType: true,
+				},
+			},
+		}),
+	});
 }

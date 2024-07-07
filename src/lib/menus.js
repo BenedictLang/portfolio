@@ -9,26 +9,26 @@ export const MENU_LOCATION_NAVIGATION_DEFAULT = 'DEFAULT_NAVIGATION';
  */
 
 export async function getAllMenus() {
-  const apolloClient = getApolloClient();
+	const apolloClient = getApolloClient();
 
-  const data = await apolloClient.query({
-    query: QUERY_ALL_MENUS,
-  });
+	const data = await apolloClient.query({
+		query: QUERY_ALL_MENUS,
+	});
 
-  const menus = data?.data.menus.edges.map(mapMenuData);
+	const menus = data?.data.menus.edges.map(mapMenuData);
 
-  const defaultNavigation = createMenuFromPages({
-    locations: [MENU_LOCATION_NAVIGATION_DEFAULT],
-    pages: await getTopLevelPages({
-      queryIncludes: 'index',
-    }),
-  });
+	const defaultNavigation = createMenuFromPages({
+		locations: [MENU_LOCATION_NAVIGATION_DEFAULT],
+		pages: await getTopLevelPages({
+			queryIncludes: 'index',
+		}),
+	});
 
-  menus.push(defaultNavigation);
+	menus.push(defaultNavigation);
 
-  return {
-    menus,
-  };
+	return {
+		menus,
+	};
 }
 
 /**
@@ -36,14 +36,14 @@ export async function getAllMenus() {
  */
 
 export function mapMenuData(menu = {}) {
-  const { node } = menu;
-  const data = { ...node };
+	const { node } = menu;
+	const data = { ...node };
 
-  data.menuItems = data.menuItems.edges.map(({ node }) => {
-    return { ...node };
-  });
+	data.menuItems = data.menuItems.edges.map(({ node }) => {
+		return { ...node };
+	});
 
-  return data;
+	return data;
 }
 
 /**
@@ -51,13 +51,13 @@ export function mapMenuData(menu = {}) {
  */
 
 export function mapPagesToMenuItems(pages) {
-  return pages.map(({ id, uri, title }) => {
-    return {
-      label: title,
-      path: uri,
-      id,
-    };
-  });
+	return pages.map(({ id, uri, title }) => {
+		return {
+			label: title,
+			path: uri,
+			id,
+		};
+	});
 }
 
 /**
@@ -65,30 +65,30 @@ export function mapPagesToMenuItems(pages) {
  */
 
 export function createMenuFromPages({ locations, pages }) {
-  return {
-    menuItems: mapPagesToMenuItems(pages),
-    locations,
-  };
+	return {
+		menuItems: mapPagesToMenuItems(pages),
+		locations,
+	};
 }
 
 /**
  * parseHierarchicalMenu
  */
 export const parseHierarchicalMenu = (
-  data = [],
-  { idKey = 'id', parentKey = 'parentId', childrenKey = 'children' } = {},
+	data = [],
+	{ idKey = 'id', parentKey = 'parentId', childrenKey = 'children' } = {},
 ) => {
-  const tree = [];
-  const childrenOf = {};
+	const tree = [];
+	const childrenOf = {};
 
-  data.forEach((item) => {
-    const newItem = { ...item };
-    const { [idKey]: id, [parentKey]: parentId = 0 } = newItem;
-    childrenOf[id] = childrenOf[id] || [];
-    newItem[childrenKey] = childrenOf[id];
-    parentId ? (childrenOf[parentId] = childrenOf[parentId] || []).push(newItem) : tree.push(newItem);
-  });
-  return tree;
+	data.forEach((item) => {
+		const newItem = { ...item };
+		const { [idKey]: id, [parentKey]: parentId = 0 } = newItem;
+		childrenOf[id] = childrenOf[id] || [];
+		newItem[childrenKey] = childrenOf[id];
+		parentId ? (childrenOf[parentId] = childrenOf[parentId] || []).push(newItem) : tree.push(newItem);
+	});
+	return tree;
 };
 
 /**
@@ -96,13 +96,13 @@ export const parseHierarchicalMenu = (
  */
 
 export function findMenuByLocation(menus, location) {
-  if (typeof location !== 'string') {
-    throw new Error('Failed to find menu by location - location is not a string.');
-  }
+	if (typeof location !== 'string') {
+		throw new Error('Failed to find menu by location - location is not a string.');
+	}
 
-  const menu = menus.find(({ locations }) => {
-    return locations.map((loc) => loc.toUpperCase()).includes(location.toUpperCase());
-  });
+	const menu = menus.find(({ locations }) => {
+		return locations.map((loc) => loc.toUpperCase()).includes(location.toUpperCase());
+	});
 
-  return menu && parseHierarchicalMenu(menu.menuItems);
+	return menu && parseHierarchicalMenu(menu.menuItems);
 }

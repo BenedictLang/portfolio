@@ -1,6 +1,6 @@
-@import "styles/settings/__settings";
+@import '../styles/settings/__settings';
 $progressbar_color: $color-primary;
 
 :export {
-  progressbarColor: $progressbar_color;
+	progressbarColor: $progressbar_color;
 }

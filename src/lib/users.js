@@ -11,7 +11,7 @@ import { QUERY_ALL_USERS, QUERY_ALL_USERS_SEO } from 'data/users';
  */
 
 export function authorPathBySlug(slug) {
-  return `/authors/${slug}`;
+	return `/authors/${slug}`;
 }
 
 /**
@@ -19,13 +19,13 @@ export function authorPathBySlug(slug) {
  */
 
 export async function getUserBySlug(slug) {
-  const { users } = await getAllUsers();
+	const { users } = await getAllUsers();
 
-  const user = users.find((user) => user.slug === slug);
+	const user = users.find((user) => user.slug === slug);
 
-  return {
-    user,
-  };
+	return {
+		user,
+	};
 }
 
 /**
@@ -33,7 +33,7 @@ export async function getUserBySlug(slug) {
  */
 
 export function authorPathByName(name) {
-  return `/authors/${parameterize(name)}`;
+	return `/authors/${parameterize(name)}`;
 }
 
 /**
@@ -41,13 +41,13 @@ export function authorPathByName(name) {
  */
 
 export async function getUserByNameSlug(name) {
-  const { users } = await getAllUsers();
+	const { users } = await getAllUsers();
 
-  const user = users.find((user) => parameterize(user.name) === name);
+	const user = users.find((user) => parameterize(user.name) === name);
 
-  return {
-    user,
-  };
+	return {
+		user,
+	};
 }
 
 /**
@@ -55,7 +55,7 @@ export async function getUserByNameSlug(name) {
  */
 
 export function userSlugByName(name) {
-  return parameterize(name);
+	return parameterize(name);
 }
 
 /**
@@ -63,58 +63,58 @@ export function userSlugByName(name) {
  */
 
 export async function getAllUsers() {
-  const apolloClient = getApolloClient();
+	const apolloClient = getApolloClient();
 
-  let usersData;
-  let seoData;
+	let usersData;
+	let seoData;
 
-  try {
-    usersData = await apolloClient.query({
-      query: QUERY_ALL_USERS,
-    });
-  } catch (e) {
-    console.log(`[users][getAllUsers] Failed to query users data: ${e.message}`);
-    throw e;
-  }
+	try {
+		usersData = await apolloClient.query({
+			query: QUERY_ALL_USERS,
+		});
+	} catch (e) {
+		console.log(`[users][getAllUsers] Failed to query users data: ${e.message}`);
+		throw e;
+	}
 
-  let users = usersData?.data.users.edges.map(({ node = {} }) => node).map(mapUserData);
+	let users = usersData?.data.users.edges.map(({ node = {} }) => node).map(mapUserData);
 
-  // If the SEO plugin is enabled, look up the data
-  // and apply it to the default settings
+	// If the SEO plugin is enabled, look up the data
+	// and apply it to the default settings
 
-  if (process.env.WORDPRESS_PLUGIN_SEO === true) {
-    try {
-      seoData = await apolloClient.query({
-        query: QUERY_ALL_USERS_SEO,
-      });
-    } catch (e) {
-      console.log(`[users][getAllUsers] Failed to query SEO plugin: ${e.message}`);
-      console.log('Is the SEO Plugin installed? If not, disable WORDPRESS_PLUGIN_SEO in next.config.js.');
-      throw e;
-    }
+	if (process.env.WORDPRESS_PLUGIN_SEO === true) {
+		try {
+			seoData = await apolloClient.query({
+				query: QUERY_ALL_USERS_SEO,
+			});
+		} catch (e) {
+			console.log(`[users][getAllUsers] Failed to query SEO plugin: ${e.message}`);
+			console.log('Is the SEO Plugin installed? If not, disable WORDPRESS_PLUGIN_SEO in next.config.js.');
+			throw e;
+		}
 
-    users = users.map((user) => {
-      const data = { ...user };
-      const { id } = data;
+		users = users.map((user) => {
+			const data = { ...user };
+			const { id } = data;
 
-      const seo = seoData?.data?.users.edges.map(({ node = {} }) => node).find((node) => node.id === id)?.seo;
+			const seo = seoData?.data?.users.edges.map(({ node = {} }) => node).find((node) => node.id === id)?.seo;
 
-      return {
-        ...data,
-        title: seo.title,
-        description: seo.metaDesc,
-        robots: {
-          nofollow: seo.metaRobotsNofollow,
-          noindex: seo.metaRobotsNoindex,
-        },
-        social: seo.social,
-      };
-    });
-  }
+			return {
+				...data,
+				title: seo.title,
+				description: seo.metaDesc,
+				robots: {
+					nofollow: seo.metaRobotsNofollow,
+					noindex: seo.metaRobotsNoindex,
+				},
+				social: seo.social,
+			};
+		});
+	}
 
-  return {
-    users,
-  };
+	return {
+		users,
+	};
 }
 
 /**
@@ -122,19 +122,19 @@ export async function getAllUsers() {
  */
 
 export async function getAllAuthors() {
-  const { users } = await getAllUsers();
+	const { users } = await getAllUsers();
 
-  // TODO: Roles aren't showing in response - we should be filtering here
+	// TODO: Roles aren't showing in response - we should be filtering here
 
-  // const authors = users.filter(({ roles }) => {
-  //   const userRoles = roles.map(({ name }) => name);
-  //   const authorRoles = userRoles.filter(role => ROLES_AUTHOR.includes(role));
-  //   return authorRoles.length > 0;
-  // });
+	// const authors = users.filter(({ roles }) => {
+	//   const userRoles = roles.map(({ name }) => name);
+	//   const authorRoles = userRoles.filter(role => ROLES_AUTHOR.includes(role));
+	//   return authorRoles.length > 0;
+	// });
 
-  return {
-    authors: users,
-  };
+	return {
+		authors: users,
+	};
 }
 
 /**
@@ -142,11 +142,11 @@ export async function getAllAuthors() {
  */
 
 export function mapUserData(user) {
-  return {
-    ...user,
-    roles: user.roles ? [...user.roles.nodes] : [],
-    avatar: user.avatar && updateUserAvatar(user.avatar),
-  };
+	return {
+		...user,
+		roles: user.roles ? [...user.roles.nodes] : [],
+		avatar: user.avatar && updateUserAvatar(user.avatar),
+	};
 }
 
 /**
@@ -154,13 +154,13 @@ export function mapUserData(user) {
  */
 
 export function updateUserAvatar(avatar) {
-  // The URL by default that comes from Gravatar / WordPress is not a secure
-  // URL. This ends up redirecting to https, but it gives mixed content warnings
-  // as the HTML shows it as http. Replace the url to avoid those warnings
-  // and provide a secure URL by default
+	// The URL by default that comes from Gravatar / WordPress is not a secure
+	// URL. This ends up redirecting to https, but it gives mixed content warnings
+	// as the HTML shows it as http. Replace the url to avoid those warnings
+	// and provide a secure URL by default
 
-  return {
-    ...avatar,
-    url: avatar.url?.replace('http://', 'https://'),
-  };
+	return {
+		...avatar,
+		url: avatar.url?.replace('http://', 'https://'),
+	};
 }

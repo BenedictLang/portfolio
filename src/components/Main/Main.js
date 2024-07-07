@@ -1,7 +1,7 @@
 import styles from './Main.module.scss';
 
-const Main = ({ children }) => {
-  return <main className={styles.main}>{children}</main>;
+const Main = ({ children, className }) => {
+	return <main className={`${styles.main} ${className}`}>{children}</main>;
 };
 
 export default Main;
