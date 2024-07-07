@@ -1,0 +1,18 @@
+@import 'colors';
+
+$fx-dropShadow:
+	0.3em 0.4em 0.4em 0.4em rgba(0, 0, 0, 0.4),
+	0.3em 0.4em 0.4em 0.4em rgba(0, 0, 0, 0.4);
+$fx-dropShadow-glow:
+	0 2em 4em 0 $color-primary,
+	0 3em 0.5em 0 $color-primary;
+$fx-dropShadow-glow-slight:
+	0 0 10em 2em $color-primary,
+	0 0 10em 0 $color-primary;
+
+$blur: blur(45px);
+$blur-light: blur(2px);
+
+$duration-short: 0.4s;
+$duration-middle: 0.7s;
+$duration-long: 1.5s;

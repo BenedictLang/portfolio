@@ -64,14 +64,36 @@
 }
 
 .footerLegal {
-	color: $color-gray-400;
-	background-color: $color-gray-900;
-	padding: 0.8rem 0;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	color: $color-text-passive;
+	padding: $space-small $space-medium;
 	margin: 0;
 
+	a {
+		color: unset;
+		text-decoration: underline;
+	}
+
 	p {
-		font-size: 0.9em;
-		text-align: center;
+		font-size: $font-size-passive;
 		margin: 0;
+	}
+
+	.legalLinks {
+		display: flex;
+		flex-direction: row;
+		gap: $space-small;
+
+		a {
+			color: $color-text-passive;
+			text-decoration: underline;
+			font-size: $font-size-passive;
+			transition-duration: $duration-short;
+			&:hover {
+				color: $color-primary;
+			}
+		}
 	}
 }

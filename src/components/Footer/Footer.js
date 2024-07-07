@@ -79,9 +79,16 @@ const Footer = ({ simple = false }) => {
 			)}
 
 			<Section className={styles.footerLegal}>
-				<Container>
-					<p>&copy; {new Date().getFullYear()} Benedict Lang</p>
-				</Container>
+				<p>
+					All rights reserved. Copyright &copy; 2020 - {new Date().getFullYear()} by&nbsp;
+					<Link href="/home">Benedict Lang</Link>
+				</p>
+				{simple && (
+					<div className={styles.legalLinks}>
+						<Link href={'https://lang-familie.de/impressum/'}>Imprint</Link>
+						<Link href={'https://lang-familie.de/datenschutzerklaerung/'}>Privacy Policy</Link>
+					</div>
+				)}
 			</Section>
 		</footer>
 	);

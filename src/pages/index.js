@@ -9,7 +9,7 @@ export default function Start() {
 		<LayoutFullscreen>
 			<Container className={styles.content}>
 				<ButtonGlow href="/home" className>
-					GET DATA
+					GET $data
 				</ButtonGlow>
 			</Container>
 		</LayoutFullscreen>

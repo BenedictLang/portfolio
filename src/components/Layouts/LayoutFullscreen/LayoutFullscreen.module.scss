@@ -16,3 +16,14 @@
 .centeredContainer {
 	text-align: center;
 }
+
+#glow {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	background-color: rgb(60, 244, 220);
+	border-radius: 50%;
+	box-shadow: 0 0 10px 5px rgb(60, 244, 220);
+	pointer-events: none;
+	mix-blend-mode: overlay;
+}

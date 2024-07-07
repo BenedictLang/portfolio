@@ -5,7 +5,7 @@ import styles from './Logo.module.scss';
 const Logo = () => {
 	return (
 		<Link href="/home" className={styles.logo}>
-			<Image src="/images/logos/bl_logo.svg" alt="Logo" width={50} height={50} />
+			<Image src="/images/logos/Logo-BL.svg" alt="Logo" width={50} height={50} />
 		</Link>
 	);
 };

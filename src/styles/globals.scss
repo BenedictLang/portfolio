@@ -19,6 +19,10 @@ body {
 		sans-serif;
 }
 
+body {
+	overflow: hidden;
+}
+
 p {
 	line-height: 1.6;
 	margin: 1.2em 0;
@@ -63,3 +67,16 @@ figcaption {
 	width: 0;
 	height: 0;
 }
+
+/*a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus,
+[tabindex]:focus,
+area:focus {
+	//color: $color-bg !important;
+	font-weight: 700 !important;
+	//background-color: $color-text !important;
+	box-shadow: $fx-dropShadow-glow-slight !important;
+}*/

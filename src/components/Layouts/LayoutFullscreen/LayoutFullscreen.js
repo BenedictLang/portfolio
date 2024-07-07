@@ -8,6 +8,7 @@ import { helmetSettingsFromMetadata } from '../../../lib/site';
 import Main from '../../Main';
 import Header from '../../Header';
 import Footer from '../../Footer';
+import { useEffect } from 'react';
 
 const LayoutFullscreen = ({ children }) => {
 	const router = useRouter();
@@ -54,8 +55,25 @@ const LayoutFullscreen = ({ children }) => {
 		}),
 	};
 
+	useEffect(() => {
+		const handleMouseMove = (event) => {
+			const glow = document.getElementById('glow');
+			if (glow) {
+				glow.style.left = `${event.pageX}px`;
+				glow.style.top = `${event.pageY}px`;
+			}
+		};
+
+		document.addEventListener('mousemove', handleMouseMove);
+
+		return () => {
+			document.removeEventListener('mousemove', handleMouseMove);
+		};
+	}, []);
+
 	return (
 		<div className={styles.layoutContainer}>
+			<div id="glow" className={styles.glow}></div>
 			<Helmet {...helmetSettings} />
 			<Header simple={true}></Header>
 			<Main className={styles.main}>{children}</Main>
