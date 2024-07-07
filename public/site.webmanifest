@@ -1,9 +1,15 @@
 {
   "name": "Benedict Lang | Portfolio",
   "short_name": "BL | Portfolio",
-  "description": "Portfolio Website of Benedict Lang. Fullstack Developer, Web-Developer, UX und UI Designer. Student at Hochschule der Medien Stuttgart.",
+  "description": "Portfolio of Benedict Lang. Fullstack Developer, Web-Developer, IT Security, UX and UI Designer. Student at Hochschule der Medien Stuttgart.",
   "orientation": "any",
+  "start_url": ".",
   "icons": [
+    {
+        "src": "/favicon.svg",
+        "sizes": "any",
+        "type": "image/svg+xml"
+    },
     {
       "src": "/android-chrome-192x192.png",
       "sizes": "192x192",
@@ -16,6 +22,6 @@
     }
   ],
   "theme_color": "#1DFFE4",
-  "background_color": "#060816",
+  "background_color": "#0a0a13",
   "display": "standalone"
 }
