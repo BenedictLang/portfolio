@@ -7,8 +7,7 @@
 	position: relative;
 	z-index: 0;
 
-	&:before,
-	&:after {
+	&:before {
 		content: '';
 		position: absolute;
 		width: 100%;
@@ -21,31 +20,11 @@
 	}
 
 	&:before {
-		background: linear-gradient(
-			40deg,
-			transparent,
-			#a663ca,
-			transparent,
-			$color-primary,
-			#a663ca,
-			transparent,
-			#a663ca,
-			transparent
-		);
-		background-size: 400%;
+		background: linear-gradient($color-gradient), linear-gradient($color-gradient);
+		background-size: 500%;
 		filter: blur(1em);
-		opacity: 0.5;
+		opacity: 0.7;
 		animation: glowing 15s ease-in-out infinite;
-	}
-
-	&:after {
-		border: 0.15em solid transparent;
-		filter: blur(15px);
-		opacity: 0;
-	}
-
-	&:active:before {
-		filter: blur(3em);
 	}
 
 	&:hover {
@@ -53,12 +32,15 @@
 	}
 
 	&:hover:before {
-		opacity: 0.8;
+		background-size: 600%;
+		opacity: 0.9;
+		filter: blur(1.3em);
 	}
 
-	&:hover:after {
-		opacity: 0.8;
-		filter: blur(10px);
+	&:active:before {
+		background-blend-mode: color-burn;
+		filter: blur(3em);
+		box-shadow: $fx-dropShadow-glow-slight;
 	}
 
 	@keyframes glowing {

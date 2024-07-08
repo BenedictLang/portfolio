@@ -35,3 +35,6 @@ $color-bg-transparent: $color-black-trans;
 $color-text: $color-blue-50;
 $color-text-transparent: $color-white-trans;
 $color-text-passive: $color-gray-700;
+
+$color-gradient: 40deg, transparent, #a663ca, transparent, $color-primary, #a663ca, transparent, $color-primary, #a663ca,
+	transparent;
