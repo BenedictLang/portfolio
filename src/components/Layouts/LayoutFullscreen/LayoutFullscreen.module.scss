@@ -17,13 +17,18 @@
 	text-align: center;
 }
 
-#glow {
-	position: absolute;
-	width: 20px;
-	height: 20px;
-	background-color: rgb(60, 244, 220);
-	border-radius: 50%;
-	box-shadow: 0 0 10px 5px rgb(60, 244, 220);
+.haloMouse {
+	position: fixed;
+	z-index: 1;
 	pointer-events: none;
-	mix-blend-mode: overlay;
+	width: 20em;
+	height: 20em;
+	border-radius: 50%;
+	background: #0fbcff;
+	top: var(--y, 0);
+	left: var(--x, 0);
+	filter: blur(10em);
+	transform: translate(-50%, -50%);
+	opacity: 0.2;
+	mix-blend-mode: lighten;
 }

@@ -79,10 +79,10 @@ const Footer = ({ simple = false }) => {
 			)}
 
 			<Section className={styles.footerLegal}>
-				<p>
-					All rights reserved. Copyright &copy; 2020 - {new Date().getFullYear()} by&nbsp;
+				<div className={styles.copyright}>
+					<p>All rights reserved. Copyright &copy; 2020 - {new Date().getFullYear()} by&nbsp;</p>
 					<Link href="/home">Benedict Lang</Link>
-				</p>
+				</div>
 				{simple && (
 					<div className={styles.legalLinks}>
 						<Link href={'https://lang-familie.de/impressum/'}>Imprint</Link>

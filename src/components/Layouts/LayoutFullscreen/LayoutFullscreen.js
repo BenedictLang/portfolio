@@ -57,7 +57,7 @@ const LayoutFullscreen = ({ children }) => {
 
 	useEffect(() => {
 		const handleMouseMove = (event) => {
-			const glow = document.getElementById('glow');
+			const glow = document.getElementById('halo-mouse');
 			if (glow) {
 				glow.style.left = `${event.pageX}px`;
 				glow.style.top = `${event.pageY}px`;
@@ -73,7 +73,7 @@ const LayoutFullscreen = ({ children }) => {
 
 	return (
 		<div className={styles.layoutContainer}>
-			<div id="glow" className={styles.glow}></div>
+			<div id="halo-mouse" className={styles.haloMouse}></div>
 			<Helmet {...helmetSettings} />
 			<Header simple={true}></Header>
 			<Main className={styles.main}>{children}</Main>
