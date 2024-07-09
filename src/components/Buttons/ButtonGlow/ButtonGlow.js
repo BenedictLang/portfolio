@@ -2,9 +2,9 @@ import styles from './ButtonGlow.module.scss';
 import stylesBtn from '../Button/Button.module.css';
 import Link from 'next/link';
 
-const ButtonGlow = ({ children, className, href, ...rest }) => {
+const ButtonGlow = ({ onClick, children, className, href, ...rest }) => {
 	return (
-		<Link href={href} className={`${className} ${stylesBtn.button} ${styles.button}`} {...rest}>
+		<Link onClick={onClick} href={href} className={`${className} ${stylesBtn.button} ${styles.button}`} {...rest}>
 			{children}
 		</Link>
 	);
