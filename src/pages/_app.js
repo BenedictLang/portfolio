@@ -1,18 +1,25 @@
 import NextApp from 'next/app';
-
 import { SiteContext, useSiteContext } from 'hooks/use-site';
 import { SearchProvider } from 'hooks/use-search';
-
 import { getSiteMetadata } from 'lib/site';
 import { getRecentPosts } from 'lib/posts';
 import { getCategories } from 'lib/categories';
 import NextNProgress from 'nextjs-progressbar';
 import { getAllMenus } from 'lib/menus';
-
 import 'styles/globals.css';
 import 'styles/globals.scss';
 import 'styles/wordpress.scss';
+import styles from 'styles/pages/App.module.scss';
 import variables from 'styles/_variables.module.scss';
+import THREEScene from 'components/3D/Scene/THREEScene';
+import { createContext, useState, useContext } from 'react';
+import Particles from '../components/3D/particles';
+
+const ThreeSceneContext = createContext(null);
+
+export function useThreeScene() {
+	return useContext(ThreeSceneContext);
+}
 
 function App({ Component, pageProps = {}, metadata, recentPosts, categories, menus }) {
 	const site = useSiteContext({
@@ -22,10 +29,20 @@ function App({ Component, pageProps = {}, metadata, recentPosts, categories, men
 		menus,
 	});
 
+	const [threeSceneChildren, setThreeSceneChildren] = useState(null);
+
 	return (
 		<SiteContext.Provider value={site}>
 			<SearchProvider>
 				<NextNProgress height={4} color={variables.progressbarColor} />
+				<div className={styles.webglContainer}>
+					<ThreeSceneContext.Provider value={setThreeSceneChildren}>
+						<THREEScene>
+							<Particles shape={'sphere'} />
+							{threeSceneChildren}
+						</THREEScene>
+					</ThreeSceneContext.Provider>
+				</div>
 				<Component {...pageProps} />
 			</SearchProvider>
 		</SiteContext.Provider>
