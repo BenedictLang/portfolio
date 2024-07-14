@@ -1,0 +1,95 @@
+.soundToggle {
+  position: relative;
+  text-align: center;
+  width: 2em;
+  height: 2em;
+  cursor: pointer;
+}
+.soundToggle:hover .soundBar {
+  background-color: #1dffe4;
+}
+.soundToggle .soundBar {
+  height: 1px;
+  max-height: 20px;
+  width: 2px;
+  float: left;
+  background-color: #333e4a;
+  opacity: 1;
+  bottom: 5px;
+  position: absolute;
+  animation-play-state: running;
+  animation-direction: alternate;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  transition: all 0.7s ease-in-out;
+}
+.soundToggle .soundBar:nth-child(1) {
+  left: 2px;
+  animation-name: growShrink1;
+  animation-duration: 1000ms;
+  animation-delay: 0ms;
+}
+.soundToggle .soundBar:nth-child(2) {
+  left: 6px;
+  animation-name: growShrink2;
+  animation-duration: 1000ms;
+  animation-delay: 200ms;
+}
+.soundToggle .soundBar:nth-child(3) {
+  left: 10px;
+  animation-name: growShrink3;
+  animation-duration: 1000ms;
+  animation-delay: 400ms;
+}
+.soundToggle .soundBar:nth-child(4) {
+  left: 14px;
+  animation-name: growShrink4;
+  animation-duration: 1000ms;
+  animation-delay: 600ms;
+}
+.soundToggle .noSound {
+  transition: all ease-out 0.7s;
+  max-height: 1px;
+}
+@keyframes growShrink1 {
+  0%, 100% {
+    height: 1px;
+  }
+  50% {
+    height: 14px;
+  }
+}
+@keyframes growShrink2 {
+  0%, 100% {
+    height: 1px;
+  }
+  50% {
+    height: 12px;
+  }
+}
+@keyframes growShrink3 {
+  0%, 100% {
+    height: 1px;
+  }
+  50% {
+    height: 10px;
+  }
+}
+@keyframes growShrink4 {
+  0%, 100% {
+    height: 1px;
+  }
+  50% {
+    height: 8px;
+  }
+}
+@keyframes shrink {
+  0% {
+    height: 14px;
+  }
+  100% {
+    height: 1px;
+  }
+}
+
+/*# sourceMappingURL=ButtonAudio.module.css.map */

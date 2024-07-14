@@ -3,6 +3,7 @@ import styles from './Header.module.scss';
 import Container from 'components/Container';
 import Nav from '../Nav';
 import Logo from '../Logo';
+import ButtonAudio from '../Buttons/ButtonAudio';
 
 const Header = ({ children, simple = false }) => {
 	return (
@@ -10,12 +11,15 @@ const Header = ({ children, simple = false }) => {
 			<div className={styles.navLogo}>
 				<Logo />
 			</div>
-			{!simple && (
-				<div className={styles.wrapper}>
-					<Container>{children}</Container>
-					<Nav />
-				</div>
-			)}
+			<div className={styles.headerWrapper}>
+				{!simple && (
+					<div className={styles.wrapper}>
+						<Container>{children}</Container>
+						<Nav />
+					</div>
+				)}
+				<ButtonAudio />
+			</div>
 		</header>
 	);
 };

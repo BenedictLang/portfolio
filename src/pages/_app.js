@@ -14,6 +14,7 @@ import variables from 'styles/_variables.module.scss';
 import THREEScene from 'components/3D/Scene/THREEScene';
 import { createContext, useState, useContext } from 'react';
 import Particles from '../components/3D/particles';
+import { AudioProvider } from '../components/Buttons/ButtonAudio/AudioContext';
 
 const ThreeSceneContext = createContext(null);
 
@@ -34,16 +35,18 @@ function App({ Component, pageProps = {}, metadata, recentPosts, categories, men
 	return (
 		<SiteContext.Provider value={site}>
 			<SearchProvider>
-				<NextNProgress height={4} color={variables.progressbarColor} />
-				<div className={styles.webglContainer}>
-					<ThreeSceneContext.Provider value={setThreeSceneChildren}>
-						<THREEScene>
-							<Particles shape={'sphere'} />
-							{threeSceneChildren}
-						</THREEScene>
-					</ThreeSceneContext.Provider>
-				</div>
-				<Component {...pageProps} />
+				<AudioProvider>
+					<NextNProgress height={4} color={variables.progressbarColor} />
+					<div className={styles.webglContainer}>
+						<ThreeSceneContext.Provider value={setThreeSceneChildren}>
+							<THREEScene>
+								<Particles shape={'sphere'} />
+								{threeSceneChildren}
+							</THREEScene>
+						</ThreeSceneContext.Provider>
+					</div>
+					<Component {...pageProps} />
+				</AudioProvider>
 			</SearchProvider>
 		</SiteContext.Provider>
 	);

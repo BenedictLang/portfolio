@@ -29,6 +29,7 @@
     "fuse.js": "^7.0.0",
     "graphql": "^16.9.0",
     "he": "^1.2.0",
+    "howler": "^2.2.4",
     "loader-utils": "^3.3.1",
     "next": "14.2.4",
     "nextjs-progressbar": "^0.0.16",

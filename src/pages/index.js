@@ -3,10 +3,12 @@ import styles from 'styles/pages/Start.module.scss';
 import Container from 'components/Container';
 import ButtonGlow from 'components/Buttons/ButtonGlow';
 import LayoutFullscreen from 'components/Layouts/LayoutFullscreen';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useThreeScene } from './_app';
+import { AudioContext } from '../components/Buttons/ButtonAudio/AudioContext';
 
 export default function Start() {
+	const { isPlaying, toggleAudio } = useContext(AudioContext);
 	const [shape, setShape] = useState('sphere');
 	const setThreeSceneChildren = useThreeScene();
 
@@ -14,13 +16,19 @@ export default function Start() {
 		setShape(shape === 'sphere' ? 'cube' : 'sphere');
 	};
 
-	useEffect(() => {
-		//setThreeSceneChildren(<Particles shape={shape} />);
-	}, [shape, setThreeSceneChildren]);
+	useEffect(() => {}, [shape, setThreeSceneChildren]);
+
+	const handleClick = () => {
+		if (!isPlaying) {
+			toggleAudio();
+		}
+		changeParticles();
+	};
+
 	return (
 		<LayoutFullscreen>
 			<Container className={styles.content}>
-				<ButtonGlow href="/home" className onClick={changeParticles}>
+				<ButtonGlow href="/home" onClick={handleClick}>
 					GET $data
 				</ButtonGlow>
 			</Container>
