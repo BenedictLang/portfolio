@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Helmet } from 'react-helmet';
 
 import Layout from 'components/Layouts/Layout';
@@ -6,6 +5,7 @@ import Section from 'components/Section';
 import Container from 'components/Container';
 
 import styles from 'styles/pages/Error.module.scss';
+import CustomLink from '../components/Link';
 
 export default function Custom404() {
 	return (
@@ -20,7 +20,7 @@ export default function Custom404() {
 					<p className={styles.errorCode}>404</p>
 					<p className={styles.errorMessage}>The page you were looking for could not be found.</p>
 					<p>
-						<Link href="/">Go back home</Link>
+						<CustomLink href="/">Go back home</CustomLink>
 					</p>
 				</Container>
 			</Section>

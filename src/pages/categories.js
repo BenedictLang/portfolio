@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Helmet } from 'react-helmet';
 
 import useSite from 'hooks/use-site';
@@ -12,6 +11,7 @@ import SectionTitle from 'components/SectionTitle';
 
 import styles from 'styles/pages/Categories.module.scss';
 import HeroSub from '../components/Heros/HeroSub';
+import CustomLink from '../components/Link';
 
 export default function Categories({ categories }) {
 	const { metadata = {} } = useSite();
@@ -44,7 +44,7 @@ export default function Categories({ categories }) {
 						{categories.map((category) => {
 							return (
 								<li key={category.slug}>
-									<Link href={categoryPathBySlug(category.slug)}>{category.name}</Link>
+									<CustomLink href={categoryPathBySlug(category.slug)}>{category.name}</CustomLink>
 								</li>
 							);
 						})}

@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Helmet } from 'react-helmet';
 
 import { getPostBySlug, getRecentPosts, getRelatedPosts, postPathBySlug } from 'lib/posts';
@@ -18,6 +17,7 @@ import FeaturedImage from 'components/FeaturedImage';
 
 import styles from 'styles/pages/Post.module.scss';
 import HeroSub from '../../components/Heros/HeroSub';
+import CustomLink from '../../components/Link';
 
 export default function Post({ post, socialImage, related }) {
 	const {
@@ -116,7 +116,7 @@ export default function Post({ post, socialImage, related }) {
 						<div className={styles.relatedPosts}>
 							{relatedPostsTitle.name ? (
 								<span>
-									More from <Link href={relatedPostsTitle.link}>{relatedPostsTitle.name}</Link>
+									More from <CustomLink href={relatedPostsTitle.link}>{relatedPostsTitle.name}</CustomLink>
 								</span>
 							) : (
 								<span>More Posts</span>
@@ -124,7 +124,7 @@ export default function Post({ post, socialImage, related }) {
 							<ul>
 								{relatedPostsList.map((post) => (
 									<li key={post.title}>
-										<Link href={postPathBySlug(post.slug)}>{post.title}</Link>
+										<CustomLink href={postPathBySlug(post.slug)}>{post.title}</CustomLink>
 									</li>
 								))}
 							</ul>

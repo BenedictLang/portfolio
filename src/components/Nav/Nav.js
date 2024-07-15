@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import Link from 'next/link';
 import { FaSearch } from 'react-icons/fa';
 
 import useSite from '../../hooks/use-site';
@@ -11,6 +10,7 @@ import Section from '../Section';
 
 import styles from './Nav.module.scss';
 import NavListItem from '../NavListItem';
+import CustomLink from '../Link';
 
 const SEARCH_VISIBLE = 'visible';
 const SEARCH_HIDDEN = 'hidden';
@@ -205,9 +205,9 @@ const Nav = () => {
 										{results.map(({ slug, title }, index) => {
 											return (
 												<li key={slug}>
-													<Link tabIndex={index} href={postPathBySlug(slug)}>
+													<CustomLink tabIndex={index} href={postPathBySlug(slug)}>
 														{title}
-													</Link>
+													</CustomLink>
 												</li>
 											);
 										})}

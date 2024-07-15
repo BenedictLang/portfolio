@@ -1,11 +1,10 @@
-import Link from 'next/link';
-
 import config from '../../../package.json';
 import { Helmet } from 'react-helmet';
 
 import { GrPrevious as PreviousIcon, GrNext as NextIcon } from 'react-icons/gr';
 import { HiOutlineDotsHorizontal as Dots } from 'react-icons/hi';
 import styles from './Pagination.module.scss';
+import CustomLink from '../Link';
 
 const MAX_NUM_PAGES = 9;
 
@@ -55,9 +54,9 @@ const Pagination = ({ pagesCount, currentPage, basePath, addCanonical = true }) 
 
 			<nav className={styles.nav} role="navigation" aria-label="Pagination Navigation">
 				{hasPreviousPage && (
-					<Link className={styles.prev} href={`${path}${currentPage - 1}`} aria-label="Goto Previous Page">
+					<CustomLink className={styles.prev} href={`${path}${currentPage - 1}`} aria-label="Goto Previous Page">
 						<PreviousIcon /> Previous
-					</Link>
+					</CustomLink>
 				)}
 
 				<ul className={styles.pages}>
@@ -76,9 +75,9 @@ const Pagination = ({ pagesCount, currentPage, basePath, addCanonical = true }) 
 							</li>
 						) : (
 							<li key={page}>
-								<Link href={`${path}${page}`} aria-label={`Goto Page ${page}`}>
+								<CustomLink href={`${path}${page}`} aria-label={`Goto Page ${page}`}>
 									<span>{page}</span>
-								</Link>
+								</CustomLink>
 							</li>
 						);
 					})}
@@ -90,9 +89,9 @@ const Pagination = ({ pagesCount, currentPage, basePath, addCanonical = true }) 
 				</ul>
 
 				{hasNextPage && (
-					<Link className={styles.next} href={`${path}${currentPage + 1}`} aria-label="Goto Next Page">
+					<CustomLink className={styles.next} href={`${path}${currentPage + 1}`} aria-label="Goto Next Page">
 						Next <NextIcon />
-					</Link>
+					</CustomLink>
 				)}
 			</nav>
 		</>

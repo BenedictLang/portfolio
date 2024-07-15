@@ -1,8 +1,7 @@
-import Link from 'next/link';
-
 import ClassName from 'models/classname';
 
 import styles from './Breadcrumbs.module.scss';
+import CustomLink from '../Link';
 
 const Breadcrumbs = ({ className, breadcrumbs }) => {
 	const breadcrumbsClassName = new ClassName(styles.breadcrumbs);
@@ -15,7 +14,7 @@ const Breadcrumbs = ({ className, breadcrumbs }) => {
 				return (
 					<li key={id}>
 						{!uri && title}
-						{uri && <Link href={uri}>{title}</Link>}
+						{uri && <CustomLink href={uri}>{title}</CustomLink>}
 					</li>
 				);
 			})}

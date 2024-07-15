@@ -1,5 +1,5 @@
 import styles from './Button.module.scss';
-import Link from 'next/link';
+import CustomLink from '../../Link';
 
 const Button = ({ children, className, href, ...rest }) => {
 	let buttonClassName = styles.button;
@@ -9,9 +9,9 @@ const Button = ({ children, className, href, ...rest }) => {
 	}
 
 	return (
-		<Link href={href} className={buttonClassName} {...rest}>
+		<CustomLink href={href} className={buttonClassName} {...rest}>
 			{children}
-		</Link>
+		</CustomLink>
 	);
 };
 

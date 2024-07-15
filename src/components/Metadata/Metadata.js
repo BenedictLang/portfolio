@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import { categoryPathBySlug } from 'lib/categories';
 import { authorPathByName } from 'lib/users';
 import { formatDate } from 'lib/datetime';
@@ -7,6 +5,7 @@ import ClassName from 'models/classname';
 
 import { FaMapPin } from 'react-icons/fa';
 import styles from './Metadata.module.scss';
+import CustomLink from '../Link';
 
 const DEFAULT_METADATA_OPTIONS = {
 	compactCategories: true,
@@ -33,9 +32,9 @@ const Metadata = ({ className, author, date, categories, options = DEFAULT_METAD
 							/>
 						)}
 						By{' '}
-						<Link href={authorPathByName(author.name)} rel="author">
+						<CustomLink href={authorPathByName(author.name)} rel="author">
 							{author.name}
-						</Link>
+						</CustomLink>
 					</address>
 				</li>
 			)}
@@ -48,7 +47,7 @@ const Metadata = ({ className, author, date, categories, options = DEFAULT_METAD
 				<li className={styles.metadataCategories}>
 					{compactCategories && (
 						<p title={categories.map(({ name }) => name).join(', ')}>
-							<Link href={categoryPathBySlug(categories[0].slug)}>{categories[0].name}</Link>
+							<CustomLink href={categoryPathBySlug(categories[0].slug)}>{categories[0].name}</CustomLink>
 							{categories.length > 1 && ' and more'}
 						</p>
 					)}
@@ -57,7 +56,7 @@ const Metadata = ({ className, author, date, categories, options = DEFAULT_METAD
 							{categories.map((category) => {
 								return (
 									<li key={category.slug}>
-										<Link href={categoryPathBySlug(category.slug)}>{category.name}</Link>
+										<CustomLink href={categoryPathBySlug(category.slug)}>{category.name}</CustomLink>
 									</li>
 								);
 							})}

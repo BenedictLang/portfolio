@@ -18,7 +18,9 @@ export default function Start() {
 
 	useEffect(() => {}, [shape, setThreeSceneChildren]);
 
-	const handleClick = () => {
+	const handleClick = (event) => {
+		event.preventDefault();
+
 		if (!isPlaying) {
 			toggleAudio();
 		}

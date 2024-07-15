@@ -1,6 +1,6 @@
 // import ClassName from 'models/classname';
 // import styles from './NavListItem.module.scss';
-import Link from 'next/link';
+import CustomLink from '../Link';
 
 const NavListItem = ({ className, item }) => {
 	const nestedItems = (item.children || []).map((item) => {
@@ -14,9 +14,9 @@ const NavListItem = ({ className, item }) => {
         and if it does not include 'http'. This prevents a TypeError when `item.path` is null.
       */}
 			{item.path && !item.path.includes('http') && !item.target && (
-				<Link href={item.path} title={item.title}>
+				<CustomLink href={item.path} title={item.title}>
 					{item.label}
-				</Link>
+				</CustomLink>
 			)}
 			{/* 
         Before rendering the `a` tag, we first check if `item.path` exists

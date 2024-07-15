@@ -1,12 +1,22 @@
 import styles from './ButtonGlow.module.scss';
 import stylesBtn from '../Button/Button.module.css';
-import Link from 'next/link';
+import CustomLink from '../../Link';
 
 const ButtonGlow = ({ onClick, children, className, href, ...rest }) => {
+	const handleClick = (event) => {
+		if (onClick) {
+			onClick(event);
+		}
+	};
 	return (
-		<Link onClick={onClick} href={href} className={`${className} ${stylesBtn.button} ${styles.button}`} {...rest}>
+		<CustomLink
+			href={href}
+			onClick={handleClick}
+			className={`${className} ${stylesBtn.button} ${styles.button}`}
+			{...rest}
+		>
 			{children}
-		</Link>
+		</CustomLink>
 	);
 };
 

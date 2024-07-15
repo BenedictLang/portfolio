@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Helmet } from 'react-helmet';
 
 import Layout from 'components/Layouts/Layout';
@@ -6,6 +5,7 @@ import Section from 'components/Section';
 import Container from 'components/Container';
 
 import styles from 'styles/pages/Error.module.scss';
+import CustomLink from '../components/Link';
 
 export default function Custom500() {
 	return (
@@ -23,7 +23,7 @@ export default function Custom500() {
 						reach out to let us know!
 					</p>
 					<p>
-						<Link href="/">Go back home</Link>
+						<CustomLink href="/">Go back home</CustomLink>
 					</p>
 				</Container>
 			</Section>

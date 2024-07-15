@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Helmet } from 'react-helmet';
 
 import { getPageByUri, getAllPages, getBreadcrumbsByUri } from 'lib/pages';
@@ -16,6 +15,7 @@ import Breadcrumbs from 'components/Breadcrumbs';
 
 import styles from 'styles/pages/Page.module.scss';
 import HeroSub from '../../components/Heros/HeroSub';
+import CustomLink from '../../components/Link';
 
 export default function Page({ page, breadcrumbs }) {
 	const { title, metaTitle, description, slug, content, featuredImage, children } = page;
@@ -87,7 +87,7 @@ export default function Page({ page, breadcrumbs }) {
 									{children.map((child) => {
 										return (
 											<li key={child.id}>
-												<Link href={child.uri}>{child.title}</Link>
+												<CustomLink href={child.uri}>{child.title}</CustomLink>
 											</li>
 										);
 									})}
