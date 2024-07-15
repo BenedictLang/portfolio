@@ -1,22 +1,26 @@
-import React, { createContext, useState, useEffect, useMemo } from 'react';
+import React, { createContext, useState, useEffect, useMemo, useCallback } from 'react';
 import { Howl } from 'howler';
 
 export const AudioContext = createContext(null);
 
 export const AudioProvider = ({ children }) => {
 	const [isPlaying, setIsPlaying] = useState(false);
-	const [soundId, setSoundId] = useState(null);
-	const maxVolumeBG = 0.008;
+	const [backgroundMusicId, setBackgroundMusicId] = useState(null);
+	const [keyboardSoundId, setKeyboardSoundId] = useState(null);
+	const [codeSoundId, setCodeSoundId] = useState(null);
 	const maxVolume = 0.003;
+	const musicVolume = 0.008;
+	const keysVolume = 0.006;
+	const codeVolume = 0.002;
 
-	const mainSound = useMemo(
+	const backgroundMusic = useMemo(
 		() =>
 			new Howl({
 				src: ['/audio/Explora - Benedict Lang.mp3'],
 				loop: true,
-				volume: maxVolumeBG,
+				volume: musicVolume,
 			}),
-		[],
+		[musicVolume],
 	);
 
 	const clickSound = useMemo(
@@ -28,48 +32,132 @@ export const AudioProvider = ({ children }) => {
 		[maxVolume],
 	);
 
+	const keyboardSound = useMemo(
+		() =>
+			new Howl({
+				src: ['/audio/keyboard.mp3'],
+				volume: keysVolume,
+				onend: function () {
+					setKeyboardSoundId(null);
+				},
+			}),
+		[keysVolume],
+	);
+
+	const codeSound = useMemo(
+		() =>
+			new Howl({
+				src: ['/audio/binary-code-interface.mp3'],
+				volume: codeVolume,
+				onend: function () {
+					setCodeSoundId(null);
+				},
+			}),
+		[codeVolume],
+	);
+
 	useEffect(() => {
-		mainSound.volume(maxVolumeBG);
-	}, [mainSound, maxVolumeBG]);
+		backgroundMusic.volume(musicVolume);
+	}, [backgroundMusic, musicVolume]);
 
 	const toggleAudio = () => {
 		setIsPlaying((prev) => !prev);
 	};
 
-	const playClickSound = () => {
+	const playClickSound = useCallback(() => {
 		if (isPlaying) {
 			clickSound.play(undefined, true);
 		}
-	};
+	}, [isPlaying, clickSound]);
+
+	const playKeyboardSound = useCallback(() => {
+		if (isPlaying && keyboardSoundId == null) {
+			setKeyboardSoundId(keyboardSound.play(undefined, true));
+		}
+	}, [isPlaying, keyboardSound, keyboardSoundId]);
+
+	const playCodeSound = useCallback(() => {
+		if (isPlaying && codeSoundId == null) {
+			setCodeSoundId(codeSound.play(undefined, true));
+		}
+	}, [isPlaying, codeSound, codeSoundId]);
+
+	const fadeIn = useCallback(
+		(sound, volume, id) => {
+			if (sound && isPlaying && id !== null) {
+				if (!sound.playing(id)) {
+					sound.play(id, true);
+					sound.fade(0, volume, 1000, id);
+				}
+			}
+		},
+		[isPlaying],
+	);
+
+	const fadeOut = useCallback((sound, volume, id) => {
+		if (sound && id !== null) {
+			sound.fade(volume, 0, 1000, id);
+			setTimeout(() => {
+				sound.pause(id);
+			}, 1000);
+		}
+	}, []);
+
+	const playSound = useCallback(() => {
+		if (backgroundMusicId == null && !backgroundMusic.playing(backgroundMusicId)) {
+			console.log('Init BG');
+			// Initialize background music on first execution
+			setBackgroundMusicId(backgroundMusic.play(undefined, true));
+		} else {
+			if (!backgroundMusic.playing(backgroundMusicId)) fadeIn(backgroundMusic, musicVolume, backgroundMusicId);
+		}
+
+		if (keyboardSoundId) fadeIn(keyboardSound, keysVolume, keyboardSoundId);
+		if (codeSoundId) fadeIn(codeSound, codeVolume, codeSoundId);
+	}, [
+		backgroundMusic,
+		musicVolume,
+		backgroundMusicId,
+		keyboardSound,
+		keysVolume,
+		keyboardSoundId,
+		codeSound,
+		codeVolume,
+		codeSoundId,
+		fadeIn,
+	]);
+
+	const pauseSound = useCallback(() => {
+		fadeOut(backgroundMusic, musicVolume, backgroundMusicId);
+		fadeOut(keyboardSound, keysVolume, keyboardSoundId);
+		fadeOut(codeSound, codeVolume, codeSoundId);
+	}, [
+		backgroundMusic,
+		musicVolume,
+		backgroundMusicId,
+		keyboardSound,
+		keysVolume,
+		keyboardSoundId,
+		codeSound,
+		codeVolume,
+		codeSoundId,
+		fadeOut,
+	]);
 
 	useEffect(() => {
 		if (isPlaying) {
-			if (soundId === null) {
-				const id = mainSound.play(undefined, true);
-				mainSound.fade(0, maxVolumeBG, 1000, id);
-				setSoundId(id);
-			} else {
-				mainSound.fade(0, maxVolumeBG, 1000, soundId);
-				mainSound.play(soundId, true);
-			}
+			playSound();
 		} else {
-			mainSound.fade(maxVolumeBG, 0, 1000, soundId);
-			setTimeout(() => {
-				mainSound.pause(soundId);
-			}, 1000);
+			pauseSound();
 		}
-	}, [isPlaying, mainSound, soundId, maxVolumeBG]);
+	}, [isPlaying, pauseSound, playSound]);
 
 	useEffect(() => {
 		const handleVisibilityChange = () => {
 			if (document.hidden) {
-				mainSound.fade(maxVolumeBG, 0, 1000, soundId);
-				setTimeout(() => {
-					mainSound.pause(soundId);
-				}, 1000);
+				pauseSound();
 			} else if (isPlaying) {
-				mainSound.play(soundId, true);
-				mainSound.fade(0, maxVolumeBG, 1000, soundId);
+				playSound();
 			}
 		};
 
@@ -78,7 +166,11 @@ export const AudioProvider = ({ children }) => {
 		return () => {
 			document.removeEventListener('visibilitychange', handleVisibilityChange);
 		};
-	}, [isPlaying, mainSound, soundId, maxVolumeBG]);
+	}, [isPlaying, pauseSound, playSound]);
 
-	return <AudioContext.Provider value={{ isPlaying, toggleAudio, playClickSound }}>{children}</AudioContext.Provider>;
+	return (
+		<AudioContext.Provider value={{ isPlaying, toggleAudio, playClickSound, playKeyboardSound, playCodeSound }}>
+			{children}
+		</AudioContext.Provider>
+	);
 };

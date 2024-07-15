@@ -8,7 +8,7 @@ import { useThreeScene } from './_app';
 import { AudioContext } from '../components/Buttons/ButtonAudio/AudioContext';
 
 export default function Start() {
-	const { isPlaying, toggleAudio } = useContext(AudioContext);
+	const { isPlaying, toggleAudio, playKeyboardSound, playCodeSound } = useContext(AudioContext);
 	const [shape, setShape] = useState('sphere');
 	const setThreeSceneChildren = useThreeScene();
 
@@ -20,17 +20,18 @@ export default function Start() {
 
 	const handleClick = (event) => {
 		event.preventDefault();
-
 		if (!isPlaying) {
 			toggleAudio();
 		}
+		playKeyboardSound();
+		playCodeSound();
 		changeParticles();
 	};
 
 	return (
 		<LayoutFullscreen>
 			<Container className={styles.content}>
-				<ButtonGlow href="/home" onClick={handleClick}>
+				<ButtonGlow href="/" onClick={handleClick}>
 					GET $data
 				</ButtonGlow>
 			</Container>
