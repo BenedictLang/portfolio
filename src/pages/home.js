@@ -4,11 +4,11 @@ import { WebsiteJsonLd } from 'lib/json-ld';
 import styles from 'styles/pages/home.module.scss';
 
 import Layout from 'components/Layouts/Layout';
-import Section from 'components/Section';
-import Container from 'components/Container';
+import Section from 'components/Sections/Section';
+import Container from 'components/ContainerElements/Container';
 import PostCard from 'components/PostCard';
 import Pagination from 'components/Pagination';
-import HeroSub from '../components/Heros/HeroSub';
+import HeroSub from '../components/Sections/Heros/HeroSub';
 
 export default function Home({ posts, pagination }) {
 	const { metadata = {} } = useSite();

@@ -5,9 +5,9 @@ import styles from './Layout.module.scss';
 import useSite from '../../../hooks/use-site';
 import { helmetSettingsFromMetadata } from '../../../lib/site';
 
-import Main from '../../Main';
-import Footer from '../../Footer';
-import Header from '../../Header';
+import Main from '../../Sections/Main';
+import Footer from '../../Sections/Footer';
+import Header from '../../Sections/Header';
 
 const Layout = ({ children }) => {
 	const router = useRouter();

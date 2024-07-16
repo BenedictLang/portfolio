@@ -1,8 +1,8 @@
 import { Helmet } from 'react-helmet';
 
 import Layout from 'components/Layouts/Layout';
-import Section from 'components/Section';
-import Container from 'components/Container';
+import Section from 'components/Sections/Section';
+import Container from 'components/ContainerElements/Container';
 
 import styles from 'styles/pages/Error.module.scss';
 import CustomLink from '../components/Link';

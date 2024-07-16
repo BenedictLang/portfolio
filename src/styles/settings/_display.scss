@@ -1,3 +1,4 @@
+/* Dimensions */
 $border-radius-small: 0.2em;
 $border-radius-medium: 0.7em;
 
@@ -6,3 +7,53 @@ $border-width-medium: 0.15em;
 
 $space-small: 1em;
 $space-medium: 2em;
+
+$container-width: 80rem;
+
+/* Breakpoints */
+$bp-ultra-wide: 2300px;
+$bp-wide: 1450px;
+$bp-desktop: 1024px;
+$bp-tablet: 900px;
+
+@mixin only-mobile {
+	@media (max-width: $bp-tablet - 1px) {
+		@content;
+	}
+}
+
+@mixin up-to-tablet {
+	@media (max-width: $bp-desktop - 1px) and (orientation: landscape) {
+		@content;
+	}
+}
+
+@mixin from-tablet {
+	@media (min-width: $bp-tablet) {
+		@content;
+	}
+}
+
+@mixin only-tablet {
+	@media (min-width: $bp-tablet) and (max-width: $bp-desktop - 1px) and (orientation: landscape) {
+		@content;
+	}
+}
+
+@mixin only-desktop {
+	@media (min-width: $bp-desktop) and (orientation: landscape) {
+		@content;
+	}
+}
+
+@mixin only-wide {
+	@media (min-width: $bp-wide) and (orientation: landscape) {
+		@content;
+	}
+}
+
+@mixin only-ultra-wide {
+	@media (min-width: $bp-ultra-wide) and (orientation: landscape) {
+		@content;
+	}
+}

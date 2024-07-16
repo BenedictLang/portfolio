@@ -1,0 +1,55 @@
+@import '../../styles/settings/_settings';
+
+.container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background: $color-bg-transparent-light;
+	z-index: 999;
+
+	&:before {
+		content: '';
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		backdrop-filter: $blur-light;
+		transition: opacity $duration-middle ease-in-out;
+		z-index: -1;
+	}
+
+	&.visible {
+		&:before {
+			opacity: 1;
+		}
+		opacity: 1;
+	}
+
+	.modal {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		max-height: 60%;
+		max-width: calc(100% - $space-small);
+		border-radius: $border-radius-medium;
+		box-shadow: $fx-dropShadow;
+		transition: transform $duration-short ease-in-out;
+		transform: scale(0.2);
+		&.visible {
+			transform: scale(1);
+		}
+	}
+
+	.close {
+		position: absolute;
+		top: 0;
+		right: 0;
+		padding: $space-small;
+	}
+}

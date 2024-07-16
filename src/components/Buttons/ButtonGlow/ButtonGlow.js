@@ -4,6 +4,7 @@ import CustomLink from '../../Link';
 
 const ButtonGlow = ({ onClick, children, className, href, ...rest }) => {
 	const handleClick = (event) => {
+		event.preventDefault();
 		if (onClick) {
 			onClick(event);
 		}

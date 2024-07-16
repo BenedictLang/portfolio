@@ -1,6 +1,6 @@
 // import ClassName from 'models/classname';
 // import styles from './NavListItem.module.scss';
-import CustomLink from '../Link';
+import CustomLink from '../../Link';
 
 const NavListItem = ({ className, item }) => {
 	const nestedItems = (item.children || []).map((item) => {

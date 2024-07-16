@@ -1,4 +1,6 @@
+@import '../../styles/settings/_settings';
+
 .container {
-  max-width: 60rem;
-  margin: 0 auto;
+	max-width: $container-width;
+	margin: 0 auto;
 }

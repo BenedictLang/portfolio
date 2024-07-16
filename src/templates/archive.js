@@ -5,14 +5,14 @@ import { helmetSettingsFromMetadata } from 'lib/site';
 import useSite from 'hooks/use-site';
 
 import Layout from 'components/Layouts/Layout';
-import Section from 'components/Section';
-import Container from 'components/Container';
+import Section from 'components/Sections/Section';
+import Container from 'components/ContainerElements/Container';
 import SectionTitle from 'components/SectionTitle';
 import PostCard from 'components/PostCard';
 import Pagination from 'components/Pagination/Pagination';
 
 import styles from 'styles/templates/Archive.module.scss';
-import HeroSub from '../components/Heros/HeroSub';
+import HeroSub from '../components/Sections/Heros/HeroSub';
 
 const DEFAULT_POST_OPTIONS = {};
 

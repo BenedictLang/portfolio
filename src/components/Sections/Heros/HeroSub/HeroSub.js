@@ -1,6 +1,6 @@
-import ClassName from 'models/classname';
+import ClassName from '../../../../models/classname';
 import styles from './HeroSub.module.scss';
-import useSite from '../../../hooks/use-site';
+import useSite from '../../../../hooks/use-site';
 
 export default function HeroSub({ children, className }) {
 	const { metadata = {} } = useSite();

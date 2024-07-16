@@ -5,9 +5,9 @@ import styles from './LayoutFullscreen.module.scss';
 import useSite from '../../../hooks/use-site';
 import { helmetSettingsFromMetadata } from '../../../lib/site';
 
-import Main from '../../Main';
-import Header from '../../Header';
-import Footer from '../../Footer';
+import Main from '../../Sections/Main';
+import Header from '../../Sections/Header';
+import Footer from '../../Sections/Footer';
 import { useEffect } from 'react';
 
 const LayoutFullscreen = ({ children }) => {

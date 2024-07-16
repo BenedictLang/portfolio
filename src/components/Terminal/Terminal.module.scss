@@ -1,0 +1,66 @@
+@import '../../styles/settings/_settings';
+
+.terminal {
+	position: relative;
+	background-color: black;
+	background-image: radial-gradient($color-primary-transparent, black 120%);
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	overflow: hidden;
+	padding: 2rem;
+	color: white;
+	border-radius: 0 0 $border-radius-medium $border-radius-medium;
+	font:
+		1rem Inconsolata,
+		monospace;
+	text-shadow: 0 0 5px #c8c8c8;
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.5) 51%);
+		background-size: 100% 4px;
+		pointer-events: none;
+		opacity: 0.6;
+		z-index: 1;
+		animation:
+			scanlines 0.25s linear infinite,
+			opacity 5s linear infinite;
+	}
+
+	.pre {
+		position: relative;
+		width: 100%;
+		z-index: 2; // Ensure content is above the overlay
+		.code {
+			width: min-content;
+			text-wrap: balance;
+		}
+	}
+}
+
+@keyframes scanlines {
+	from {
+		background: linear-gradient(to bottom, transparent 50%, rgba(106, 101, 109, 0.4) 51%);
+		background-size: 100% 4px;
+	}
+	to {
+		background: linear-gradient(to bottom, rgba(106, 101, 109, 0.4) 50%, transparent 51%);
+		background-size: 100% 4px;
+	}
+}
+
+@keyframes opacity {
+	0%,
+	100% {
+		opacity: 0.54;
+	}
+	50% {
+		opacity: 0.5;
+	}
+}

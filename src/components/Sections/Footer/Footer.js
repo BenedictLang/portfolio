@@ -1,12 +1,12 @@
-import useSite from 'hooks/use-site';
-import { postPathBySlug } from 'lib/posts';
-import { categoryPathBySlug } from 'lib/categories';
+import useSite from '../../../hooks/use-site';
+import { postPathBySlug } from '../../../lib/posts';
+import { categoryPathBySlug } from '../../../lib/categories';
 
-import Section from 'components/Section';
-import Container from 'components/Container';
+import Section from '../Section';
+import Container from '../../ContainerElements/Container';
 
 import styles from './Footer.module.scss';
-import CustomLink from '../Link';
+import CustomLink from '../../Link';
 
 const Footer = ({ simple = false }) => {
 	const { metadata = {}, recentPosts = [], categories = [] } = useSite();

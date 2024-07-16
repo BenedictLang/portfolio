@@ -7,14 +7,14 @@ import useSite from 'hooks/use-site';
 import usePageMetadata from 'hooks/use-page-metadata';
 
 import Layout from 'components/Layouts/Layout';
-import Content from 'components/Content';
-import Section from 'components/Section';
-import Container from 'components/Container';
+import Content from 'components/ContainerElements/Content';
+import Section from 'components/Sections/Section';
+import Container from 'components/ContainerElements/Container';
 import FeaturedImage from 'components/FeaturedImage';
 import Breadcrumbs from 'components/Breadcrumbs';
 
 import styles from 'styles/pages/Page.module.scss';
-import HeroSub from '../../components/Heros/HeroSub';
+import HeroSub from '../../components/Sections/Heros/HeroSub';
 import CustomLink from '../../components/Link';
 
 export default function Page({ page, breadcrumbs }) {

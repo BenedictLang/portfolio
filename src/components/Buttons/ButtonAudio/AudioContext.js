@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useMemo, useCallback } from 'react';
+import React, { createContext, useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { Howl } from 'howler';
 
 export const AudioContext = createContext(null);
@@ -8,20 +8,25 @@ export const AudioProvider = ({ children }) => {
 	const [backgroundMusicId, setBackgroundMusicId] = useState(null);
 	const [keyboardSoundId, setKeyboardSoundId] = useState(null);
 	const [codeSoundId, setCodeSoundId] = useState(null);
+	const backgroundMusicRef = useRef(null);
 	const maxVolume = 0.003;
 	const musicVolume = 0.008;
 	const keysVolume = 0.006;
-	const codeVolume = 0.002;
+	const codeVolume = 0.0025;
 
-	const backgroundMusic = useMemo(
-		() =>
-			new Howl({
-				src: ['/audio/Explora - Benedict Lang.mp3'],
-				loop: true,
-				volume: musicVolume,
-			}),
-		[musicVolume],
-	);
+	useEffect(() => {
+		// Initialize Howler instance for background music
+		backgroundMusicRef.current = new Howl({
+			src: ['/audio/Explora - Benedict Lang.mp3'],
+			loop: true,
+			volume: 0.5,
+		});
+
+		return () => {
+			// Clean up Howler instance
+			backgroundMusicRef.current?.unload();
+		};
+	}, []);
 
 	const clickSound = useMemo(
 		() =>
@@ -37,9 +42,6 @@ export const AudioProvider = ({ children }) => {
 			new Howl({
 				src: ['/audio/keyboard.mp3'],
 				volume: keysVolume,
-				onend: function () {
-					setKeyboardSoundId(null);
-				},
 			}),
 		[keysVolume],
 	);
@@ -49,42 +51,13 @@ export const AudioProvider = ({ children }) => {
 			new Howl({
 				src: ['/audio/binary-code-interface.mp3'],
 				volume: codeVolume,
-				onend: function () {
-					setCodeSoundId(null);
-				},
 			}),
 		[codeVolume],
 	);
 
-	useEffect(() => {
-		backgroundMusic.volume(musicVolume);
-	}, [backgroundMusic, musicVolume]);
-
-	const toggleAudio = () => {
-		setIsPlaying((prev) => !prev);
-	};
-
-	const playClickSound = useCallback(() => {
-		if (isPlaying) {
-			clickSound.play(undefined, true);
-		}
-	}, [isPlaying, clickSound]);
-
-	const playKeyboardSound = useCallback(() => {
-		if (isPlaying && keyboardSoundId == null) {
-			setKeyboardSoundId(keyboardSound.play(undefined, true));
-		}
-	}, [isPlaying, keyboardSound, keyboardSoundId]);
-
-	const playCodeSound = useCallback(() => {
-		if (isPlaying && codeSoundId == null) {
-			setCodeSoundId(codeSound.play(undefined, true));
-		}
-	}, [isPlaying, codeSound, codeSoundId]);
-
 	const fadeIn = useCallback(
 		(sound, volume, id) => {
-			if (sound && isPlaying && id !== null) {
+			if (isPlaying && sound && id !== null) {
 				if (!sound.playing(id)) {
 					sound.play(id, true);
 					sound.fade(0, volume, 1000, id);
@@ -103,36 +76,77 @@ export const AudioProvider = ({ children }) => {
 		}
 	}, []);
 
+	const stopKeySound = useCallback(() => {
+		if (keyboardSoundId !== null) {
+			fadeOut(keyboardSound, keysVolume, keyboardSoundId);
+			keyboardSound.stop(keyboardSoundId, false);
+			setKeyboardSoundId(null);
+		}
+	}, [fadeOut, keyboardSound, keyboardSoundId]);
+
+	const stopCodeSound = useCallback(() => {
+		if (codeSoundId !== null) {
+			fadeOut(codeSound, codeVolume, codeSoundId);
+			codeSound.stop(codeSoundId, false);
+			setCodeSoundId(null);
+		}
+	}, [codeSound, codeSoundId, fadeOut]);
+
+	useEffect(() => {
+		backgroundMusicRef.current.volume(musicVolume);
+	}, [musicVolume]);
+
+	const toggleAudio = useCallback(() => {
+		setIsPlaying((prev) => !prev);
+	}, []);
+
+	const playClickSound = useCallback(() => {
+		if (isPlaying) {
+			clickSound.play(undefined, true);
+		}
+	}, [isPlaying, clickSound]);
+
+	const playKeySound = useCallback(() => {
+		if (isPlaying) {
+			if (keyboardSoundId == null) {
+				setKeyboardSoundId(keyboardSound.play(undefined, true));
+			} else {
+				keyboardSound.stop(keyboardSoundId, true);
+				keyboardSound.play(keyboardSoundId, true);
+			}
+		}
+	}, [isPlaying, keyboardSound, keyboardSoundId]);
+
+	const playCodeSound = useCallback(() => {
+		if (isPlaying) {
+			if (codeSoundId == null) {
+				setCodeSoundId(codeSound.play(undefined, true));
+			} else {
+				codeSound.stop(codeSoundId, true);
+				codeSound.play(codeSoundId, true);
+			}
+		}
+	}, [isPlaying, codeSound, codeSoundId]);
+
 	const playSound = useCallback(() => {
-		if (backgroundMusicId == null && !backgroundMusic.playing(backgroundMusicId)) {
-			console.log('Init BG');
+		if (backgroundMusicId == null && !backgroundMusicRef.current.playing(backgroundMusicId)) {
 			// Initialize background music on first execution
-			setBackgroundMusicId(backgroundMusic.play(undefined, true));
+			setBackgroundMusicId(backgroundMusicRef.current.play(undefined, true));
 		} else {
-			if (!backgroundMusic.playing(backgroundMusicId)) fadeIn(backgroundMusic, musicVolume, backgroundMusicId);
+			if (!backgroundMusicRef.current.playing(backgroundMusicId)) {
+				fadeIn(backgroundMusicRef.current, musicVolume, backgroundMusicId);
+			}
 		}
 
 		if (keyboardSoundId) fadeIn(keyboardSound, keysVolume, keyboardSoundId);
 		if (codeSoundId) fadeIn(codeSound, codeVolume, codeSoundId);
-	}, [
-		backgroundMusic,
-		musicVolume,
-		backgroundMusicId,
-		keyboardSound,
-		keysVolume,
-		keyboardSoundId,
-		codeSound,
-		codeVolume,
-		codeSoundId,
-		fadeIn,
-	]);
+	}, [backgroundMusicId, keyboardSoundId, fadeIn, keyboardSound, codeSoundId, codeSound]);
 
 	const pauseSound = useCallback(() => {
-		fadeOut(backgroundMusic, musicVolume, backgroundMusicId);
+		fadeOut(backgroundMusicRef.current, musicVolume, backgroundMusicId);
 		fadeOut(keyboardSound, keysVolume, keyboardSoundId);
 		fadeOut(codeSound, codeVolume, codeSoundId);
 	}, [
-		backgroundMusic,
 		musicVolume,
 		backgroundMusicId,
 		keyboardSound,
@@ -169,7 +183,9 @@ export const AudioProvider = ({ children }) => {
 	}, [isPlaying, pauseSound, playSound]);
 
 	return (
-		<AudioContext.Provider value={{ isPlaying, toggleAudio, playClickSound, playKeyboardSound, playCodeSound }}>
+		<AudioContext.Provider
+			value={{ isPlaying, toggleAudio, playClickSound, playKeySound, playCodeSound, stopKeySound, stopCodeSound }}
+		>
 			{children}
 		</AudioContext.Provider>
 	);

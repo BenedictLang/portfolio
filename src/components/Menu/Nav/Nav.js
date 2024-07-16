@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
-import useSite from '../../hooks/use-site';
-import useSearch, { SEARCH_STATE_LOADED } from '../../hooks/use-search';
-import { postPathBySlug } from '../../lib/posts';
-import { findMenuByLocation, MENU_LOCATION_NAVIGATION_DEFAULT } from '../../lib/menus';
+import useSite from '../../../hooks/use-site';
+import useSearch, { SEARCH_STATE_LOADED } from '../../../hooks/use-search';
+import { postPathBySlug } from '../../../lib/posts';
+import { findMenuByLocation, MENU_LOCATION_NAVIGATION_DEFAULT } from '../../../lib/menus';
 
-import Section from '../Section';
+import Section from '../../Sections/Section';
 
 import styles from './Nav.module.scss';
 import NavListItem from '../NavListItem';
-import CustomLink from '../Link';
+import CustomLink from '../../Link';
 
 const SEARCH_VISIBLE = 'visible';
 const SEARCH_HIDDEN = 'hidden';

@@ -6,6 +6,7 @@
 	width: 2em;
 	height: 2em;
 	cursor: pointer;
+	z-index: 1000;
 
 	&:hover {
 		.soundBar {
