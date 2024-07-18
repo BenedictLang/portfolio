@@ -3,7 +3,7 @@ import styles from './Header.module.scss';
 import Container from '../../ContainerElements/Container';
 import Nav from '../../Menu/Nav';
 import Logo from '../../Logo';
-import ButtonAudio from '../../Buttons/ButtonAudio';
+import ButtonAudio from '../../Audio/ButtonAudio';
 
 const Header = ({ children, simple = false }) => {
 	return (

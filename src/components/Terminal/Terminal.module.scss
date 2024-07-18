@@ -2,14 +2,14 @@
 
 .terminal {
 	position: relative;
+	height: 50vh;
+	width: 100%;
+	max-height: 100%;
 	background-color: black;
 	background-image: radial-gradient($color-primary-transparent, black 120%);
-	height: 100%;
-	width: 100%;
 	margin: 0;
-	overflow: hidden;
-	padding: 2rem;
 	color: white;
+	overflow-y: hidden;
 	border-radius: 0 0 $border-radius-medium $border-radius-medium;
 	font:
 		1rem Inconsolata,
@@ -23,6 +23,7 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
+		max-height: 100%;
 		background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.5) 51%);
 		background-size: 100% 4px;
 		pointer-events: none;
@@ -33,13 +34,65 @@
 			opacity 5s linear infinite;
 	}
 
-	.pre {
+	.terminalContent {
 		position: relative;
+		height: 100%;
 		width: 100%;
-		z-index: 2; // Ensure content is above the overlay
-		.code {
-			width: min-content;
-			text-wrap: balance;
+		padding: $space-medium;
+		border-radius: 0 0 $border-radius-medium $border-radius-medium;
+		white-space: pre;
+		text-wrap: pretty;
+		overflow-y: scroll;
+		font-size: xx-small;
+		z-index: 2;
+	}
+
+	.typedCursor {
+		display: inline-block;
+		background-color: $color-primary;
+		width: 0.5em;
+		height: 1em;
+		vertical-align: top;
+		animation: blink 1s step-end infinite;
+	}
+}
+
+.glitch {
+	$offset1: 2px;
+	$offset2: -2px;
+	position: relative;
+
+	&::before,
+	&::after {
+		content: attr(data-text);
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 99%;
+		height: 99%;
+		background-color: #000000;
+	}
+
+	&::before {
+		left: $offset1;
+		text-shadow: -1px 0 $color-primary;
+		clip: rect(24px, 550px, 90px, 0);
+		animation: noise-anim 3s infinite linear alternate;
+	}
+
+	&::after {
+		left: $offset2;
+		text-shadow: 1px 0 $color-complementary;
+		clip: rect(85px, 550px, 140px, 0);
+		animation: noise-anim 2.5s infinite linear alternate;
+	}
+}
+
+@keyframes noise-anim {
+	$steps: 20;
+	@for $i from 0 through $steps {
+		#{percentage($i*(1/$steps))} {
+			clip: rect(random(150) + px, 9999px, random(140) + px, 0);
 		}
 	}
 }
@@ -62,5 +115,23 @@
 	}
 	50% {
 		opacity: 0.5;
+	}
+}
+
+@keyframes blink {
+	from,
+	to {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+}
+
+@include from-tablet {
+	.terminal {
+		.terminalContent {
+			font-size: medium;
+		}
 	}
 }

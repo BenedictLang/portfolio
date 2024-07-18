@@ -56,6 +56,7 @@ const LayoutFullscreen = ({ children }) => {
 	};
 
 	useEffect(() => {
+		console.log('Rendering Layout');
 		const handleMouseMove = (event) => {
 			const glow = document.getElementById('halo-mouse');
 			if (glow) {

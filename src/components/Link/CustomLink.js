@@ -1,15 +1,15 @@
 import { useContext } from 'react';
 import Link from 'next/link';
-import { AudioContext } from 'components/Buttons/ButtonAudio/AudioContext';
+import { AudioContext } from '../Audio/AudioContext';
 
 const CustomLink = ({ href, children, onClick, ...props }) => {
-	const { playClickSound } = useContext(AudioContext);
+	const { playSound } = useContext(AudioContext);
 
 	const handleClick = (event) => {
 		if (onClick) {
 			onClick(event);
 		}
-		playClickSound();
+		playSound('click');
 	};
 
 	return (

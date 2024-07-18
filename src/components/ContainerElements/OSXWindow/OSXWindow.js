@@ -1,13 +1,13 @@
 import styles from './OSXWindow.module.scss';
 import { useContext } from 'react';
-import { AudioContext } from '../../Buttons/ButtonAudio/AudioContext';
+import { AudioContext } from '../../Audio/AudioContext';
 
 const OSXWindow = ({ headerText, children, onClick, onClose, onMinimize, onMaximize, ...props }) => {
-	const { playClickSound } = useContext(AudioContext);
+	const { playSound } = useContext(AudioContext);
 
 	const handleClick = (event, action) => {
 		event.preventDefault();
-		playClickSound();
+		playSound('click');
 
 		switch (action) {
 			case 'close':

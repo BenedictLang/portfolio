@@ -11,6 +11,10 @@
 .soundToggle:hover .soundBar {
   background-color: #1dffe4;
 }
+.soundToggle .noSound > .soundBar {
+  transition: all ease-out 0.7s;
+  max-height: 1px;
+}
 .soundToggle .soundBar {
   height: 1px;
   max-height: 20px;
@@ -49,10 +53,6 @@
   animation-name: growShrink4;
   animation-duration: 1000ms;
   animation-delay: 600ms;
-}
-.soundToggle .noSound {
-  transition: all ease-out 0.7s;
-  max-height: 1px;
 }
 @keyframes growShrink1 {
   0%, 100% {
