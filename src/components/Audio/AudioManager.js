@@ -2,8 +2,8 @@ import { Howl } from 'howler';
 
 const backgroundMusic = new Howl({
 	src: ['/audio/Explora - Benedict Lang.mp3'],
-	//loop: true,
-	volume: 0.007,
+	loop: true,
+	volume: 0.006,
 });
 
 const click = new Howl({

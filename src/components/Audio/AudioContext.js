@@ -1,4 +1,4 @@
-import React, { createContext, useState, useMemo, useCallback, useRef } from 'react';
+import React, { createContext, useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import sounds from './AudioManager';
 
 export const AudioContext = createContext(null);
@@ -113,6 +113,22 @@ export const AudioProvider = ({ children }) => {
 		});
 		updateIsPlaying();
 	}, [updateIsPlaying]);
+
+	useEffect(() => {
+		const handleVisibilityChange = () => {
+			if (document.hidden) {
+				fadeOutAllPlayingSounds();
+			} else {
+				fadeInBackgroundMusicAndResumeOthers();
+			}
+		};
+
+		document.addEventListener('visibilitychange', handleVisibilityChange);
+
+		return () => {
+			document.removeEventListener('visibilitychange', handleVisibilityChange);
+		};
+	}, [fadeInBackgroundMusicAndResumeOthers, fadeOutAllPlayingSounds]);
 
 	const value = useMemo(
 		() => ({
