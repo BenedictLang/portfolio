@@ -10,10 +10,9 @@ import Terminal from '../components/Terminal';
 import { useRouter } from 'next/router';
 
 export default function Start() {
-	const { isPlaying, playSound, stopSound } = useContext(AudioContext);
+	const { playSound, stopSound } = useContext(AudioContext);
 	const [shape, setShape] = useState('sphere');
 	const [isModalVisible, setModalVisible] = useState(false);
-	const [isComplete, setIsComplete] = useState(false);
 	const [terminalChildren, setTerminalChildren] = useState(null);
 	const router = useRouter();
 
@@ -26,34 +25,28 @@ export default function Start() {
 		if (isModalVisible) {
 			playSound('codeSound');
 			playSound('keyboardSound');
-		} else {
-			if (isComplete) {
-				//stopSound('backgroundMusic');
-				stopSound('codeSound');
-				stopSound('keyboardSound');
-				playSound('greetings');
-			}
 		}
-	}, [isComplete, isModalVisible, playSound, stopSound]);
+	}, [isModalVisible, playSound, stopSound]);
 
 	const handleClick = useCallback(
 		(event) => {
 			event.preventDefault();
-			if (!isPlaying) {
-				playSound('backgroundMusic');
-			}
 			changeParticles();
 			setModalVisible(true);
 			router.prefetch('/home').then(() => {});
 		},
-		[changeParticles, isPlaying, playSound, router],
+		[changeParticles, router],
 	);
 
 	const handleTerminalComplete = useCallback(() => {
-		setIsComplete(true);
+		stopSound('codeSound');
+		stopSound('keyboardSound');
 		setModalVisible(false);
-		router.push('/home').then(() => {});
-	}, [router]);
+		playSound('greetings');
+		router.push('/home').then(() => {
+			playSound('backgroundMusic');
+		});
+	}, [playSound, router, stopSound]);
 
 	const handleCloseModal = useCallback(() => {
 		handleTerminalComplete();

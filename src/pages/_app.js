@@ -10,17 +10,12 @@ import 'styles/globals.css';
 import 'styles/globals.scss';
 import 'styles/wordpress.scss';
 import styles from 'styles/pages/App.module.scss';
-import variables from 'styles/_variables.module.scss';
+import variables from '../styles/_variables.module.scss';
 import THREEScene from 'components/3D/Scene/THREEScene';
-import { createContext, useState, useContext } from 'react';
-import Particles from '../components/3D/particles';
+import { createContext, useState } from 'react';
 import { AudioProvider } from '../components/Audio/AudioContext';
 
 const ThreeSceneContext = createContext(null);
-
-export function useThreeScene() {
-	return useContext(ThreeSceneContext);
-}
 
 function App({ Component, pageProps = {}, metadata, recentPosts, categories, menus }) {
 	const site = useSiteContext({
@@ -39,10 +34,7 @@ function App({ Component, pageProps = {}, metadata, recentPosts, categories, men
 					<NextNProgress height={4} color={variables.progressbarColor} />
 					<div className={styles.webglContainer}>
 						<ThreeSceneContext.Provider value={setThreeSceneChildren}>
-							<THREEScene>
-								<Particles shape={'sphere'} />
-								{threeSceneChildren}
-							</THREEScene>
+							<THREEScene>{threeSceneChildren}</THREEScene>
 						</ThreeSceneContext.Provider>
 					</div>
 					<Component {...pageProps} />

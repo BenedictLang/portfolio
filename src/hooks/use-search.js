@@ -10,7 +10,7 @@ export const SEARCH_STATE_READY = 'READY';
 export const SEARCH_STATE_ERROR = 'ERROR';
 export const SEARCH_STATE_LOADED = 'LOADED';
 
-export const SearchContext = createContext();
+export const SearchContext = createContext(undefined, undefined);
 
 export const SearchProvider = (props) => {
 	const search = useSearchState();

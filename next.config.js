@@ -33,6 +33,37 @@ const nextConfig = {
 		WORDPRESS_MENU_LOCATION_NAVIGATION: process.env.WORDPRESS_MENU_LOCATION_NAVIGATION || 'PRIMARY',
 		WORDPRESS_PLUGIN_SEO: parseEnvValue(process.env.WORDPRESS_PLUGIN_SEO, 'false'),
 	},
+	// Custom Webpack configuration to handle GLSL files
+	webpack: (config) => {
+		config.module.rules.push({
+			test: /\.(glsl|vs|fs|vert|frag)$/,
+			exclude: /node_modules/,
+			use: ['raw-loader', 'glslify-loader'],
+		});
+		config.module.rules.push({
+			test: /\.module\.scss$/,
+			use: [
+				'style-loader',
+				{
+					loader: 'css-loader',
+					options: {
+						modules: true,
+						importLoaders: 1,
+						sourceMap: true,
+					},
+				},
+				'sass-loader',
+			],
+			exclude: /node_modules/,
+		});
+
+		config.module.rules.push({
+			test: /\.scss$/,
+			use: ['style-loader', 'css-loader', 'sass-loader'],
+			exclude: /\.module\.scss$/,
+		});
+		return config;
+	},
 };
 
 module.exports = () => {

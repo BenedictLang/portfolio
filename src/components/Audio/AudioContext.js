@@ -1,103 +1,129 @@
-import React, { createContext, useState, useMemo, useCallback, useEffect } from 'react';
+import React, { createContext, useState, useMemo, useCallback, useRef } from 'react';
 import sounds from './AudioManager';
 
 export const AudioContext = createContext(null);
 
 export const AudioProvider = ({ children }) => {
-	const [soundIds, setSoundIds] = useState({});
-	const soundKeys = Object.keys(sounds);
-	const initialSoundPlayingStates = soundKeys.reduce((acc, key) => {
-		acc[key] = false;
-		return acc;
-	}, {});
-	const [soundPlayingStates, setSoundPlayingStates] = useState(initialSoundPlayingStates);
+	const soundIds = useRef({});
+	const soundPlayingStates = useRef(
+		Object.keys(sounds).reduce((acc, key) => {
+			acc[key] = false;
+			return acc;
+		}, {}),
+	);
+	const pausedSounds = useRef({}); // To store both the paused ID and original volume
 
-	useEffect(() => {
-		console.log('Rendering AudioProvider');
+	const [isPlaying, setIsPlaying] = useState(false);
+
+	const updateIsPlaying = useCallback(() => {
+		setIsPlaying(Object.values(soundPlayingStates.current).some(Boolean));
 	}, []);
 
 	const playSound = useCallback(
 		(soundKey) => {
-			if (!soundPlayingStates[soundKey]) {
+			if (!soundPlayingStates.current[soundKey]) {
 				const id = sounds[soundKey].play();
-				setSoundIds((prev) => ({ ...prev, [soundKey]: id }));
-				setSoundPlayingStates((prev) => ({ ...prev, [soundKey]: true }));
+				if (!sounds[soundKey]._loop) {
+					sounds[soundKey].once('end', () => {
+						soundPlayingStates.current[soundKey] = false;
+						updateIsPlaying();
+					});
+				}
+				soundIds.current[soundKey] = id;
+				soundPlayingStates.current[soundKey] = true;
+				updateIsPlaying();
 			}
 		},
-		[soundPlayingStates],
+		[updateIsPlaying],
 	);
 
 	const pauseSound = useCallback(
 		(soundKey) => {
-			sounds[soundKey].pause(soundIds[soundKey]);
-			setSoundPlayingStates((prev) => ({ ...prev, [soundKey]: false }));
+			const id = soundIds.current[soundKey];
+			if (id !== undefined) {
+				sounds[soundKey].pause(id);
+				pausedSounds.current[soundKey] = {
+					id,
+					volume: sounds[soundKey].volume(), // Save the original volume
+				};
+				soundPlayingStates.current[soundKey] = false;
+				updateIsPlaying();
+			}
 		},
-		[soundIds],
+		[updateIsPlaying],
 	);
 
 	const stopSound = useCallback(
 		(soundKey) => {
-			sounds[soundKey].stop(soundIds[soundKey]);
-			setSoundPlayingStates((prev) => ({ ...prev, [soundKey]: false }));
+			const id = soundIds.current[soundKey];
+			if (id !== undefined) {
+				sounds[soundKey].stop(id);
+				delete pausedSounds.current[soundKey];
+				soundPlayingStates.current[soundKey] = false;
+				updateIsPlaying();
+			}
 		},
-		[soundIds],
+		[updateIsPlaying],
 	);
 
 	const fadeInBackgroundMusicAndResumeOthers = useCallback(() => {
 		const newSoundIds = {};
-		Object.keys(soundPlayingStates).forEach((soundKey) => {
-			if (soundKey === 'backgroundMusic') {
-				const id = sounds.backgroundMusic.play();
-				sounds.backgroundMusic.fade(0, sounds.backgroundMusic.volume(), 1000, id);
-				newSoundIds.backgroundMusic = id;
-			} else if (soundPlayingStates[soundKey]) {
-				const id = sounds[soundKey].play();
-				sounds[soundKey].fade(0, sounds[soundKey].volume(), 1000, id);
-				newSoundIds[soundKey] = id;
-			}
+		let anySoundPaused = false;
+
+		Object.keys(pausedSounds.current).forEach((soundKey) => {
+			const { id, volume } = pausedSounds.current[soundKey];
+			sounds[soundKey].play(id);
+			sounds[soundKey].fade(0, volume, 1000, id); // Restore original volume
+			soundPlayingStates.current[soundKey] = true;
+			newSoundIds[soundKey] = id;
+			delete pausedSounds.current[soundKey]; // Clean up paused sounds
+			anySoundPaused = true;
 		});
-		setSoundIds((prev) => ({ ...prev, ...newSoundIds }));
-		setSoundPlayingStates((prev) => ({
-			...prev,
-			backgroundMusic: true,
-			...Object.fromEntries(
-				Object.keys(soundPlayingStates)
-					.filter((key) => key !== 'backgroundMusic' && prev[key])
-					.map((key) => [key, true]),
-			),
-		}));
-	}, [soundPlayingStates]);
+
+		if (!anySoundPaused) {
+			const id = sounds.backgroundMusic.play(undefined, true);
+			sounds.backgroundMusic.fade(0, sounds.backgroundMusic.volume(), 1000, id);
+			soundPlayingStates.current.backgroundMusic = true;
+			newSoundIds.backgroundMusic = id;
+		}
+
+		soundIds.current = { ...soundIds.current, ...newSoundIds };
+		updateIsPlaying();
+	}, [updateIsPlaying]);
 
 	const fadeOutAllPlayingSounds = useCallback(() => {
-		Object.keys(soundPlayingStates).forEach((soundKey) => {
-			if (soundPlayingStates[soundKey]) {
-				const id = soundIds[soundKey];
+		Object.keys(soundPlayingStates.current).forEach((soundKey) => {
+			if (soundPlayingStates.current[soundKey]) {
+				const id = soundIds.current[soundKey];
 				if (id !== undefined) {
-					sounds[soundKey].fade(sounds[soundKey].volume(id), 0, 1000, id);
-					setTimeout(() => sounds[soundKey].pause(id), 1000);
+					const time = 1000;
+					sounds[soundKey].fade(sounds[soundKey].volume(id), 0, time, id);
+					setTimeout(() => {
+						sounds[soundKey].pause(id);
+						pausedSounds.current[soundKey] = {
+							id,
+							volume: sounds[soundKey].volume(), // Save the volume at the time of pausing
+						};
+					}, time);
 				}
 			}
 		});
-		setSoundPlayingStates((prev) => Object.keys(prev).reduce((acc, key) => ({ ...acc, [key]: false }), {}));
-	}, [soundPlayingStates, soundIds]);
+		Object.keys(soundPlayingStates.current).forEach((key) => {
+			soundPlayingStates.current[key] = false;
+		});
+		updateIsPlaying();
+	}, [updateIsPlaying]);
 
 	const value = useMemo(
 		() => ({
-			isPlaying: Object.values(soundPlayingStates).some(Boolean),
+			isPlaying,
 			playSound,
 			pauseSound,
 			stopSound,
 			fadeInBackgroundMusicAndResumeOthers,
 			fadeOutAllPlayingSounds,
 		}),
-		[
-			soundPlayingStates,
-			playSound,
-			pauseSound,
-			stopSound,
-			fadeInBackgroundMusicAndResumeOthers,
-			fadeOutAllPlayingSounds,
-		],
+		[isPlaying, playSound, pauseSound, stopSound, fadeInBackgroundMusicAndResumeOthers, fadeOutAllPlayingSounds],
 	);
 
 	return <AudioContext.Provider value={value}>{children}</AudioContext.Provider>;

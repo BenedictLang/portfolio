@@ -2,7 +2,7 @@ import { Howl } from 'howler';
 
 const backgroundMusic = new Howl({
 	src: ['/audio/Explora - Benedict Lang.mp3'],
-	loop: true,
+	//loop: true,
 	volume: 0.007,
 });
 
@@ -14,18 +14,18 @@ const click = new Howl({
 const keyboardSound = new Howl({
 	src: ['/audio/keyboard.mp3'],
 	loop: true,
-	volume: 0.006,
+	volume: 0.008,
 });
 
 const codeSound = new Howl({
 	src: ['/audio/binary-code-interface.mp3'],
 	loop: true,
-	volume: 0.0025,
+	volume: 0.008,
 });
 
 const greetings = new Howl({
-	src: ['/audio/hello-human.wav'],
-	volume: 0.009,
+	src: ['/audio/hello-human.mp3'],
+	volume: 0.1,
 });
 
 const sounds = {
