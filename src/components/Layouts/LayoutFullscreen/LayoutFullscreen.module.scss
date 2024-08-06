@@ -15,19 +15,3 @@
 .centeredContainer {
 	text-align: center;
 }
-
-.haloMouse {
-	position: fixed;
-	z-index: 1;
-	pointer-events: none;
-	width: 20em;
-	height: 20em;
-	border-radius: 50%;
-	background: #0fbcff;
-	top: var(--y, 0);
-	left: var(--x, 0);
-	filter: blur(10em);
-	transform: translate(-50%, -50%);
-	opacity: 0.2;
-	mix-blend-mode: lighten;
-}

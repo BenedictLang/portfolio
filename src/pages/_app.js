@@ -12,8 +12,9 @@ import 'styles/wordpress.scss';
 import styles from 'styles/pages/App.module.scss';
 import variables from '../styles/_variables.module.scss';
 import THREEScene from 'components/3D/Scene/THREEScene';
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { AudioProvider } from '../components/Audio/AudioContext';
+import { MouseProvider, useMouse } from '../components/Mouse/MouseProvider';
 
 const ThreeSceneContext = createContext(null);
 
@@ -29,20 +30,39 @@ function App({ Component, pageProps = {}, metadata, recentPosts, categories, men
 
 	return (
 		<SiteContext.Provider value={site}>
-			<AudioProvider>
-				<SearchProvider>
-					<NextNProgress height={4} color={variables.progressbarColor} />
-					<div className={styles.webglContainer}>
-						<ThreeSceneContext.Provider value={setThreeSceneChildren}>
-							<THREEScene>{threeSceneChildren}</THREEScene>
-						</ThreeSceneContext.Provider>
-					</div>
-					<Component {...pageProps} />
-				</SearchProvider>
-			</AudioProvider>
+			<MouseProvider>
+				<AudioProvider>
+					<SearchProvider>
+						<MouseMover>
+							<div id="halo-mouse" className={styles.haloMouse}></div>
+							<NextNProgress height={4} color={variables.progressbarColor} />
+							<div className={styles.webglContainer}>
+								<ThreeSceneContext.Provider value={setThreeSceneChildren}>
+									<THREEScene>{threeSceneChildren}</THREEScene>
+								</ThreeSceneContext.Provider>
+							</div>
+							<Component {...pageProps} />
+						</MouseMover>
+					</SearchProvider>
+				</AudioProvider>
+			</MouseProvider>
 		</SiteContext.Provider>
 	);
 }
+
+const MouseMover = ({ children }) => {
+	const mouse = useMouse();
+
+	useEffect(() => {
+		const glow = document.getElementById('halo-mouse');
+		if (glow) {
+			glow.style.left = `${mouse.x}px`;
+			glow.style.top = `${mouse.y}px`;
+		}
+	}, [mouse]);
+
+	return children;
+};
 
 App.getInitialProps = async function (appContext) {
 	const appProps = await NextApp.getInitialProps(appContext);
