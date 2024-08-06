@@ -8,7 +8,7 @@ import fragmentShader from './shader/fragmentShader';
 const BlobShaderMaterial = shaderMaterial(
 	{
 		u_time: 0,
-		u_frequency: 11,
+		u_frequency: 6,
 		u_red: 0.2,
 		u_green: 0.4,
 		u_blue: 0.4,
@@ -34,7 +34,7 @@ const Blob = () => {
 				green: 0.4,
 				blue: 0.4,
 				intensity: 2,
-				frequency: 11,
+				frequency: 6,
 			};
 
 			const colorsFolder = gui.addFolder('Colors');

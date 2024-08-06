@@ -91,15 +91,25 @@ float pnoise(vec3 P, vec3 rep) {
 }
 
 void main() {
-    vec3 pos = position + u_time;
-    float noise1 = 5.0 * pnoise(pos * 0.5, vec3(10.0));
-    float noise2 = 2.5 * pnoise(pos * 1.5, vec3(10.0));
-    float noise3 = 1.25 * pnoise(pos * 3.0, vec3(10.0));
-    float displacement = (u_frequency / 30.0) * (noise1 + noise2 + noise3) / 10.0;
+    vec3 pos = position + u_time * 0.2; // Time factor to set speed
+    float dist = length(position); // Distance from the center
+    float timeFactor = u_time * (0.3 + dist * 0.03); // Slower time for points further away
+
+    // Larger, slower waves
+    float noise1 = 10.0 * pnoise(pos * 0.2 + vec3(timeFactor), vec3(10.0));
+    float noise2 = 5.0 * pnoise(pos * 0.6 + vec3(timeFactor), vec3(10.0));
+    float noise3 = 2.5 * pnoise(pos * 1.2 + vec3(timeFactor), vec3(10.0));
+
+    // Smaller, faster waves
+    float smallNoise1 = 0.5 * pnoise(pos * 4.0 + vec3(u_time * 1.0), vec3(10.0));
+    float smallNoise2 = 0.25 * pnoise(pos * 6.0 + vec3(u_time * 1.5), vec3(10.0));
+    float smallNoise3 = 0.125 * pnoise(pos * 8.0 + vec3(u_time * 2.0), vec3(10.0));
+
+    float displacement = (u_frequency / 30.0) * ((noise1 + noise2 + noise3) / 10.0 * (1.0 + dist * 0.5) + (smallNoise1 + smallNoise2 + smallNoise3) / 5.0);
 
     vec3 newPosition = position + normal * displacement;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
-    gl_PointSize = 2.0;
+    gl_PointSize = 3.0;
 }
 `;
 
