@@ -7,6 +7,7 @@ const THREEScene = ({ children }) => {
 	return (
 		<Canvas camera={{ position: [0, -2, 14], fov: 45 }}>
 			<ambientLight intensity={0.1} />
+			<pointLight position={[10, 10, 10]} />
 			<Blob shape="sphere" />
 			<Effects />
 			{children}

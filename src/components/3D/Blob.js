@@ -8,14 +8,11 @@ import fragmentShader from './shader/fragmentShader';
 const BlobShaderMaterial = shaderMaterial(
 	{
 		u_time: 0,
-		u_intensity: 0.5,
-		u_frequency: 0,
+		u_frequency: 30,
 		u_red: 0.2,
-		u_green: 0.2,
-		u_blue: 0.3,
-		u_threshold: 0.5,
-		u_strength: 0.5,
-		u_radius: 0.8,
+		u_green: 0.4,
+		u_blue: 0.4,
+		u_intensity: 2,
 	},
 	vertexShader,
 	fragmentShader,
@@ -24,7 +21,7 @@ const BlobShaderMaterial = shaderMaterial(
 extend({ BlobShaderMaterial });
 
 const Blob = () => {
-	const meshRef = useRef();
+	const pointsRef = useRef();
 	const materialRef = useRef();
 
 	useEffect(() => {
@@ -34,45 +31,47 @@ const Blob = () => {
 			gui = new GUI();
 			const params = {
 				red: 0.2,
-				green: 0.2,
-				blue: 0.3,
-				frequency: 1.0,
-				threshold: 0.5,
-				strength: 0.5,
-				radius: 0.8,
+				green: 0.4,
+				blue: 0.4,
+				intensity: 2,
+				frequency: 30,
 			};
 
 			const colorsFolder = gui.addFolder('Colors');
 			colorsFolder.add(params, 'red', 0, 1).onChange((value) => (materialRef.current.uniforms.u_red.value = value));
 			colorsFolder.add(params, 'green', 0, 1).onChange((value) => (materialRef.current.uniforms.u_green.value = value));
 			colorsFolder.add(params, 'blue', 0, 1).onChange((value) => (materialRef.current.uniforms.u_blue.value = value));
+			colorsFolder
+				.add(params, 'intensity', 0, 3)
+				.onChange((value) => (materialRef.current.uniforms.u_intensity.value = value));
 
-			const bloomFolder = gui.addFolder('Bloom');
-			bloomFolder.add(params, 'threshold', 0, 1);
-			bloomFolder.add(params, 'strength', 0, 3);
-			bloomFolder.add(params, 'radius', 0, 1);
+			const animationFolder = gui.addFolder('Animation');
+			animationFolder
+				.add(params, 'frequency', 0, 50)
+				.onChange((value) => (materialRef.current.uniforms.u_frequency.value = value));
 		}
 
 		init().then(() => {});
 
-		// Add other parameters to the GUI as needed
 		return () => {
 			gui.destroy();
 		};
 	}, []);
 
 	useFrame((state, delta) => {
-		meshRef.current.rotation.x += 0.001;
-		meshRef.current.rotation.y += 0.001;
 		materialRef.current.uniforms.u_time.value += delta;
-		materialRef.current.uniforms.u_frequency.value = 10.0; // Example frequency value, change as needed
+		if (pointsRef.current) {
+			pointsRef.current.rotation.y += 0.001;
+			pointsRef.current.rotation.x += 0.0012;
+			pointsRef.current.rotation.z += 0.001;
+		}
 	});
 
 	return (
-		<mesh ref={meshRef} position={[0, 0, 0]}>
-			<icosahedronGeometry args={[4, 20]} />
-			<blobShaderMaterial ref={materialRef} wireframe={true} />
-		</mesh>
+		<points ref={pointsRef} position={[0, 0, 0]}>
+			<icosahedronGeometry args={[3, 30]} />
+			<blobShaderMaterial ref={materialRef} />
+		</points>
 	);
 };
 
