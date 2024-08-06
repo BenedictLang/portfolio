@@ -1,3 +1,4 @@
+const vertexShader = `
 uniform float u_time;
 uniform float u_frequency;
 
@@ -95,3 +96,6 @@ void main() {
     vec3 newPosition = position + normal * displacement;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
 }
+`;
+
+export default vertexShader;

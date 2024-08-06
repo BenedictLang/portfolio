@@ -2,16 +2,20 @@ import React, { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { shaderMaterial } from '@react-three/drei';
 import { extend } from '@react-three/fiber';
-import vertexShader from './shader/vertexShader.glsl';
-import fragmentShader from './shader/fragmentShader.glsl';
+import vertexShader from './shader/vertexShader';
+import fragmentShader from './shader/fragmentShader';
 
 const BlobShaderMaterial = shaderMaterial(
 	{
 		u_time: 0,
+		u_intensity: 0.5,
 		u_frequency: 0,
-		u_red: 1.0,
-		u_green: 1.0,
-		u_blue: 1.0,
+		u_red: 0.2,
+		u_green: 0.2,
+		u_blue: 0.3,
+		u_threshold: 0.5,
+		u_strength: 0.5,
+		u_radius: 0.8,
 	},
 	vertexShader,
 	fragmentShader,
@@ -29,9 +33,9 @@ const Blob = () => {
 			const { GUI } = await import('dat.gui');
 			gui = new GUI();
 			const params = {
-				red: 1.0,
-				green: 1.0,
-				blue: 1.0,
+				red: 0.2,
+				green: 0.2,
+				blue: 0.3,
 				frequency: 1.0,
 				threshold: 0.5,
 				strength: 0.5,
@@ -39,9 +43,9 @@ const Blob = () => {
 			};
 
 			const colorsFolder = gui.addFolder('Colors');
-			colorsFolder.add(params, 'red', 0, 1);
-			colorsFolder.add(params, 'green', 0, 1);
-			colorsFolder.add(params, 'blue', 0, 1);
+			colorsFolder.add(params, 'red', 0, 1).onChange((value) => (materialRef.current.uniforms.u_red.value = value));
+			colorsFolder.add(params, 'green', 0, 1).onChange((value) => (materialRef.current.uniforms.u_green.value = value));
+			colorsFolder.add(params, 'blue', 0, 1).onChange((value) => (materialRef.current.uniforms.u_blue.value = value));
 
 			const bloomFolder = gui.addFolder('Bloom');
 			bloomFolder.add(params, 'threshold', 0, 1);
@@ -58,16 +62,16 @@ const Blob = () => {
 	}, []);
 
 	useFrame((state, delta) => {
-		meshRef.current.rotation.x += 0.01;
-		meshRef.current.rotation.y += 0.01;
+		meshRef.current.rotation.x += 0.001;
+		meshRef.current.rotation.y += 0.001;
 		materialRef.current.uniforms.u_time.value += delta;
 		materialRef.current.uniforms.u_frequency.value = 10.0; // Example frequency value, change as needed
 	});
 
 	return (
-		<mesh ref={meshRef}>
-			<icosahedronGeometry args={[4, 30]} />
-			<blobShaderMaterial ref={materialRef} wireframe />
+		<mesh ref={meshRef} position={[0, 0, 0]}>
+			<icosahedronGeometry args={[4, 20]} />
+			<blobShaderMaterial ref={materialRef} wireframe={true} />
 		</mesh>
 	);
 };
