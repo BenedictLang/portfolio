@@ -2,11 +2,13 @@ import React, { useRef, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { shaderMaterial } from '@react-three/drei';
 import { extend } from '@react-three/fiber';
-import { Vector2, Vector3, Raycaster, Plane, AxesHelper, CameraHelper } from 'three';
+import { Vector2, Vector3, Raycaster, Plane, AxesHelper, DoubleSide } from 'three';
 import vertexShader from './shader/vertexShader';
 import fragmentShader from './shader/fragmentShader';
 import { useMouse } from '../Mouse/MouseProvider';
 import * as THREE from 'three';
+
+const defaultInteractionRadius = 1.5;
 
 // Define the shader material
 const BlobShaderMaterial = shaderMaterial(
@@ -17,6 +19,8 @@ const BlobShaderMaterial = shaderMaterial(
 		u_green: 0.4,
 		u_blue: 0.4,
 		u_intensity: 2,
+		u_interactionPosition: new THREE.Vector3(0, 0, 0),
+		u_interactionRadius: defaultInteractionRadius,
 	},
 	vertexShader,
 	fragmentShader,
@@ -24,7 +28,12 @@ const BlobShaderMaterial = shaderMaterial(
 
 extend({ BlobShaderMaterial });
 
-// Function to calculate cylinder properties
+/**
+ * Function to calculate cylinder properties
+ * @param {THREE.Vector3} startPoint - The starting point of the cylinder
+ * @param {THREE.Vector3} endPoint - The ending point of the cylinder
+ * @returns {Object} - Contains position, rotation, and length of the cylinder
+ */
 function calculateCylinderProps(startPoint, endPoint) {
 	const direction = new THREE.Vector3().subVectors(endPoint, startPoint);
 	const distance = direction.length();
@@ -52,6 +61,10 @@ const ParticleCloud = () => {
 	const raycaster = new Raycaster();
 	const cylinderRef = useRef();
 	const planeMeshRef = useRef();
+	const radiusRef = useRef(defaultInteractionRadius);
+	const prevCameraPosition = useRef(new Vector3()); // To store the previous camera position
+	const planeRef = useRef(new Plane()); // To store the plane reference
+	const planeNormal = useRef(new Vector3()); // To store the previous plane normal
 
 	useEffect(() => {
 		let gui;
@@ -64,7 +77,7 @@ const ParticleCloud = () => {
 				blue: 0.4,
 				intensity: 2,
 				frequency: 6,
-				radius: 0.3, // Initial cylinder radius
+				radius: radiusRef.current,
 			};
 
 			const colorsFolder = gui.addFolder('Colors');
@@ -96,13 +109,20 @@ const ParticleCloud = () => {
 				}
 			});
 
-			// Add a GUI slider to adjust the cylinder radius
+			// Add a GUI slider to adjust the cylinder and touch radius
 			const cylinderFolder = gui.addFolder('Interaction');
 			cylinderFolder.add(params, 'radius', 0.1, 10).onChange((value) => {
+				radiusRef.current = value; // Update the stored radius
+
 				if (cylinderRef.current) {
 					// Update cylinder geometry with new radius
 					const length = cylinderRef.current.geometry.parameters.height; // Preserve the existing length
 					cylinderRef.current.geometry = new THREE.CylinderGeometry(value, value, length, 16);
+
+					// Update shader uniform with new radius
+					if (materialRef.current) {
+						materialRef.current.uniforms.u_interactionRadius.value = value;
+					}
 				}
 			});
 		}
@@ -111,9 +131,6 @@ const ParticleCloud = () => {
 
 		const axesHelper = new AxesHelper(2);
 		pointsRef.current.add(axesHelper);
-
-		const cameraHelper = new CameraHelper(camera);
-		scene.add(cameraHelper);
 
 		return () => {
 			gui.destroy();
@@ -131,15 +148,27 @@ const ParticleCloud = () => {
 			pointsRef.current.rotation.z += 0.001;
 		}
 
+		const currentCameraPosition = camera.position.clone();
+
+		// Check if the camera position has changed
+		if (!prevCameraPosition.current.equals(currentCameraPosition)) {
+			console.log('Camera position changed');
+
+			// Update previous camera position
+			prevCameraPosition.current.copy(currentCameraPosition);
+
+			// Update the plane normal and plane reference when the camera position changes
+			planeNormal.current.copy(camera.getWorldDirection(new Vector3()));
+			planeRef.current.normal.copy(planeNormal.current);
+			planeRef.current.constant = 0;
+		}
+
 		if (materialRef.current) {
 			const normalizedMouseX = (mouse.x / window.innerWidth) * 2 - 1;
 			const normalizedMouseY = -(mouse.y / window.innerHeight) * 2 + 1;
 			const mouseCoords = new Vector2(normalizedMouseX, normalizedMouseY);
 
-			// Create a plane through the origin and parallel to the camera plane
-			const planeNormal = new Vector3().copy(camera.getWorldDirection(new Vector3()));
-			const plane = new Plane(planeNormal, 0);
-
+			const plane = planeRef.current;
 			raycaster.setFromCamera(mouseCoords, camera);
 			const intersectPoint = new Vector3();
 			raycaster.ray.intersectPlane(plane, intersectPoint);
@@ -151,12 +180,10 @@ const ParticleCloud = () => {
 				if (cylinderRef.current) {
 					cylinderRef.current.position.copy(position);
 					cylinderRef.current.rotation.copy(rotation);
-					cylinderRef.current.geometry = new THREE.CylinderGeometry(
-						cylinderRef.current.geometry.parameters.radiusTop,
-						cylinderRef.current.geometry.parameters.radiusBottom,
-						length,
-						16,
-					);
+					cylinderRef.current.geometry = new THREE.CylinderGeometry(radiusRef.current, radiusRef.current, length, 16);
+
+					// Update the shader uniforms for touch position and radius
+					materialRef.current.uniforms.u_interactionPosition.value.copy(cylinderRef.current.position);
 				}
 			}
 		}
@@ -169,8 +196,8 @@ const ParticleCloud = () => {
 				<blobShaderMaterial ref={materialRef} />
 			</points>
 			<mesh ref={cylinderRef} position={[0, 0, 0]}>
-				<cylinderGeometry args={[0.3, 0.3, 2, 16]} />
-				<meshBasicMaterial color="red" wireframe={true} />
+				<cylinderGeometry args={[radiusRef.current, radiusRef.current, 2, 16]} />
+				<meshBasicMaterial color="red" side={DoubleSide} transparent={true} opacity={0.9} wireframe={false} />
 			</mesh>
 			<mesh ref={planeMeshRef} position={[0, 0, 0]}>
 				<planeGeometry args={[10, 10]} />

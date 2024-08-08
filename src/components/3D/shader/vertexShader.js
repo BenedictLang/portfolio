@@ -1,8 +1,8 @@
 const vertexShader = `
 uniform float u_time;
 uniform float u_frequency;
-uniform vec3 u_mousePosition;
-uniform float u_mouseRadius;
+uniform vec3 u_interactionPosition;
+uniform float u_interactionRadius;
 
 varying vec3 vNormal;
 varying vec3 vPosition;
