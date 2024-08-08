@@ -1,6 +1,11 @@
 const vertexShader = `
 uniform float u_time;
 uniform float u_frequency;
+uniform vec3 u_mousePosition;
+uniform float u_mouseRadius;
+
+varying vec3 vNormal;
+varying vec3 vPosition;
 
 vec3 mod289(vec3 x) {
     return x - floor(x * (1.0 / 289.0)) * 289.0;
@@ -91,9 +96,9 @@ float pnoise(vec3 P, vec3 rep) {
 }
 
 void main() {
-    vec3 pos = position + u_time * 0.2; // Time factor to set speed
-    float dist = length(position); // Distance from the center
-    float timeFactor = u_time * (0.3 + dist * 0.03); // Slower time for points further away
+    vec3 pos = position + u_time * 0.2;
+    float dist = length(position);
+    float timeFactor = u_time * (0.3 + dist * 0.03);
 
     // Larger, slower waves
     float noise1 = 10.0 * pnoise(pos * 0.2 + vec3(timeFactor), vec3(10.0));
@@ -109,7 +114,7 @@ void main() {
 
     vec3 newPosition = position + normal * displacement;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
-    gl_PointSize = 3.0;
+    gl_PointSize = 2.0;
 }
 `;
 
