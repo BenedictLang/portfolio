@@ -10,7 +10,6 @@ import * as THREE from 'three';
 
 const defaultInteractionRadius = 1.5;
 
-// Define the shader material
 const BlobShaderMaterial = shaderMaterial(
 	{
 		u_time: 0,
@@ -21,6 +20,7 @@ const BlobShaderMaterial = shaderMaterial(
 		u_intensity: 2,
 		u_interactionPosition: new THREE.Vector3(0, 0, 0),
 		u_interactionRadius: defaultInteractionRadius,
+		u_gravity: 0.1,
 	},
 	vertexShader,
 	fragmentShader,
@@ -62,9 +62,9 @@ const ParticleCloud = () => {
 	const cylinderRef = useRef();
 	const planeMeshRef = useRef();
 	const radiusRef = useRef(defaultInteractionRadius);
-	const prevCameraPosition = useRef(new Vector3()); // To store the previous camera position
-	const planeRef = useRef(new Plane()); // To store the plane reference
-	const planeNormal = useRef(new Vector3()); // To store the previous plane normal
+	const prevCameraPosition = useRef(new Vector3());
+	const planeRef = useRef(new Plane());
+	const planeNormal = useRef(new Vector3());
 
 	useEffect(() => {
 		let gui;
@@ -109,17 +109,12 @@ const ParticleCloud = () => {
 				}
 			});
 
-			// Add a GUI slider to adjust the cylinder and touch radius
 			const cylinderFolder = gui.addFolder('Interaction');
 			cylinderFolder.add(params, 'radius', 0.1, 10).onChange((value) => {
-				radiusRef.current = value; // Update the stored radius
-
+				radiusRef.current = value;
 				if (cylinderRef.current) {
-					// Update cylinder geometry with new radius
-					const length = cylinderRef.current.geometry.parameters.height; // Preserve the existing length
+					const length = cylinderRef.current.geometry.parameters.height;
 					cylinderRef.current.geometry = new THREE.CylinderGeometry(value, value, length, 16);
-
-					// Update shader uniform with new radius
 					if (materialRef.current) {
 						materialRef.current.uniforms.u_interactionRadius.value = value;
 					}
@@ -149,15 +144,9 @@ const ParticleCloud = () => {
 		}
 
 		const currentCameraPosition = camera.position.clone();
-
-		// Check if the camera position has changed
 		if (!prevCameraPosition.current.equals(currentCameraPosition)) {
 			console.log('Camera position changed');
-
-			// Update previous camera position
 			prevCameraPosition.current.copy(currentCameraPosition);
-
-			// Update the plane normal and plane reference when the camera position changes
 			planeNormal.current.copy(camera.getWorldDirection(new Vector3()));
 			planeRef.current.normal.copy(planeNormal.current);
 			planeRef.current.constant = 0;
@@ -182,8 +171,9 @@ const ParticleCloud = () => {
 					cylinderRef.current.rotation.copy(rotation);
 					cylinderRef.current.geometry = new THREE.CylinderGeometry(radiusRef.current, radiusRef.current, length, 16);
 
-					// Update the shader uniforms for touch position and radius
-					materialRef.current.uniforms.u_interactionPosition.value.copy(cylinderRef.current.position);
+					if (materialRef.current) {
+						materialRef.current.uniforms.u_interactionPosition.value.copy(cylinderRef.current.position);
+					}
 				}
 			}
 		}
