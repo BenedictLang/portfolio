@@ -1,22 +1,23 @@
 const fragmentShader = `
-uniform float u_time;
-uniform float u_frequency;
-uniform float u_intensity;
-uniform float u_red;
-uniform float u_green;
-uniform float u_blue;
-
-varying vec3 v_position;
+varying float vDist; // Erhalt der Distanz aus dem Vertex-Shader
+varying vec3 v_position; // Erhalt der Position aus dem Vertex-Shader
 
 void main() {
-    float brightness = sin(u_frequency * length(v_position) - u_time) * 0.2 + 0.9;
-    vec3 color = vec3(u_red, u_green, u_blue) * brightness * u_intensity;
+    vec3 color;
+    float alpha;
     
-    float dist = length(gl_PointCoord - vec2(0.5));
-    if (dist > 0.5) discard;
-
-    gl_FragColor = vec4(color, 1.0);
+    // Beispiel für Farbänderung basierend auf der Distanz
+    if (vDist < 2.0) {
+        color = vec3(1.0, 0.0, 1.0); // Magenta für beeinflusste Partikel
+        alpha = 1.0;
+    } else {
+        color = vec3(0.0, 1.0, 1.0); // Cyan für nicht beeinflusste Partikel
+        alpha = 1.0;
+    }
+    
+    gl_FragColor = vec4(color, alpha);
 }
+
 `;
 
 export default fragmentShader;
