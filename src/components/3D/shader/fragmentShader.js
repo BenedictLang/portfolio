@@ -7,11 +7,18 @@ uniform float u_blue;
 uniform float u_intensity;
 
 uniform float u_interactionRadius;
-varying float vDist;
+in float vDist;
+in float vColorFactor;
+in float vBoostIntensity;
 
 void main() {
+    float intensity = u_intensity;
+    if (vBoostIntensity > 0.0) {
+        intensity *= 1.5;
+    }
+    
     // Calculate pulsating factor using a sine wave, based on time and frequency
-    float pulsatingIntensity = u_intensity + 0.25 * sin(u_time * 3.0);
+    float pulsatingIntensity = intensity + 0.25 * sin(u_time * 3.0);
 
     // Base color, modulated by the pulsating intensity
     vec3 baseColor = vec3(u_red, u_green, u_blue) * pulsatingIntensity;
@@ -19,11 +26,14 @@ void main() {
     // Compute the complementary color by inverting the base color
     vec3 complementaryColor = vec3(1.0) - (baseColor * 0.7);
 
-    // Smooth interpolation factor based on the distance
-    float influence = smoothstep(0.0, u_interactionRadius, vDist);
+    // Adjust the color based on the distance to the original position
+    vec3 color = mix(baseColor, vec3(1.5), vColorFactor);
 
-    // Interpolate between the base color and its complementary color
-    vec3 color = mix(complementaryColor, baseColor, influence);
+    // Interpolate to complementary color if influenced by the line segment
+    if (vBoostIntensity > 0.0) {
+        float influence = smoothstep(0.1, 0.0, vDist * 0.1);
+        color = mix(color, complementaryColor, influence);
+    }
 
     // Handle point size and discard if outside bounds
     float dist = length(gl_PointCoord - vec2(0.5));

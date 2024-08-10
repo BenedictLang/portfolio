@@ -10,8 +10,9 @@ uniform vec3 u_objectPosition;
 uniform float u_objectRadius;
 uniform float u_interactionRadius;
 
-varying float vDist;
-varying vec3 vPosition;
+out float vDist;
+out float vColorFactor;
+out float vBoostIntensity;
 
 // Utility functions for Perlin noise
 vec3 mod289(vec3 x) {
@@ -121,6 +122,9 @@ void main() {
     // New position after noise displacement
     vec3 noisePosition = position + normal * displacement;
 
+    // Store the distance factor for color adjustment
+    vColorFactor = length(noisePosition - position);
+
     // Line segment collision calculations using noise-displaced position
     vec3 lineVec = u_targetPosition - u_cameraPosition;
     vec3 pointToPos = noisePosition - u_cameraPosition;
@@ -141,6 +145,12 @@ void main() {
     vec3 closestPointOnLine = u_cameraPosition + t * lineVec;
     vec3 seg = noisePosition - closestPointOnLine;
     float distToLine = length(seg) * perspectiveFactor;
+    
+    // Pass distance to the fragment shader for color adjustments
+    vDist = distToLine;
+    
+    // Set a flag if the particle is influenced by the line segment
+    vBoostIntensity = float(distToLine < (u_interactionRadius * 0.4));
     
     float force = smoothstep(u_interactionRadius, 0.0, distToLine);
     

@@ -7,18 +7,22 @@ import vertexShader from './shader/vertexShader';
 import fragmentShader from './shader/fragmentShader';
 import { useMouse } from '../Mouse/MouseProvider';
 import * as THREE from 'three';
-import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils';
+import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils';
 
 const defaultInteractionRadius = 3;
+const defaultIntensity = 1.5;
+const defaultRedValue = 0.1;
+const defaultGreenValue = 0.4;
+const defaultBlueValue = 0.47;
 
 const BlobShaderMaterial = shaderMaterial(
 	{
 		u_time: 0,
 		u_frequency: 6,
-		u_red: 0.2,
-		u_green: 0.4,
-		u_blue: 0.47,
-		u_intensity: 2,
+		u_red: defaultRedValue,
+		u_green: defaultGreenValue,
+		u_blue: defaultBlueValue,
+		u_intensity: defaultIntensity,
 		u_gravity: 0.1,
 		u_perspectiveCorrection: true,
 		u_cameraPosition: new THREE.Vector3(),
@@ -36,12 +40,16 @@ const ParticleCloud = () => {
 	const pointsRef = useRef();
 	const materialRef = useRef();
 	const mouse = useMouse();
-	const { camera, scene } = useThree();
+	const { camera } = useThree();
 	const raycaster = new Raycaster();
+	const geometryRaycaster = new Raycaster();
 	const radiusRef = useRef(defaultInteractionRadius);
+	const intensityRef = useRef(defaultIntensity);
+	const targetIntensityRef = useRef(defaultIntensity);
 	const prevCameraPosition = useRef(new Vector3());
 	const planeRef = useRef(new Plane());
 	const planeNormal = useRef(new Vector3());
+	const intensityChangeSpeed = 1;
 
 	useEffect(() => {
 		let gui;
@@ -49,10 +57,10 @@ const ParticleCloud = () => {
 			const { GUI } = await import('dat.gui');
 			gui = new GUI();
 			const params = {
-				red: 0.2,
-				green: 0.4,
-				blue: 0.47,
-				intensity: 2,
+				red: defaultRedValue,
+				green: defaultGreenValue,
+				blue: defaultBlueValue,
+				intensity: intensityRef.current,
 				frequency: 6,
 				radius: radiusRef.current,
 			};
@@ -74,6 +82,8 @@ const ParticleCloud = () => {
 				}
 			});
 			colorsFolder.add(params, 'intensity', 0, 3).onChange((value) => {
+				intensityRef.current = value;
+				targetIntensityRef.current = value;
 				if (materialRef.current) {
 					materialRef.current.uniforms.u_intensity.value = value;
 				}
@@ -101,9 +111,8 @@ const ParticleCloud = () => {
 		return () => {
 			gui.destroy();
 		};
-	}, [camera, scene]);
+	}, [camera]);
 
-	// Apply vertex merging to the geometry
 	useEffect(() => {
 		if (pointsRef.current) {
 			const geometry = pointsRef.current.geometry;
@@ -124,7 +133,7 @@ const ParticleCloud = () => {
 
 		const currentCameraPosition = camera.position.clone();
 		if (!prevCameraPosition.current.equals(currentCameraPosition)) {
-			console.log('Camera position changed');
+			// Re-renders in case the camera position changed
 			prevCameraPosition.current.copy(currentCameraPosition);
 			planeNormal.current.copy(camera.getWorldDirection(new Vector3()));
 			planeRef.current.normal.copy(planeNormal.current);
@@ -135,9 +144,12 @@ const ParticleCloud = () => {
 		const normalizedMouseY = -(mouse.y / window.innerHeight) * 2 + 1;
 		const mouseCoords = new Vector2(normalizedMouseX, normalizedMouseY);
 		raycaster.setFromCamera(mouseCoords, camera);
+
+		// Check for intersection with the plane
 		const intersectPoint = new Vector3();
 		raycaster.ray.intersectPlane(planeRef.current, intersectPoint);
 
+		let isIntersecting = false;
 		if (intersectPoint) {
 			const cameraPosition = new Vector3().copy(camera.position);
 
@@ -157,6 +169,29 @@ const ParticleCloud = () => {
 				materialRef.current.uniforms.u_objectPosition.value.copy(interactionLocalPositionObject);
 				materialRef.current.uniforms.u_targetPosition.value.copy(interactionLocalPositionTarget);
 			}
+
+			// Check for intersection with the geometry
+			geometryRaycaster.ray.copy(raycaster.ray);
+			const intersects = geometryRaycaster.intersectObject(pointsRef.current, true);
+
+			if (intersects.length > 0) {
+				isIntersecting = true;
+			}
+		}
+
+		if (isIntersecting) {
+			targetIntensityRef.current = intensityRef.current * 1.8;
+		} else {
+			targetIntensityRef.current = intensityRef.current;
+		}
+
+		if (materialRef.current) {
+			// Interpolate intensity
+			materialRef.current.uniforms.u_intensity.value = THREE.MathUtils.lerp(
+				materialRef.current.uniforms.u_intensity.value,
+				targetIntensityRef.current,
+				delta * intensityChangeSpeed,
+			);
 		}
 	});
 
