@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { shaderMaterial } from '@react-three/drei';
 import { extend } from '@react-three/fiber';
-import { Vector2, Vector3, Raycaster, Plane, DoubleSide } from 'three';
+import { Vector2, Vector3, Raycaster, Plane } from 'three';
 import vertexShader from './shader/vertexShader';
 import fragmentShader from './shader/fragmentShader';
 import { useMouse } from '../Mouse/MouseProvider';
@@ -20,7 +20,9 @@ const BlobShaderMaterial = shaderMaterial(
 		u_blue: 0.4,
 		u_intensity: 2,
 		u_gravity: 0.1,
-		u_interactionPos: new THREE.Vector3(),
+		u_interactionPosA: new THREE.Vector3(),
+		u_interactionPosB: new THREE.Vector3(),
+		u_interactionRadius: defaultInteractionRadius,
 	},
 	vertexShader,
 	fragmentShader,
@@ -28,39 +30,12 @@ const BlobShaderMaterial = shaderMaterial(
 
 extend({ BlobShaderMaterial });
 
-/**
- * Function to calculate cylinder properties
- * @param {THREE.Vector3} startPoint - The starting point of the cylinder
- * @param {THREE.Vector3} endPoint - The ending point of the cylinder
- * @returns {Object} - Contains position, rotation, and length of the cylinder
- */
-function calculateCylinderProps(startPoint, endPoint) {
-	const direction = new THREE.Vector3().subVectors(endPoint, startPoint);
-	const distance = direction.length();
-
-	// Calculate the position of the cylinder (midpoint between the two points)
-	const position = new THREE.Vector3().addVectors(startPoint, endPoint).multiplyScalar(0.5);
-
-	// Calculate the quaternion rotation to orient the cylinder along the direction
-	const quaternion = new THREE.Quaternion();
-	const up = new THREE.Vector3(0, 1, 0); // Default cylinder orientation along the Y-axis
-	quaternion.setFromUnitVectors(up, direction.clone().normalize());
-
-	return {
-		position,
-		rotation: new THREE.Euler().setFromQuaternion(quaternion),
-		length: distance,
-	};
-}
-
 const ParticleCloud = () => {
 	const pointsRef = useRef();
 	const materialRef = useRef();
 	const mouse = useMouse();
 	const { camera, scene } = useThree();
 	const raycaster = new Raycaster();
-	const cylinderRef = useRef();
-	const planeMeshRef = useRef();
 	const radiusRef = useRef(defaultInteractionRadius);
 	const prevCameraPosition = useRef(new Vector3());
 	const planeRef = useRef(new Plane());
@@ -109,23 +84,17 @@ const ParticleCloud = () => {
 				}
 			});
 
-			const cylinderFolder = gui.addFolder('Interaction');
-			cylinderFolder.add(params, 'radius', 0.1, 10).onChange((value) => {
+			const interactionFolder = gui.addFolder('Interaction');
+			interactionFolder.add(params, 'radius', 0.1, 10).onChange((value) => {
 				radiusRef.current = value;
-				if (cylinderRef.current) {
-					const length = cylinderRef.current.geometry.parameters.height;
-					cylinderRef.current.geometry = new THREE.CylinderGeometry(value, value, length, 16);
-					if (materialRef.current) {
-						//materialRef.current.uniforms.u_interactionRadius.value = value;
-					}
+
+				if (materialRef.current) {
+					materialRef.current.uniforms.u_interactionRadius.value = value;
 				}
 			});
 		}
 
 		init().then(() => {});
-
-		//const axesHelper = new AxesHelper(2);
-		//pointsRef.current.add(axesHelper);
 
 		return () => {
 			gui.destroy();
@@ -157,7 +126,7 @@ const ParticleCloud = () => {
 			prevCameraPosition.current.copy(currentCameraPosition);
 			planeNormal.current.copy(camera.getWorldDirection(new Vector3()));
 			planeRef.current.normal.copy(planeNormal.current);
-			planeRef.current.constant = 0;
+			planeRef.current.constant = -5;
 		}
 
 		const normalizedMouseX = (mouse.x / window.innerWidth) * 2 - 1;
@@ -170,14 +139,7 @@ const ParticleCloud = () => {
 		if (intersectPoint) {
 			const cameraPosition = new Vector3().copy(camera.position);
 
-			const { position, rotation, length } = calculateCylinderProps(cameraPosition, intersectPoint);
-			if (cylinderRef.current) {
-				cylinderRef.current.position.copy(position);
-				cylinderRef.current.rotation.copy(rotation);
-				cylinderRef.current.geometry = new THREE.CylinderGeometry(radiusRef.current, radiusRef.current, length, 16);
-			}
-
-			if (cylinderRef.current && materialRef.current) {
+			if (materialRef.current) {
 				// Compute the inverse of the object's world matrix
 				pointsRef.current.updateMatrixWorld(); // Ensure the matrix world is up-to-date
 
@@ -185,9 +147,11 @@ const ParticleCloud = () => {
 				let inverseMatrix = new THREE.Matrix4().copy(pointsRef.current.matrixWorld).invert();
 
 				// Calculate the marker position in local coordinates
-				let interactionLocalPosition = intersectPoint.clone().applyMatrix4(inverseMatrix);
+				let interactionLocalPositionA = intersectPoint.clone().applyMatrix4(inverseMatrix);
+				let interactionLocalPositionB = cameraPosition.clone().applyMatrix4(inverseMatrix);
 
-				materialRef.current.uniforms.u_interactionPos.value.copy(interactionLocalPosition);
+				materialRef.current.uniforms.u_interactionPosA.value.copy(interactionLocalPositionA);
+				materialRef.current.uniforms.u_interactionPosB.value.copy(interactionLocalPositionB);
 			}
 		}
 	});
@@ -198,14 +162,6 @@ const ParticleCloud = () => {
 				<icosahedronGeometry args={[3, 30]} />
 				<blobShaderMaterial ref={materialRef} />
 			</points>
-			<mesh ref={cylinderRef} position={[0, 0, 0]}>
-				<cylinderGeometry args={[radiusRef.current, radiusRef.current, 2, 16]} />
-				<meshBasicMaterial color="red" side={DoubleSide} transparent={true} opacity={0} wireframe={false} />
-			</mesh>
-			<mesh ref={planeMeshRef} position={[0, 0, 0]}>
-				<planeGeometry args={[10, 10]} />
-				<meshBasicMaterial color="blue" wireframe={false} />
-			</mesh>
 		</>
 	);
 };
