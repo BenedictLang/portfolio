@@ -9,7 +9,7 @@ import { useMouse } from '../Mouse/MouseProvider';
 import * as THREE from 'three';
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils';
 
-const defaultInteractionRadius = 3;
+const defaultInteractionRadius = 6;
 const defaultIntensity = 1.5;
 const defaultRedValue = 0.1;
 const defaultGreenValue = 0.4;

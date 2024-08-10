@@ -11,14 +11,9 @@ in float vDist;
 in float vColorFactor;
 in float vBoostIntensity;
 
-void main() {
-    float intensity = u_intensity;
-    if (vBoostIntensity > 0.0) {
-        intensity *= 1.5;
-    }
-    
+void main() {    
     // Calculate pulsating factor using a sine wave, based on time and frequency
-    float pulsatingIntensity = intensity + 0.25 * sin(u_time * 3.0);
+    float pulsatingIntensity = u_intensity + 0.25 * sin(u_time * 3.0);
 
     // Base color, modulated by the pulsating intensity
     vec3 baseColor = vec3(u_red, u_green, u_blue) * pulsatingIntensity;
@@ -31,7 +26,7 @@ void main() {
 
     // Interpolate to complementary color if influenced by the line segment
     if (vBoostIntensity > 0.0) {
-        float influence = smoothstep(0.1, 0.0, vDist * 0.1);
+        float influence = smoothstep(0.9, 0.0, vDist * 0.3);
         color = mix(color, complementaryColor, influence);
     }
 

@@ -150,7 +150,7 @@ void main() {
     vDist = distToLine;
     
     // Set a flag if the particle is influenced by the line segment
-    vBoostIntensity = float(distToLine < (u_interactionRadius * 0.4));
+    vBoostIntensity = float(distToLine < u_interactionRadius);
     
     float force = smoothstep(u_interactionRadius, 0.0, distToLine);
     
