@@ -17,13 +17,14 @@ const BlobShaderMaterial = shaderMaterial(
 		u_frequency: 6,
 		u_red: 0.2,
 		u_green: 0.4,
-		u_blue: 0.4,
+		u_blue: 0.47,
 		u_intensity: 2,
 		u_gravity: 0.1,
-		u_interactionPosA: new THREE.Vector3(),
-		u_interactionPosB: new THREE.Vector3(),
+		u_perspectiveCorrection: true,
+		u_cameraPosition: new THREE.Vector3(),
+		u_targetPosition: new THREE.Vector3(),
 		u_interactionRadius: defaultInteractionRadius,
-		u_perspectiveDiff: 0.18,
+		u_objectPosition: new THREE.Vector3(),
 	},
 	vertexShader,
 	fragmentShader,
@@ -50,7 +51,7 @@ const ParticleCloud = () => {
 			const params = {
 				red: 0.2,
 				green: 0.4,
-				blue: 0.4,
+				blue: 0.47,
 				intensity: 2,
 				frequency: 6,
 				radius: radiusRef.current,
@@ -148,11 +149,13 @@ const ParticleCloud = () => {
 				let inverseMatrix = new THREE.Matrix4().copy(pointsRef.current.matrixWorld).invert();
 
 				// Calculate the marker position in local coordinates
-				let interactionLocalPositionA = cameraPosition.clone().applyMatrix4(inverseMatrix);
-				let interactionLocalPositionB = intersectPoint.clone().applyMatrix4(inverseMatrix);
+				let interactionLocalPositionCam = cameraPosition.clone().applyMatrix4(inverseMatrix);
+				let interactionLocalPositionObject = pointsRef.current.position.clone().applyMatrix4(inverseMatrix);
+				let interactionLocalPositionTarget = intersectPoint.clone().applyMatrix4(inverseMatrix);
 
-				materialRef.current.uniforms.u_interactionPosA.value.copy(interactionLocalPositionA);
-				materialRef.current.uniforms.u_interactionPosB.value.copy(interactionLocalPositionB);
+				materialRef.current.uniforms.u_cameraPosition.value.copy(interactionLocalPositionCam);
+				materialRef.current.uniforms.u_objectPosition.value.copy(interactionLocalPositionObject);
+				materialRef.current.uniforms.u_targetPosition.value.copy(interactionLocalPositionTarget);
 			}
 		}
 	});
@@ -160,7 +163,7 @@ const ParticleCloud = () => {
 	return (
 		<>
 			<points ref={pointsRef} position={[0, 0, 0]}>
-				<icosahedronGeometry args={[3, 30]} />
+				<icosahedronGeometry args={[4, 30]} />
 				<blobShaderMaterial ref={materialRef} />
 			</points>
 		</>
