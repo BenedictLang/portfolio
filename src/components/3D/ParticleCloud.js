@@ -9,7 +9,7 @@ import { useMouse } from '../Mouse/MouseProvider';
 import * as THREE from 'three';
 import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils';
 
-const defaultInteractionRadius = 1.5;
+const defaultInteractionRadius = 3;
 
 const BlobShaderMaterial = shaderMaterial(
 	{
@@ -23,6 +23,7 @@ const BlobShaderMaterial = shaderMaterial(
 		u_interactionPosA: new THREE.Vector3(),
 		u_interactionPosB: new THREE.Vector3(),
 		u_interactionRadius: defaultInteractionRadius,
+		u_perspectiveDiff: 0.18,
 	},
 	vertexShader,
 	fragmentShader,
@@ -147,8 +148,8 @@ const ParticleCloud = () => {
 				let inverseMatrix = new THREE.Matrix4().copy(pointsRef.current.matrixWorld).invert();
 
 				// Calculate the marker position in local coordinates
-				let interactionLocalPositionA = intersectPoint.clone().applyMatrix4(inverseMatrix);
-				let interactionLocalPositionB = cameraPosition.clone().applyMatrix4(inverseMatrix);
+				let interactionLocalPositionA = cameraPosition.clone().applyMatrix4(inverseMatrix);
+				let interactionLocalPositionB = intersectPoint.clone().applyMatrix4(inverseMatrix);
 
 				materialRef.current.uniforms.u_interactionPosA.value.copy(interactionLocalPositionA);
 				materialRef.current.uniforms.u_interactionPosB.value.copy(interactionLocalPositionB);
