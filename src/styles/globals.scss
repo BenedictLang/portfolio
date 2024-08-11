@@ -23,6 +23,36 @@ body {
 	position: relative;
 	overflow: hidden;
 	background-color: $color-bg;
+
+	/* Background glows */
+	&::before,
+	&::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		mix-blend-mode: color-dodge;
+		opacity: 0.5;
+		z-index: 0;
+		background-repeat: no-repeat;
+	}
+
+	/* Top left background glow */
+	&::before {
+		--light-size: 70vmin;
+
+		background-image: radial-gradient(circle at center, $color-primary, black 70%);
+		background-size: var(--light-size) var(--light-size);
+		background-position: calc(50% - min(100vw, $bp-wide) / 2 + 5vw) calc(var(--light-size) / -2 - 2vmin);
+	}
+	/* Bottom right background glow */
+	&::after {
+		--light-size: 100vw;
+
+		background-image: radial-gradient(circle at center, $color-complementary, black 70%);
+		background-size: var(--light-size) var(--light-size);
+		background-position: calc(100% + var(--light-size) / 2 + 2vmin) calc(100% + var(--light-size) / 2 + 2vmin);
+	}
 }
 
 p {
