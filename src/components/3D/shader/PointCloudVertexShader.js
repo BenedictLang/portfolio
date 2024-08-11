@@ -145,14 +145,13 @@ void main() {
     vec3 closestPointOnLine = u_cameraPosition + t * lineVec;
     vec3 seg = noisePosition - closestPointOnLine;
     float distToLine = length(seg) * perspectiveFactor;
+    float force = smoothstep(u_interactionRadius, 0.0, distToLine);
     
     // Pass distance to the fragment shader for color adjustments
     vDist = distToLine;
     
     // Set a flag if the particle is influenced by the line segment
     vBoostIntensity = float(distToLine < u_interactionRadius);
-    
-    float force = smoothstep(u_interactionRadius, 0.0, distToLine);
     
     // Final position considering both noise and line segment influence
     vec3 finalPosition = noisePosition + normalize(seg) * force;
