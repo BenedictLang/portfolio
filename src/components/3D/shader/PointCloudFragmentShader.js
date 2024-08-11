@@ -1,4 +1,4 @@
-const fragmentShader = `
+const pointCloudFragmentShader = `
 uniform float u_time;
 
 uniform float u_red;
@@ -39,4 +39,4 @@ void main() {
 }
 `;
 
-export default fragmentShader;
+export default pointCloudFragmentShader;

@@ -3,13 +3,14 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { shaderMaterial } from '@react-three/drei';
 import { extend } from '@react-three/fiber';
 import { Vector2, Vector3, Raycaster, Plane } from 'three';
-import vertexShader from './shader/vertexShader';
-import fragmentShader from './shader/fragmentShader';
+import pointCloudVertexShader from './shader/PointCloudVertexShader';
+import pointCloudFragmentShader from './shader/PointCloudFragmentShader';
 import { useMouse } from '../Mouse/MouseProvider';
 import * as THREE from 'three';
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils';
 
 const defaultInteractionRadius = 6;
+const defaultGravity = 0.1;
 const defaultIntensity = 1.5;
 const defaultRedValue = 0.1;
 const defaultGreenValue = 0.4;
@@ -23,15 +24,15 @@ const BlobShaderMaterial = shaderMaterial(
 		u_green: defaultGreenValue,
 		u_blue: defaultBlueValue,
 		u_intensity: defaultIntensity,
-		u_gravity: 0.1,
+		u_gravity: defaultGravity,
 		u_perspectiveCorrection: true,
 		u_cameraPosition: new THREE.Vector3(),
 		u_targetPosition: new THREE.Vector3(),
 		u_interactionRadius: defaultInteractionRadius,
 		u_objectPosition: new THREE.Vector3(),
 	},
-	vertexShader,
-	fragmentShader,
+	pointCloudVertexShader,
+	pointCloudFragmentShader,
 );
 
 extend({ BlobShaderMaterial });
@@ -49,7 +50,7 @@ const ParticleCloud = () => {
 	const prevCameraPosition = useRef(new Vector3());
 	const planeRef = useRef(new Plane());
 	const planeNormal = useRef(new Vector3());
-	const intensityChangeSpeed = 1;
+	const intensityChangeSpeed = 3;
 
 	useEffect(() => {
 		let gui;
@@ -62,6 +63,7 @@ const ParticleCloud = () => {
 				blue: defaultBlueValue,
 				intensity: intensityRef.current,
 				frequency: 6,
+				gravity: defaultGravity,
 				radius: radiusRef.current,
 			};
 
@@ -93,6 +95,11 @@ const ParticleCloud = () => {
 			animationFolder.add(params, 'frequency', 0, 50).onChange((value) => {
 				if (materialRef.current) {
 					materialRef.current.uniforms.u_frequency.value = value;
+				}
+			});
+			animationFolder.add(params, 'gravity', 0, 10).onChange((value) => {
+				if (materialRef.current) {
+					materialRef.current.uniforms.u_gravity.value = value;
 				}
 			});
 
@@ -180,7 +187,7 @@ const ParticleCloud = () => {
 		}
 
 		if (isIntersecting) {
-			targetIntensityRef.current = intensityRef.current * 1.8;
+			targetIntensityRef.current = intensityRef.current * 2.4;
 		} else {
 			targetIntensityRef.current = intensityRef.current;
 		}

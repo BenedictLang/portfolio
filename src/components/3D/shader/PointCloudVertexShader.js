@@ -1,4 +1,4 @@
-const vertexShader = `
+const pointCloudVertexShader = `
 uniform float u_time;
 uniform float u_gravity;
 uniform float u_frequency;
@@ -163,4 +163,4 @@ void main() {
 }
 `;
 
-export default vertexShader;
+export default pointCloudVertexShader;
