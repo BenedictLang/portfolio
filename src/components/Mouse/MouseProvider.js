@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const MouseContext = createContext();
+const MouseContext = createContext(undefined, undefined);
 
 export const MouseProvider = ({ children }) => {
-	const [mouse, setMouse] = useState({ x: 0, y: 0 });
+	const [mouse, setMouse] = useState({ x: -50, y: 50 });
 
 	useEffect(() => {
 		const handleMouseMove = (event) => {

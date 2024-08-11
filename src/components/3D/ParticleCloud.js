@@ -152,14 +152,12 @@ const ParticleCloud = () => {
 		const mouseCoords = new Vector2(normalizedMouseX, normalizedMouseY);
 		raycaster.setFromCamera(mouseCoords, camera);
 
-		// Check for intersection with the plane
 		const intersectPoint = new Vector3();
 		raycaster.ray.intersectPlane(planeRef.current, intersectPoint);
 
 		let isIntersecting = false;
-		if (intersectPoint) {
-			const cameraPosition = new Vector3().copy(camera.position);
-
+		if (intersectPoint && intersectPoint.x !== 0) {
+			// Avoid intersectPoint gets reset to origin after 5 seconds of no interaction
 			if (materialRef.current) {
 				// Compute the inverse of the object's world matrix
 				pointsRef.current.updateMatrixWorld(); // Ensure the matrix world is up-to-date
@@ -168,7 +166,7 @@ const ParticleCloud = () => {
 				let inverseMatrix = new THREE.Matrix4().copy(pointsRef.current.matrixWorld).invert();
 
 				// Calculate the marker position in local coordinates
-				let interactionLocalPositionCam = cameraPosition.clone().applyMatrix4(inverseMatrix);
+				let interactionLocalPositionCam = camera.position.clone().applyMatrix4(inverseMatrix);
 				let interactionLocalPositionObject = pointsRef.current.position.clone().applyMatrix4(inverseMatrix);
 				let interactionLocalPositionTarget = intersectPoint.clone().applyMatrix4(inverseMatrix);
 
@@ -177,7 +175,6 @@ const ParticleCloud = () => {
 				materialRef.current.uniforms.u_targetPosition.value.copy(interactionLocalPositionTarget);
 			}
 
-			// Check for intersection with the geometry
 			geometryRaycaster.ray.copy(raycaster.ray);
 			const intersects = geometryRaycaster.intersectObject(pointsRef.current, true);
 
@@ -193,7 +190,6 @@ const ParticleCloud = () => {
 		}
 
 		if (materialRef.current) {
-			// Interpolate intensity
 			materialRef.current.uniforms.u_intensity.value = THREE.MathUtils.lerp(
 				materialRef.current.uniforms.u_intensity.value,
 				targetIntensityRef.current,
