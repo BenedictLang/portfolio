@@ -25,8 +25,10 @@ $color-blue-1000: #080917;
 
 $color-green-300: #1dffe4;
 $color-green-300-trans: rgba(0, 255, 224, 0.68);
+$color-green-300-trans-strong: rgba(0, 255, 224, 0.03);
 
 $color-purple-300: #a663ca;
+$color-orange-300: #c67941;
 
 $color-white-trans-light: rgba(243, 248, 255, 0.3);
 $color-white-trans: rgba(243, 248, 255, 0.1);
@@ -37,7 +39,8 @@ $color-black-trans: rgba(3, 6, 11, 0.7);
 
 $color-primary: $color-green-300;
 $color-primary-transparent: $color-green-300-trans;
-$color-complementary: $color-purple-300;
+$color-primary-transparent-strong: $color-green-300-trans-strong;
+$color-complementary: $color-orange-300;
 
 $color-bg: $color-gray-1000;
 $color-bg-transparent-light: $color-black-trans-light;

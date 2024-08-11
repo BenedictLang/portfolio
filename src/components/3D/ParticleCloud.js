@@ -9,17 +9,18 @@ import { useMouse } from '../Mouse/MouseProvider';
 import * as THREE from 'three';
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils';
 
-const defaultInteractionRadius = 6;
+const defaultInteractionRadius = 5;
+const defaultFrequency = 4;
 const defaultGravity = 0.1;
 const defaultIntensity = 1.5;
-const defaultRedValue = 0.1;
-const defaultGreenValue = 0.4;
-const defaultBlueValue = 0.47;
+const defaultRedValue = 1.0;
+const defaultGreenValue = 0.16;
+const defaultBlueValue = 0.0;
 
 const BlobShaderMaterial = shaderMaterial(
 	{
 		u_time: 0,
-		u_frequency: 6,
+		u_frequency: defaultFrequency,
 		u_red: defaultRedValue,
 		u_green: defaultGreenValue,
 		u_blue: defaultBlueValue,
@@ -47,6 +48,8 @@ const ParticleCloud = () => {
 	const radiusRef = useRef(defaultInteractionRadius);
 	const intensityRef = useRef(defaultIntensity);
 	const targetIntensityRef = useRef(defaultIntensity);
+	const frequencyRef = useRef(defaultFrequency);
+	const targetFrequencyRef = useRef(defaultFrequency);
 	const prevCameraPosition = useRef(new Vector3());
 	const planeRef = useRef(new Plane());
 	const planeNormal = useRef(new Vector3());
@@ -62,7 +65,7 @@ const ParticleCloud = () => {
 				green: defaultGreenValue,
 				blue: defaultBlueValue,
 				intensity: intensityRef.current,
-				frequency: 6,
+				frequency: defaultFrequency,
 				gravity: defaultGravity,
 				radius: radiusRef.current,
 			};
@@ -93,6 +96,7 @@ const ParticleCloud = () => {
 
 			const animationFolder = gui.addFolder('Animation');
 			animationFolder.add(params, 'frequency', 0, 50).onChange((value) => {
+				frequencyRef.current = value;
 				if (materialRef.current) {
 					materialRef.current.uniforms.u_frequency.value = value;
 				}
@@ -185,14 +189,21 @@ const ParticleCloud = () => {
 
 		if (isIntersecting) {
 			targetIntensityRef.current = intensityRef.current * 2.4;
+			targetFrequencyRef.current = frequencyRef.current * 1.6;
 		} else {
 			targetIntensityRef.current = intensityRef.current;
+			targetFrequencyRef.current = frequencyRef.current;
 		}
 
 		if (materialRef.current) {
 			materialRef.current.uniforms.u_intensity.value = THREE.MathUtils.lerp(
 				materialRef.current.uniforms.u_intensity.value,
 				targetIntensityRef.current,
+				delta * intensityChangeSpeed,
+			);
+			materialRef.current.uniforms.u_frequency.value = THREE.MathUtils.lerp(
+				materialRef.current.uniforms.u_frequency.value,
+				targetFrequencyRef.current,
 				delta * intensityChangeSpeed,
 			);
 		}

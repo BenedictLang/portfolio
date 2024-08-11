@@ -1,3 +1,4 @@
+import styles from './THREEScene.module.scss';
 import React, { useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import ParticleCloud from '../ParticleCloud';
@@ -36,15 +37,18 @@ const CameraController = () => {
 
 const THREEScene = ({ children }) => {
 	return (
-		<Canvas camera={{ position: [0, 0, -17], fov: 45 }}>
-			<CameraController />
-			<ambientLight intensity={0.1} />
-			<pointLight position={[10, 10, 10]} />
-			<StarField count={1000} />
-			<ParticleCloud shape="sphere" />
-			<Effects />
-			{children}
-		</Canvas>
+		<div className={styles.container}>
+			<Canvas camera={{ position: [0, 0, -17], fov: 45 }}>
+				<CameraController />
+				<ambientLight intensity={0.1} />
+				<pointLight position={[10, 10, 10]} />
+				<StarField count={1000} />
+				<ParticleCloud shape="sphere" />
+				<Effects />
+				{children}
+			</Canvas>
+			<div className={styles.canvasOverlay}></div>
+		</div>
 	);
 };
 
