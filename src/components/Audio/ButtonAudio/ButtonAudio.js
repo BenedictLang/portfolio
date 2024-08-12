@@ -3,13 +3,13 @@ import { AudioContext } from '../AudioProvider';
 import styles from './ButtonAudio.module.scss';
 
 const ButtonAudio = () => {
-	const { isPlaying, fadeInBackgroundMusicAndResumeOthers, fadeOutAllPlayingSounds } = useContext(AudioContext);
+	const { isPlaying, mute } = useContext(AudioContext);
 
 	const handleClick = () => {
 		if (isPlaying) {
-			fadeOutAllPlayingSounds();
+			mute(true);
 		} else {
-			fadeInBackgroundMusicAndResumeOthers();
+			mute(false);
 		}
 	};
 

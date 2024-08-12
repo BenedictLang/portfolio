@@ -11,9 +11,10 @@ export const AudioProvider = ({ children }) => {
 			return acc;
 		}, {}),
 	);
-	const pausedSounds = useRef({}); // To store both the paused ID and original volume
+	const pausedSounds = useRef({}); // Stores the paused ID and original volume
 
 	const [isPlaying, setIsPlaying] = useState(false);
+	const [isMutedByUser, setIsMutedByUser] = useState(false);
 
 	const updateIsPlaying = useCallback(() => {
 		setIsPlaying(Object.values(soundPlayingStates.current).some(Boolean));
@@ -21,7 +22,7 @@ export const AudioProvider = ({ children }) => {
 
 	const playSound = useCallback(
 		(soundKey) => {
-			if (!soundPlayingStates.current[soundKey]) {
+			if (!soundPlayingStates.current[soundKey] && !isMutedByUser) {
 				const id = sounds[soundKey].play();
 				if (!sounds[soundKey]._loop) {
 					sounds[soundKey].once('end', () => {
@@ -34,7 +35,7 @@ export const AudioProvider = ({ children }) => {
 				updateIsPlaying();
 			}
 		},
-		[updateIsPlaying],
+		[updateIsPlaying, isMutedByUser],
 	);
 
 	const pauseSound = useCallback(
@@ -44,7 +45,7 @@ export const AudioProvider = ({ children }) => {
 				sounds[soundKey].pause(id);
 				pausedSounds.current[soundKey] = {
 					id,
-					volume: sounds[soundKey].volume(), // Save the original volume
+					volume: sounds[soundKey].volume(),
 				};
 				soundPlayingStates.current[soundKey] = false;
 				updateIsPlaying();
@@ -66,32 +67,40 @@ export const AudioProvider = ({ children }) => {
 		[updateIsPlaying],
 	);
 
-	const fadeInBackgroundMusicAndResumeOthers = useCallback(() => {
-		const newSoundIds = {};
-		let anySoundPaused = false;
+	const resumeAllPausedAudio = useCallback(() => {
+		if (!isMutedByUser) {
+			const newSoundIds = {};
 
-		Object.keys(pausedSounds.current).forEach((soundKey) => {
-			const { id, volume } = pausedSounds.current[soundKey];
-			sounds[soundKey].play(id);
-			sounds[soundKey].fade(0, volume, 1000, id); // Restore original volume
-			soundPlayingStates.current[soundKey] = true;
-			newSoundIds[soundKey] = id;
-			delete pausedSounds.current[soundKey]; // Clean up paused sounds
-			anySoundPaused = true;
-		});
+			Object.keys(pausedSounds.current).forEach((soundKey) => {
+				const { id, volume } = pausedSounds.current[soundKey];
+				sounds[soundKey].play(id);
+				sounds[soundKey].fade(0, volume, 1000, id);
+				soundPlayingStates.current[soundKey] = true;
+				newSoundIds[soundKey] = id;
+				delete pausedSounds.current[soundKey];
+			});
 
-		if (!anySoundPaused) {
-			const id = sounds.backgroundMusic.play(undefined, true);
-			sounds.backgroundMusic.fade(0, sounds.backgroundMusic.volume(), 1000, id);
-			soundPlayingStates.current.backgroundMusic = true;
-			newSoundIds.backgroundMusic = id;
+			soundIds.current = { ...soundIds.current, ...newSoundIds };
+			updateIsPlaying();
 		}
+	}, [updateIsPlaying, isMutedByUser]);
 
-		soundIds.current = { ...soundIds.current, ...newSoundIds };
-		updateIsPlaying();
-	}, [updateIsPlaying]);
+	const fadeInBackgroundMusicAndResumeOthers = useCallback(() => {
+		if (!isMutedByUser) {
+			resumeAllPausedAudio();
 
-	const fadeOutAllPlayingSounds = useCallback(() => {
+			if (!sounds.backgroundMusic.playing(soundIds.current.backgroundMusic)) {
+				const id = sounds.backgroundMusic.play(undefined, true);
+				sounds.backgroundMusic.fade(0, sounds.backgroundMusic.volume(), 1000, id);
+				soundPlayingStates.current.backgroundMusic = true;
+				soundIds.current.backgroundMusic = id;
+			}
+
+			updateIsPlaying();
+		}
+	}, [resumeAllPausedAudio, updateIsPlaying, isMutedByUser]);
+
+	const pauseAllPlayingAudio = useCallback(() => {
 		Object.keys(soundPlayingStates.current).forEach((soundKey) => {
 			if (soundPlayingStates.current[soundKey]) {
 				const id = soundIds.current[soundKey];
@@ -114,12 +123,26 @@ export const AudioProvider = ({ children }) => {
 		updateIsPlaying();
 	}, [updateIsPlaying]);
 
+	const mute = useCallback(
+		(shouldMute) => {
+			setIsMutedByUser(shouldMute);
+			if (shouldMute) {
+				pauseAllPlayingAudio();
+			} else {
+				fadeInBackgroundMusicAndResumeOthers();
+			}
+		},
+		[pauseAllPlayingAudio, fadeInBackgroundMusicAndResumeOthers],
+	);
+
 	useEffect(() => {
 		const handleVisibilityChange = () => {
 			if (document.hidden) {
-				fadeOutAllPlayingSounds();
+				pauseAllPlayingAudio();
 			} else {
-				fadeInBackgroundMusicAndResumeOthers();
+				if (!isMutedByUser) {
+					resumeAllPausedAudio();
+				}
 			}
 		};
 
@@ -128,18 +151,19 @@ export const AudioProvider = ({ children }) => {
 		return () => {
 			document.removeEventListener('visibilitychange', handleVisibilityChange);
 		};
-	}, [fadeInBackgroundMusicAndResumeOthers, fadeOutAllPlayingSounds]);
+	}, [pauseAllPlayingAudio, resumeAllPausedAudio, isMutedByUser]);
 
 	const value = useMemo(
 		() => ({
 			isPlaying,
+			mute,
 			playSound,
 			pauseSound,
 			stopSound,
 			fadeInBackgroundMusicAndResumeOthers,
-			fadeOutAllPlayingSounds,
+			fadeOutAllPlayingSounds: pauseAllPlayingAudio,
 		}),
-		[isPlaying, playSound, pauseSound, stopSound, fadeInBackgroundMusicAndResumeOthers, fadeOutAllPlayingSounds],
+		[isPlaying, mute, playSound, pauseSound, stopSound, fadeInBackgroundMusicAndResumeOthers, pauseAllPlayingAudio],
 	);
 
 	return <AudioContext.Provider value={value}>{children}</AudioContext.Provider>;

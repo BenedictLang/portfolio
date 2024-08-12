@@ -53,7 +53,6 @@ export default function Start() {
 	}, [handleTerminalComplete]);
 
 	// Memoize children to avoid unnecessary re-renders of Terminal
-	{/* prettier-ignore */}
 	const memoizedTerminalChildren = useMemo(
 		() => (
 			<>
