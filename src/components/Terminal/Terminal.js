@@ -118,7 +118,7 @@ const Terminal = React.memo(({ children, isAnimated = false, onComplete, qPrefix
 
 	return (
 		<div className={`${styles.terminal}`}>
-			<div className={`${styles.terminalContent}`} ref={terminalContentRef}></div>
+			<div className={`${styles.terminalContent} scrollbar__mini`} ref={terminalContentRef}></div>
 			<span className={!isComplete ? styles.typedCursor : ''} ref={cursorRef}></span>
 		</div>
 	);

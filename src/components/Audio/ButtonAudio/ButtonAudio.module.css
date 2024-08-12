@@ -65,10 +65,10 @@
   max-height: 1px;
 }
 .soundToggle:hover span {
-  color: #1dffe4;
+  color: rgb(10, 250, 206);
 }
 .soundToggle:hover .soundBars .soundBar {
-  background-color: #1dffe4;
+  background-color: rgb(10, 250, 206);
 }
 @keyframes growShrink1 {
   0%, 100% {
