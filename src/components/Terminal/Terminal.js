@@ -21,8 +21,8 @@ const Terminal = React.memo(({ children, isAnimated = false, onComplete, qPrefix
 					printText(text);
 				}
 
-				// Delay of 1 second between elements
-				await new Promise((resolve) => setTimeout(resolve, 1000));
+				// Delay between elements
+				await new Promise((resolve) => setTimeout(resolve, 500));
 			}
 			setIsComplete(true);
 		};
@@ -57,7 +57,7 @@ const Terminal = React.memo(({ children, isAnimated = false, onComplete, qPrefix
 						clearInterval(intervalRef.current);
 						resolve();
 					}
-				}, 50);
+				}, 25);
 			});
 		};
 

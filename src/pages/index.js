@@ -104,29 +104,6 @@ lang-familie.de. 5 IN SOA ns5.server.com. hostmaster.server.com.
 
 `}
 				</code>
-				<code data-output-type="q">wappalyzer benedict.lang-familie.de</code>
-				<code data-output-type="a">
-					{`
-- - - - - - - - - -
-W A P P A L Y Z E R
-- - - - - - - - - -
-Tools:
----
-\tSecurity\treCAPTCHA
-\tCDN\tcdnjs, Cloudflare
-\tLibraries\tJQuery[3.1.1]
-`}
-				</code>
-				<code data-output-type="a">
-					{`
-Found Social Links:
----
-GitHub [https://github.com/BenedictLang]
-LinkedIn [https://www.linkedin.com/in/benedict-lang-72b78721a]
-Instagram [https://www.instagram.com/bl_design.de/]
-
-`}
-				</code>
 				<code data-output-type="q">theHarvester -d benedict.lang-familie.de -b all</code>
 				<code data-output-type="a">
 					{`
@@ -179,6 +156,18 @@ DNS Security Extensions\t\tEnabled
 Server               \t\tApache 
 Public key algorithm \t\trsaEncryption
 Signature algorithm  \t\tsha256WithRSAEncryption
+
+Tools:
+---
+\tSecurity\treCAPTCHA
+\tCDN\tcdnjs, Cloudflare
+\tLibraries\tJQuery[3.1.1]
+
+Found Social Links:
+---
+GitHub [https://github.com/BenedictLang]
+LinkedIn [https://www.linkedin.com/in/benedict-lang-72b78721a]
+Instagram [https://www.instagram.com/bl_design.de/]
 
 `}
 				</code>
