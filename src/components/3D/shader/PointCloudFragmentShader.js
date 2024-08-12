@@ -19,10 +19,10 @@ void main() {
     vec3 baseColor = vec3(u_red, u_green, u_blue) * pulsatingIntensity;
 
     // Compute the complementary color by inverting the base color
-    vec3 complementaryColor = vec3(1.0) - (baseColor * 0.7);
+    vec3 complementaryColor = vec3(1.0) - (baseColor * 0.5);
 
     // Adjust the color based on the distance to the original position
-    vec3 color = mix(baseColor, vec3(1.5), vColorFactor);
+    vec3 color = mix(baseColor, complementaryColor, vColorFactor);
 
     // Interpolate to complementary color if influenced by the line segment
     if (vBoostIntensity > 0.0) {
@@ -30,11 +30,10 @@ void main() {
         color = mix(color, complementaryColor, influence);
     }
 
-    // Handle point size and discard if outside bounds
+    // Make Points round
     float dist = length(gl_PointCoord - vec2(0.5));
     if (dist > 0.5) discard;
 
-    // Set the final color with full opacity
     gl_FragColor = vec4(color, 1.0);
 }
 `;

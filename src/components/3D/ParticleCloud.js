@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { shaderMaterial } from '@react-three/drei';
 import { extend } from '@react-three/fiber';
+import { Howler } from 'howler';
 import { Vector2, Vector3, Raycaster, Plane } from 'three';
 import pointCloudVertexShader from './shader/PointCloudVertexShader';
 import pointCloudFragmentShader from './shader/PointCloudFragmentShader';
@@ -10,10 +11,10 @@ import { useViewport } from '../_General/Viewport/ViewportProvider';
 import * as THREE from 'three';
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils';
 
-const defaultInteractionRadius = 5;
-const defaultFrequency = 4;
+const defaultInteractionRadius = 7;
+const defaultFrequency = 3;
 const defaultGravity = 0.1;
-const defaultIntensity = 1.5;
+const defaultIntensity = 2.5;
 const defaultRedValue = 1.0;
 const defaultGreenValue = 0.16;
 const defaultBlueValue = 0.0;
@@ -46,6 +47,7 @@ const ParticleCloud = () => {
 	const [geometrySize, setGeometrySize] = useState(4);
 	const mouse = useMouse();
 	const { isMobile } = useViewport();
+	const analyserRef = useRef(null);
 	const { camera } = useThree();
 	const raycasterRef = useRef(new Raycaster(undefined, undefined, 0, undefined));
 	const geometryRaycasterRef = useRef(new Raycaster(undefined, undefined, 0, undefined));
@@ -65,6 +67,7 @@ const ParticleCloud = () => {
 
 		if (materialRef.current) {
 			materialRef.current.uniforms.u_interactionRadius.value = isMobile ? radiusRef.current * 0.75 : radiusRef.current;
+			materialRef.current.uniforms.u_intensity.value = isMobile ? intensityRef.current * 0.75 : intensityRef.current;
 		}
 	}, [isMobile]);
 
@@ -152,17 +155,29 @@ const ParticleCloud = () => {
 	}, []);
 
 	useEffect(() => {
-		/*camera.add(listener);
-		const audioContext = Howler.ctx;
-		const sourceNode = sound._sounds[0]._node;
+		const analyser = Howler.ctx.createAnalyser();
+		Howler.masterGain.connect(analyser);
+		analyser.connect(Howler.ctx.destination);
+		analyser.fftSize = 32;
+		analyser.minDecibels = -100;
+		analyser.maxDecibels = -15;
 
-		const threeSound = new THREE.Audio(listener);
-		threeSound.setNodeSource(sourceNode);
-
-		const analyser = new THREE.AudioAnalyser(threeSound, 32);
-		console.log(analyser.getAverageFrequency());
-		 */
+		analyserRef.current = analyser;
 	}, []);
+
+	// Function to calculate average frequency from the AnalyserNode
+	const getAverageFrequency = () => {
+		if (analyserRef.current) {
+			const frequencyData = new Uint8Array(analyserRef.current.frequencyBinCount);
+			analyserRef.current.getByteFrequencyData(frequencyData);
+
+			const sum = frequencyData.reduce((a, b) => a + b, 0);
+			const average = sum / frequencyData.length;
+
+			return (average / 256) * 40; // Werte zwischen 0 und 100
+		}
+		return 0;
+	};
 
 	useFrame((state, delta) => {
 		if (materialRef.current) {
@@ -170,9 +185,9 @@ const ParticleCloud = () => {
 		}
 
 		if (pointsRef.current) {
-			pointsRef.current.rotation.y += 0.001;
-			pointsRef.current.rotation.x += 0.0012;
-			pointsRef.current.rotation.z += 0.001;
+			pointsRef.current.rotation.y += 0.0005;
+			pointsRef.current.rotation.x += 0.0003;
+			pointsRef.current.rotation.z += 0.0004;
 		}
 
 		const currentCameraPosition = camera.position.clone();
@@ -220,6 +235,7 @@ const ParticleCloud = () => {
 			}
 		}
 
+		// Update frequency and intensity if intersecting object
 		if (isIntersecting) {
 			targetIntensityRef.current = intensityRef.current * 2.4;
 			targetFrequencyRef.current = frequencyRef.current * 1.6;
@@ -227,6 +243,10 @@ const ParticleCloud = () => {
 			targetIntensityRef.current = intensityRef.current;
 			targetFrequencyRef.current = frequencyRef.current;
 		}
+
+		// Update frequency from audio analysis
+		const audioAverageFrequency = getAverageFrequency();
+		targetFrequencyRef.current = frequencyRef.current * (1 + audioAverageFrequency);
 
 		if (materialRef.current) {
 			materialRef.current.uniforms.u_intensity.value = THREE.MathUtils.lerp(
