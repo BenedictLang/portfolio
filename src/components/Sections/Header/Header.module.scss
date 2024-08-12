@@ -3,7 +3,9 @@
 .header {
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	width: 100%;
+	height: fit-content;
 	padding: $space-small $space-medium $space-small $space-medium;
 
 	.headerWrapper {
@@ -12,8 +14,11 @@
 }
 
 .navLogo {
+	position: relative;
 	display: flex;
 	align-items: center;
+	width: fit-content;
+	height: fit-content;
 }
 
 .wrapper {
