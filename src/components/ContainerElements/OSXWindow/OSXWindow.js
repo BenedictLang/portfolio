@@ -1,6 +1,6 @@
 import styles from './OSXWindow.module.scss';
 import { useContext } from 'react';
-import { AudioContext } from '../../Audio/AudioContext';
+import { AudioContext } from '../../Audio/AudioProvider';
 
 const OSXWindow = ({ headerText, children, onClick, onClose, onMinimize, onMaximize, ...props }) => {
 	const { playSound } = useContext(AudioContext);

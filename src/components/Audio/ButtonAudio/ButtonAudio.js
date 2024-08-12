@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AudioContext } from '../AudioContext';
+import { AudioContext } from '../AudioProvider';
 import styles from './ButtonAudio.module.scss';
 
 const ButtonAudio = () => {

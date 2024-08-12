@@ -13,7 +13,7 @@ import styles from 'styles/pages/App.module.scss';
 import cssVariables from '../styles/_variables.module.scss';
 import THREEScene from 'components/3D/Scene/THREEScene';
 import { createContext, useEffect, useState } from 'react';
-import { AudioProvider } from '../components/Audio/AudioContext';
+import { AudioProvider } from '../components/Audio/AudioProvider';
 import { MouseProvider, useMouse } from '../components/Mouse/MouseProvider';
 import { ViewportProvider } from '../components/_General/Viewport/ViewportProvider';
 

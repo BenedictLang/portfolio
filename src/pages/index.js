@@ -3,7 +3,7 @@ import Container from 'components/ContainerElements/Container';
 import ButtonGlow from 'components/Buttons/ButtonGlow';
 import LayoutFullscreen from 'components/Layouts/LayoutFullscreen';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { AudioContext } from '../components/Audio/AudioContext';
+import { AudioContext } from '../components/Audio/AudioProvider';
 import Modal from '../components/Modal';
 import OSXWindow from '../components/ContainerElements/OSXWindow';
 import Terminal from '../components/Terminal';

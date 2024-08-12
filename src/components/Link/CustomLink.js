@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import Link from 'next/link';
-import { AudioContext } from '../Audio/AudioContext';
+import { AudioContext } from '../Audio/AudioProvider';
 
 const CustomLink = ({ href, children, onClick, ...props }) => {
 	const { playSound } = useContext(AudioContext);
