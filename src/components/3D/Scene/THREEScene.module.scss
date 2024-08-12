@@ -16,3 +16,9 @@
 	opacity: 1;
 	background: radial-gradient(circle, $color-primary-transparent-strong 40%, $color-bg 80%);
 }
+
+@include only-mobile {
+	.canvasOverlay {
+		opacity: 0;
+	}
+}

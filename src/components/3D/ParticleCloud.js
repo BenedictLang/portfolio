@@ -25,7 +25,8 @@ const BlobShaderMaterial = shaderMaterial(
 		u_green: defaultGreenValue,
 		u_blue: defaultBlueValue,
 		u_intensity: defaultIntensity,
-		u_gravity: defaultGravity,
+		u_damping: defaultGravity,
+		u_acceleration: 1,
 		u_perspectiveCorrection: true,
 		u_cameraPosition: new THREE.Vector3(),
 		u_targetPosition: new THREE.Vector3(),
@@ -67,6 +68,7 @@ const ParticleCloud = () => {
 				intensity: intensityRef.current,
 				frequency: defaultFrequency,
 				gravity: defaultGravity,
+				acceleration: 1,
 				radius: radiusRef.current,
 			};
 
@@ -103,7 +105,12 @@ const ParticleCloud = () => {
 			});
 			animationFolder.add(params, 'gravity', 0, 10).onChange((value) => {
 				if (materialRef.current) {
-					materialRef.current.uniforms.u_gravity.value = value;
+					materialRef.current.uniforms.u_damping.value = value;
+				}
+			});
+			animationFolder.add(params, 'acceleration', 0, 10).onChange((value) => {
+				if (materialRef.current) {
+					materialRef.current.uniforms.u_acceleration.value = value;
 				}
 			});
 

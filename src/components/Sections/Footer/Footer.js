@@ -79,8 +79,10 @@ const Footer = ({ simple = false }) => {
 
 			<Section className={styles.footerLegal}>
 				<div className={styles.copyright}>
-					<p>All rights reserved. Copyright &copy; 2020 - {new Date().getFullYear()} by&nbsp;</p>
-					<CustomLink href="/home">Benedict Lang</CustomLink>
+					<p>
+						All rights reserved. Copyright &copy; 2020 - {new Date().getFullYear()} by&nbsp;
+						<CustomLink href="/home">Benedict Lang</CustomLink>
+					</p>
 				</div>
 				{simple && (
 					<div className={styles.legalLinks}>

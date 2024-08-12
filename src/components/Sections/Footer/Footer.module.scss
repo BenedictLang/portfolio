@@ -84,16 +84,18 @@
 	background: rgba(0, 0, 0, 0.2);
 	padding: $space-small $space-medium;
 	margin: 0;
+	font-size: $font-size-passive;
 
 	.copyright {
 		display: flex;
 		flex-direction: row;
+		flex-wrap: wrap;
 	}
 
 	a {
 		color: unset;
 		text-decoration: underline;
-		font-size: $font-size-passive;
+		text-wrap: nowrap;
 		transition-duration: $duration-short;
 		&:hover {
 			color: $color-primary;
@@ -101,13 +103,35 @@
 	}
 
 	p {
-		font-size: $font-size-passive;
+		flex: 1;
 		margin: 0;
+		text-wrap: stable;
 	}
 
 	.legalLinks {
 		display: flex;
 		flex-direction: row;
 		gap: $space-small;
+	}
+}
+
+@include only-mobile {
+	.footerLegal {
+		flex-wrap: wrap;
+		gap: $space-small;
+
+		.copyright {
+			flex-grow: 1;
+			justify-content: center;
+			text-align: center;
+		}
+
+		.legalLinks {
+			flex-wrap: wrap;
+			width: 100%;
+			gap: $space-medium;
+
+			justify-content: center;
+		}
 	}
 }
