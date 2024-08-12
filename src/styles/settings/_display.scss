@@ -14,10 +14,10 @@ $container-width: 80rem;
 $bp-ultra-wide: 2300px;
 $bp-wide: 1450px;
 $bp-desktop: 1024px;
-$bp-tablet: 900px;
+$bp-tablet: 899px;
 
 @mixin only-mobile {
-	@media (max-width: $bp-tablet - 1px) {
+	@media (max-width: $bp-tablet) {
 		@content;
 	}
 }

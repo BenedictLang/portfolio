@@ -10,11 +10,12 @@ import 'styles/globals.css';
 import 'styles/globals.scss';
 import 'styles/wordpress.scss';
 import styles from 'styles/pages/App.module.scss';
-import variables from '../styles/_variables.module.scss';
+import cssVariables from '../styles/_variables.module.scss';
 import THREEScene from 'components/3D/Scene/THREEScene';
 import { createContext, useEffect, useState } from 'react';
 import { AudioProvider } from '../components/Audio/AudioContext';
 import { MouseProvider, useMouse } from '../components/Mouse/MouseProvider';
+import { ViewportProvider } from '../components/_General/Viewport/ViewportProvider';
 
 const ThreeSceneContext = createContext(null);
 
@@ -30,22 +31,24 @@ function App({ Component, pageProps = {}, metadata, recentPosts, categories, men
 
 	return (
 		<SiteContext.Provider value={site}>
-			<MouseProvider>
-				<AudioProvider>
-					<SearchProvider>
-						<MouseMover>
-							<div id="halo-mouse" className={styles.haloMouse}></div>
-							<NextNProgress height={4} color={variables.progressbarColor} />
-							<div className={styles.webglContainer}>
-								<ThreeSceneContext.Provider value={setThreeSceneChildren}>
-									<THREEScene>{threeSceneChildren}</THREEScene>
-								</ThreeSceneContext.Provider>
-							</div>
-							<Component {...pageProps} />
-						</MouseMover>
-					</SearchProvider>
-				</AudioProvider>
-			</MouseProvider>
+			<ViewportProvider>
+				<MouseProvider>
+					<AudioProvider>
+						<SearchProvider>
+							<MouseMover>
+								<div id="halo-mouse" className={styles.haloMouse}></div>
+								<NextNProgress height={4} color={cssVariables.progressbarColor} />
+								<div className={styles.webglContainer}>
+									<ThreeSceneContext.Provider value={setThreeSceneChildren}>
+										<THREEScene>{threeSceneChildren}</THREEScene>
+									</ThreeSceneContext.Provider>
+								</div>
+								<Component {...pageProps} />
+							</MouseMover>
+						</SearchProvider>
+					</AudioProvider>
+				</MouseProvider>
+			</ViewportProvider>
 		</SiteContext.Provider>
 	);
 }

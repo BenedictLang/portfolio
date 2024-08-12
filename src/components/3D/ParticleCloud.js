@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { shaderMaterial } from '@react-three/drei';
 import { extend } from '@react-three/fiber';
@@ -6,6 +6,7 @@ import { Vector2, Vector3, Raycaster, Plane } from 'three';
 import pointCloudVertexShader from './shader/PointCloudVertexShader';
 import pointCloudFragmentShader from './shader/PointCloudFragmentShader';
 import { useMouse } from '../Mouse/MouseProvider';
+import { useViewport } from '../_General/Viewport/ViewportProvider';
 import * as THREE from 'three';
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils';
 
@@ -42,10 +43,12 @@ extend({ BlobShaderMaterial });
 const ParticleCloud = () => {
 	const pointsRef = useRef();
 	const materialRef = useRef();
+	const [geometrySize, setGeometrySize] = useState(4);
 	const mouse = useMouse();
+	const { isMobile } = useViewport();
 	const { camera } = useThree();
-	const raycaster = new Raycaster();
-	const geometryRaycaster = new Raycaster();
+	const raycasterRef = useRef(new Raycaster(undefined, undefined, 0, undefined));
+	const geometryRaycasterRef = useRef(new Raycaster(undefined, undefined, 0, undefined));
 	const radiusRef = useRef(defaultInteractionRadius);
 	const intensityRef = useRef(defaultIntensity);
 	const targetIntensityRef = useRef(defaultIntensity);
@@ -55,6 +58,15 @@ const ParticleCloud = () => {
 	const planeRef = useRef(new Plane());
 	const planeNormal = useRef(new Vector3());
 	const intensityChangeSpeed = 3;
+
+	useEffect(() => {
+		const adjustedGeometrySize = isMobile ? 3 : 4;
+		setGeometrySize(adjustedGeometrySize);
+
+		if (materialRef.current) {
+			materialRef.current.uniforms.u_interactionRadius.value = isMobile ? radiusRef.current * 0.75 : radiusRef.current;
+		}
+	}, [isMobile]);
 
 	useEffect(() => {
 		let gui;
@@ -129,13 +141,26 @@ const ParticleCloud = () => {
 		return () => {
 			gui.destroy();
 		};
-	}, [camera]);
+	}, []);
 
 	useEffect(() => {
 		if (pointsRef.current) {
 			const geometry = pointsRef.current.geometry;
 			BufferGeometryUtils.mergeVertices(geometry);
 		}
+	}, []);
+
+	useEffect(() => {
+		/*camera.add(listener);
+		const audioContext = Howler.ctx;
+		const sourceNode = sound._sounds[0]._node;
+
+		const threeSound = new THREE.Audio(listener);
+		threeSound.setNodeSource(sourceNode);
+
+		const analyser = new THREE.AudioAnalyser(threeSound, 32);
+		console.log(analyser.getAverageFrequency());
+		 */
 	}, []);
 
 	useFrame((state, delta) => {
@@ -161,10 +186,10 @@ const ParticleCloud = () => {
 		const normalizedMouseX = (mouse.x / window.innerWidth) * 2 - 1;
 		const normalizedMouseY = -(mouse.y / window.innerHeight) * 2 + 1;
 		const mouseCoords = new Vector2(normalizedMouseX, normalizedMouseY);
-		raycaster.setFromCamera(mouseCoords, camera);
+		raycasterRef.current.setFromCamera(mouseCoords, camera);
 
 		const intersectPoint = new Vector3();
-		raycaster.ray.intersectPlane(planeRef.current, intersectPoint);
+		raycasterRef.current.ray.intersectPlane(planeRef.current, intersectPoint);
 
 		let isIntersecting = false;
 		if (intersectPoint && intersectPoint.x !== 0) {
@@ -186,8 +211,8 @@ const ParticleCloud = () => {
 				materialRef.current.uniforms.u_targetPosition.value.copy(interactionLocalPositionTarget);
 			}
 
-			geometryRaycaster.ray.copy(raycaster.ray);
-			const intersects = geometryRaycaster.intersectObject(pointsRef.current, true);
+			geometryRaycasterRef.current.ray.copy(raycasterRef.current.ray);
+			const intersects = geometryRaycasterRef.current.intersectObject(pointsRef.current, true);
 
 			if (intersects.length > 0) {
 				isIntersecting = true;
@@ -219,7 +244,7 @@ const ParticleCloud = () => {
 	return (
 		<>
 			<points ref={pointsRef} position={[0, 0, 0]}>
-				<icosahedronGeometry args={[4, 30]} />
+				<icosahedronGeometry args={[geometrySize, 30]} />
 				<blobShaderMaterial ref={materialRef} />
 			</points>
 		</>
