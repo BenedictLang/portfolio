@@ -2,15 +2,69 @@
 
 .soundToggle {
 	position: relative;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: $space-mini;
+	align-items: center;
 	text-align: center;
-	width: 2em;
-	height: 2em;
 	cursor: pointer;
 	z-index: 1000;
 
-	&:hover {
+	span {
+		font-size: $font-size-passive;
+		color: $color-text-passive;
+		transition: color $duration-middle ease-in-out;
+	}
+
+	.soundBars {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		gap: 2px;
+		justify-content: start;
+
+		width: 20px;
+		height: 20px;
+
 		.soundBar {
-			background-color: $color-primary;
+			position: relative;
+			align-items: start;
+			align-self: center;
+			height: 1px;
+			max-height: 20px;
+			width: 2px;
+			background-color: $color-text-passive;
+			opacity: 1;
+			animation-play-state: running;
+			animation-direction: alternate;
+			animation-timing-function: linear;
+			animation-iteration-count: infinite;
+			transition: all $duration-middle ease-in-out;
+		}
+
+		.soundBar:nth-child(1) {
+			animation-name: growShrink1;
+			animation-duration: 1000ms;
+			animation-delay: 0ms;
+		}
+
+		.soundBar:nth-child(2) {
+			animation-name: growShrink2;
+			animation-duration: 1000ms;
+			animation-delay: 200ms;
+		}
+
+		.soundBar:nth-child(3) {
+			animation-name: growShrink3;
+			animation-duration: 1000ms;
+			animation-delay: 400ms;
+		}
+
+		.soundBar:nth-child(4) {
+			animation-name: growShrink4;
+			animation-duration: 1000ms;
+			animation-delay: 600ms;
 		}
 	}
 
@@ -19,48 +73,15 @@
 		max-height: 1px;
 	}
 
-	.soundBar {
-		height: 1px;
-		max-height: 20px;
-		width: 2px;
-		float: left;
-		background-color: $color-text-passive;
-		opacity: 1;
-		bottom: 5px;
-		position: absolute;
-		animation-play-state: running;
-		animation-direction: alternate;
-		animation-timing-function: linear;
-		animation-iteration-count: infinite;
-		transition: all $duration-middle ease-in-out;
-	}
-
-	.soundBar:nth-child(1) {
-		left: 2px;
-		animation-name: growShrink1;
-		animation-duration: 1000ms;
-		animation-delay: 0ms;
-	}
-
-	.soundBar:nth-child(2) {
-		left: 6px;
-		animation-name: growShrink2;
-		animation-duration: 1000ms;
-		animation-delay: 200ms;
-	}
-
-	.soundBar:nth-child(3) {
-		left: 10px;
-		animation-name: growShrink3;
-		animation-duration: 1000ms;
-		animation-delay: 400ms;
-	}
-
-	.soundBar:nth-child(4) {
-		left: 14px;
-		animation-name: growShrink4;
-		animation-duration: 1000ms;
-		animation-delay: 600ms;
+	&:hover {
+		span {
+			color: $color-primary;
+		}
+		.soundBars {
+			.soundBar {
+				background-color: $color-primary;
+			}
+		}
 	}
 
 	@keyframes growShrink1 {

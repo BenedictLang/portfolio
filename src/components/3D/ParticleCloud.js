@@ -73,6 +73,7 @@ const ParticleCloud = () => {
 		async function init() {
 			const { GUI } = await import('dat.gui');
 			gui = new GUI();
+			gui.domElement.style.display = 'none';
 			const params = {
 				red: defaultRedValue,
 				green: defaultGreenValue,

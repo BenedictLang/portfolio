@@ -5,20 +5,20 @@ import Nav from '../../Menu/Nav';
 import Logo from '../../Logo';
 import ButtonAudio from '../../Audio/ButtonAudio';
 
-const Header = ({ children, simple = false }) => {
+const Header = ({ children, minimal = false }) => {
 	return (
 		<header className={styles.header}>
 			<div className={styles.navLogo}>
 				<Logo />
 			</div>
 			<div className={styles.headerWrapper}>
-				{!simple && (
+				{!minimal && (
 					<div className={styles.wrapper}>
 						<Container>{children}</Container>
 						<Nav />
 					</div>
 				)}
-				<ButtonAudio />
+				<ButtonAudio minimal={!minimal} />
 			</div>
 		</header>
 	);

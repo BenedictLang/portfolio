@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { AudioContext } from '../AudioProvider';
 import styles from './ButtonAudio.module.scss';
 
-const ButtonAudio = () => {
+const ButtonAudio = ({ minimal = false }) => {
 	const { isPlaying, mute } = useContext(AudioContext);
 
 	const handleClick = () => {
@@ -15,7 +15,8 @@ const ButtonAudio = () => {
 
 	return (
 		<div className={styles.soundToggle} onClick={handleClick}>
-			<div className={!isPlaying ? styles.noSound : ''}>
+			{!minimal && <span>Sound</span>}
+			<div className={`${styles.soundBars} ${!isPlaying ? styles.noSound : ''}`}>
 				<span className={styles.soundBar}></span>
 				<span className={styles.soundBar}></span>
 				<span className={styles.soundBar}></span>

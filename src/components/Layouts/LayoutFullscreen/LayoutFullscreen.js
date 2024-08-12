@@ -57,9 +57,9 @@ const LayoutFullscreen = ({ children }) => {
 	return (
 		<div className={styles.layoutContainer}>
 			<Helmet {...helmetSettings} />
-			<Header simple={true}></Header>
+			<Header minimal={true}></Header>
 			<Main className={styles.main}>{children}</Main>
-			<Footer simple={true}></Footer>
+			<Footer minimal={true}></Footer>
 		</div>
 	);
 };

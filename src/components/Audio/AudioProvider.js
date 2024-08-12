@@ -14,7 +14,7 @@ export const AudioProvider = ({ children }) => {
 	const pausedSounds = useRef({}); // Stores the paused ID and original volume
 
 	const [isPlaying, setIsPlaying] = useState(false);
-	const [isMutedByUser, setIsMutedByUser] = useState(false);
+	const isMutedByUser = useRef(false);
 
 	const updateIsPlaying = useCallback(() => {
 		setIsPlaying(Object.values(soundPlayingStates.current).some(Boolean));
@@ -22,7 +22,7 @@ export const AudioProvider = ({ children }) => {
 
 	const playSound = useCallback(
 		(soundKey) => {
-			if (!soundPlayingStates.current[soundKey] && !isMutedByUser) {
+			if (!soundPlayingStates.current[soundKey] && !isMutedByUser.current) {
 				const id = sounds[soundKey].play();
 				if (!sounds[soundKey]._loop) {
 					sounds[soundKey].once('end', () => {
@@ -68,7 +68,7 @@ export const AudioProvider = ({ children }) => {
 	);
 
 	const resumeAllPausedAudio = useCallback(() => {
-		if (!isMutedByUser) {
+		if (!isMutedByUser.current) {
 			const newSoundIds = {};
 
 			Object.keys(pausedSounds.current).forEach((soundKey) => {
@@ -86,7 +86,7 @@ export const AudioProvider = ({ children }) => {
 	}, [updateIsPlaying, isMutedByUser]);
 
 	const fadeInBackgroundMusicAndResumeOthers = useCallback(() => {
-		if (!isMutedByUser) {
+		if (!isMutedByUser.current) {
 			resumeAllPausedAudio();
 
 			if (!sounds.backgroundMusic.playing(soundIds.current.backgroundMusic)) {
@@ -125,7 +125,7 @@ export const AudioProvider = ({ children }) => {
 
 	const mute = useCallback(
 		(shouldMute) => {
-			setIsMutedByUser(shouldMute);
+			isMutedByUser.current = shouldMute;
 			if (shouldMute) {
 				pauseAllPlayingAudio();
 			} else {

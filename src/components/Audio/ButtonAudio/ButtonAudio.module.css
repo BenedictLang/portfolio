@@ -2,57 +2,73 @@
 /* Breakpoints */
 .soundToggle {
   position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.5em;
+  align-items: center;
   text-align: center;
-  width: 2em;
-  height: 2em;
   cursor: pointer;
   z-index: 1000;
 }
-.soundToggle:hover .soundBar {
-  background-color: #1dffe4;
+.soundToggle span {
+  font-size: 0.9em;
+  color: #333e4a;
+  transition: color 0.7s ease-in-out;
 }
-.soundToggle .noSound > .soundBar {
-  transition: all ease-out 0.7s;
-  max-height: 1px;
+.soundToggle .soundBars {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  justify-content: start;
+  width: 20px;
+  height: 20px;
 }
-.soundToggle .soundBar {
+.soundToggle .soundBars .soundBar {
+  position: relative;
+  align-items: start;
+  align-self: center;
   height: 1px;
   max-height: 20px;
   width: 2px;
-  float: left;
   background-color: #333e4a;
   opacity: 1;
-  bottom: 5px;
-  position: absolute;
   animation-play-state: running;
   animation-direction: alternate;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   transition: all 0.7s ease-in-out;
 }
-.soundToggle .soundBar:nth-child(1) {
-  left: 2px;
+.soundToggle .soundBars .soundBar:nth-child(1) {
   animation-name: growShrink1;
   animation-duration: 1000ms;
   animation-delay: 0ms;
 }
-.soundToggle .soundBar:nth-child(2) {
-  left: 6px;
+.soundToggle .soundBars .soundBar:nth-child(2) {
   animation-name: growShrink2;
   animation-duration: 1000ms;
   animation-delay: 200ms;
 }
-.soundToggle .soundBar:nth-child(3) {
-  left: 10px;
+.soundToggle .soundBars .soundBar:nth-child(3) {
   animation-name: growShrink3;
   animation-duration: 1000ms;
   animation-delay: 400ms;
 }
-.soundToggle .soundBar:nth-child(4) {
-  left: 14px;
+.soundToggle .soundBars .soundBar:nth-child(4) {
   animation-name: growShrink4;
   animation-duration: 1000ms;
   animation-delay: 600ms;
+}
+.soundToggle .noSound > .soundBar {
+  transition: all ease-out 0.7s;
+  max-height: 1px;
+}
+.soundToggle:hover span {
+  color: #1dffe4;
+}
+.soundToggle:hover .soundBars .soundBar {
+  background-color: #1dffe4;
 }
 @keyframes growShrink1 {
   0%, 100% {

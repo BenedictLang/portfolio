@@ -8,7 +8,7 @@ import Container from '../../ContainerElements/Container';
 import styles from './Footer.module.scss';
 import CustomLink from '../../Link';
 
-const Footer = ({ simple = false }) => {
+const Footer = ({ minimal = false }) => {
 	const { metadata = {}, recentPosts = [], categories = [] } = useSite();
 	const { title } = metadata;
 
@@ -18,7 +18,7 @@ const Footer = ({ simple = false }) => {
 
 	return (
 		<footer className={styles.footer}>
-			{hasMenu && !simple && (
+			{hasMenu && !minimal && (
 				<div>
 					<div>{title}</div>
 					<Section className={styles.footerMenu}>
@@ -84,7 +84,7 @@ const Footer = ({ simple = false }) => {
 						<CustomLink href="/home">Benedict Lang</CustomLink>
 					</p>
 				</div>
-				{simple && (
+				{minimal && (
 					<div className={styles.legalLinks}>
 						<CustomLink href={'https://lang-familie.de/impressum/'}>Imprint</CustomLink>
 						<CustomLink href={'https://lang-familie.de/datenschutzerklaerung/'}>Privacy Policy</CustomLink>
