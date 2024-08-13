@@ -23,6 +23,7 @@ body {
 	position: relative;
 	overflow: auto;
 	background-color: $color-bg;
+	color: $color-text;
 
 	/* Background glows */
 	&::before,
@@ -53,6 +54,10 @@ body {
 		background-size: var(--light-size) var(--light-size);
 		background-position: calc(100% + var(--light-size) / 2 + 2vmin) calc(100% + var(--light-size) / 2 + 2vmin);
 	}
+}
+
+h1 {
+	font-family: Geologica, sans-serif;
 }
 
 p {

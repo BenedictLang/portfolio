@@ -1,5 +1,11 @@
 /* Dimensions */
 /* Breakpoints */
+@font-face {
+  font-family: Geologica;
+  src: url("/fonts/Geologica-VariableFont_CRSV,SHRP,slnt,wght.ttf") format("ttf");
+  font-weight: 500;
+  font-display: swap;
+}
 .soundToggle {
   position: relative;
   display: flex;
@@ -65,10 +71,10 @@
   max-height: 1px;
 }
 .soundToggle:hover span {
-  color: rgb(10, 250, 206);
+  color: rgb(10, 230, 236);
 }
 .soundToggle:hover .soundBars .soundBar {
-  background-color: rgb(10, 250, 206);
+  background-color: rgb(10, 230, 236);
 }
 @keyframes growShrink1 {
   0%, 100% {

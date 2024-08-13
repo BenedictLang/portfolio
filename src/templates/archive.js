@@ -7,7 +7,7 @@ import useSite from 'hooks/use-site';
 import Layout from 'components/Layouts/Layout';
 import Section from 'components/Sections/Section';
 import Container from 'components/ContainerElements/Container';
-import SectionTitle from 'components/SectionTitle';
+import SectionTitle from 'components/Text/SectionTitle';
 import PostCard from 'components/PostCard';
 import Pagination from 'components/Pagination/Pagination';
 

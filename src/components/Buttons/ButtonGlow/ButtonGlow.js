@@ -3,7 +3,7 @@ import stylesBtn from '../Button/Button.module.css';
 import CustomLink from '../../Link';
 import { useEffect } from 'react';
 
-const ButtonGlow = ({ onClick, children, className, href, ...rest }) => {
+const ButtonGlow = ({ onClick, children, className, href, overglow, ...rest }) => {
 	useEffect(() => {
 		console.log('Rendering ButtonGlow');
 	}, []);
@@ -17,7 +17,7 @@ const ButtonGlow = ({ onClick, children, className, href, ...rest }) => {
 		<CustomLink
 			href={href}
 			onClick={handleClick}
-			className={`${className} ${stylesBtn.button} ${styles.button}`}
+			className={`${className} ${stylesBtn.button} ${styles.button} ${overglow ? styles.overGlow : ''}`}
 			{...rest}
 		>
 			{children}

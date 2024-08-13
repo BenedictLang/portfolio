@@ -1,4 +1,4 @@
-import ClassName from 'models/classname';
+import ClassName from '../../../models/classname';
 
 import styles from './Title.module.scss';
 

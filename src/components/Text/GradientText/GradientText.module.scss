@@ -1,0 +1,8 @@
+@import '../../../styles/settings/__settings';
+
+.gradientText {
+	background-image: linear-gradient(to right, $color-white-trans-light, $color-primary);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}

@@ -8,11 +8,11 @@ import Section from 'components/Sections/Section';
 import Container from 'components/ContainerElements/Container';
 import PostCard from 'components/PostCard';
 import Pagination from 'components/Pagination';
-import HeroSub from '../components/Sections/Heros/HeroSub';
 import { useContext, useEffect } from 'react';
 import { ThreeSceneContext } from '../components/3D/ThreeSceneProvider';
 import { Vector3 } from 'three';
 import { useViewport } from '../components/_General/Viewport/ViewportProvider';
+import Hero from '../components/Sections/Heros/Hero';
 
 export default function Home({ posts, pagination }) {
 	const { metadata = {} } = useSite();
@@ -25,7 +25,7 @@ export default function Home({ posts, pagination }) {
 		if (isMobile) {
 			newTarget.y = 3;
 		} else {
-			newTarget.x = 5;
+			newTarget.x = -5;
 		}
 		setCameraTarget(newTarget);
 	}, [isMobile, setCameraTarget]);
@@ -33,7 +33,7 @@ export default function Home({ posts, pagination }) {
 	return (
 		<Layout>
 			<WebsiteJsonLd siteTitle={title} />
-			<HeroSub />
+			<Hero />
 			<Section>
 				<Container>
 					<h2 className="sr-only">Posts</h2>

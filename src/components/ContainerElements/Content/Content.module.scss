@@ -1,7 +1,13 @@
 @import '../../../styles/settings/_settings';
 
 .content {
-	font-size: 1.5rem;
+	position: relative;
+	width: 100%;
+	max-width: $container-width;
+	height: 100%;
+	padding: 0 $space-medium;
+	margin: 0 auto;
+	align-content: center;
 
 	h2,
 	h3,

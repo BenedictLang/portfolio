@@ -23,8 +23,8 @@ $color-blue-800: #002a5a;
 $color-blue-900: #001227;
 $color-blue-1000: #080917;
 
-$color-green-300: rgb(10, 250, 206);
-$color-green-300-trans: rgba(10, 250, 206, 0.68);
+$color-green-300: rgb(10, 230, 236);
+$color-green-300-trans: rgba(10, 230, 236, 0.68);
 $color-green-300-trans-strong: rgba(0, 255, 224, 0.03);
 
 $color-purple-300: #a663ca;
@@ -53,6 +53,9 @@ $color-text: $color-blue-50;
 $color-text-transparent-light: $color-white-trans-light;
 $color-text-transparent: $color-white-trans;
 $color-text-passive: $color-gray-700;
+
+$color-gradient-light: 40deg, transparent, $color-container, transparent, $color-primary, $color-container, transparent,
+	$color-primary, $color-container, transparent;
 
 $color-gradient: 40deg, transparent, $color-complementary, transparent, $color-primary, $color-complementary,
 	transparent, $color-primary, $color-complementary, transparent;

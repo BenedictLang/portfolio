@@ -3,7 +3,7 @@ import { getPostsByCategoryId } from 'lib/posts';
 import usePageMetadata from 'hooks/use-page-metadata';
 
 import TemplateArchive from 'templates/archive';
-import Title from 'components/Title';
+import Title from 'components/Text/Title';
 
 export default function Category({ category, posts }) {
 	const { name, description, slug } = category;

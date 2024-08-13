@@ -4,7 +4,7 @@ import { AuthorJsonLd } from 'lib/json-ld';
 import usePageMetadata from 'hooks/use-page-metadata';
 
 import TemplateArchive from 'templates/archive';
-import Title from 'components/Title';
+import Title from 'components/Text/Title';
 
 export default function Author({ user, posts }) {
 	const { title, name, avatar, description, slug } = user;

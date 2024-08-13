@@ -183,7 +183,7 @@ Instagram [https://www.instagram.com/bl_design.de/]
 	return (
 		<LayoutFullscreen>
 			<Container className={styles.content}>
-				<ButtonGlow href="/" onClick={handleClick}>
+				<ButtonGlow href="/" onClick={handleClick} overglow={true}>
 					GET $data
 				</ButtonGlow>
 				{isModalVisible && (
