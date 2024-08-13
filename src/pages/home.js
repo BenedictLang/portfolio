@@ -9,10 +9,26 @@ import Container from 'components/ContainerElements/Container';
 import PostCard from 'components/PostCard';
 import Pagination from 'components/Pagination';
 import HeroSub from '../components/Sections/Heros/HeroSub';
+import { useContext, useEffect } from 'react';
+import { ThreeSceneContext } from '../components/3D/ThreeSceneProvider';
+import { Vector3 } from 'three';
+import { useViewport } from '../components/_General/Viewport/ViewportProvider';
 
 export default function Home({ posts, pagination }) {
 	const { metadata = {} } = useSite();
 	const { title } = metadata;
+	const { isMobile } = useViewport();
+	const { setCameraTarget } = useContext(ThreeSceneContext);
+
+	useEffect(() => {
+		const newTarget = new Vector3();
+		if (isMobile) {
+			newTarget.y = 3;
+		} else {
+			newTarget.x = 5;
+		}
+		setCameraTarget(newTarget);
+	}, [isMobile, setCameraTarget]);
 
 	return (
 		<Layout>

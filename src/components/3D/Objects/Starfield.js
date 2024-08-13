@@ -2,8 +2,8 @@ import React, { useRef, useEffect } from 'react';
 import { useFrame, extend } from '@react-three/fiber';
 import { shaderMaterial } from '@react-three/drei';
 import * as THREE from 'three';
-import vertexShader from './shader/StarfieldVertexShader';
-import fragmentShader from './shader/StarfieldFragmentShader';
+import vertexShader from '../Shader/StarfieldVertexShader';
+import fragmentShader from '../Shader/StarfieldFragmentShader';
 
 const StarFieldMaterial = shaderMaterial(
 	{

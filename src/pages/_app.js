@@ -11,13 +11,11 @@ import 'styles/globals.scss';
 import 'styles/wordpress.scss';
 import styles from 'styles/pages/App.module.scss';
 import cssVariables from '../styles/_variables.module.scss';
-import THREEScene from 'components/3D/Scene/THREEScene';
-import { createContext, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { AudioProvider } from '../components/Audio/AudioProvider';
 import { MouseProvider, useMouse } from '../components/Mouse/MouseProvider';
 import { ViewportProvider } from '../components/_General/Viewport/ViewportProvider';
-
-const ThreeSceneContext = createContext(null);
+import { ThreeSceneProvider } from '../components/3D/ThreeSceneProvider';
 
 function App({ Component, pageProps = {}, metadata, recentPosts, categories, menus }) {
 	const site = useSiteContext({
@@ -26,8 +24,6 @@ function App({ Component, pageProps = {}, metadata, recentPosts, categories, men
 		categories,
 		menus,
 	});
-
-	const [threeSceneChildren, setThreeSceneChildren] = useState(null);
 
 	return (
 		<SiteContext.Provider value={site}>
@@ -38,12 +34,9 @@ function App({ Component, pageProps = {}, metadata, recentPosts, categories, men
 							<MouseMover>
 								<div id="halo-mouse" className={styles.haloMouse}></div>
 								<NextNProgress height={4} color={cssVariables.progressbarColor} />
-								<div className={styles.webglContainer}>
-									<ThreeSceneContext.Provider value={setThreeSceneChildren}>
-										<THREEScene>{threeSceneChildren}</THREEScene>
-									</ThreeSceneContext.Provider>
-								</div>
-								<Component {...pageProps} />
+								<ThreeSceneProvider>
+									<Component {...pageProps} />
+								</ThreeSceneProvider>
 							</MouseMover>
 						</SearchProvider>
 					</AudioProvider>

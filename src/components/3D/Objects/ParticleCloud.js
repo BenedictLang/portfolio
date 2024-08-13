@@ -4,10 +4,10 @@ import { shaderMaterial } from '@react-three/drei';
 import { extend } from '@react-three/fiber';
 import { Howler } from 'howler';
 import { Vector2, Vector3, Raycaster, Plane } from 'three';
-import pointCloudVertexShader from './shader/PointCloudVertexShader';
-import pointCloudFragmentShader from './shader/PointCloudFragmentShader';
-import { useMouse } from '../Mouse/MouseProvider';
-import { useViewport } from '../_General/Viewport/ViewportProvider';
+import pointCloudVertexShader from '../Shader/PointCloudVertexShader';
+import pointCloudFragmentShader from '../Shader/PointCloudFragmentShader';
+import { useMouse } from '../../Mouse/MouseProvider';
+import { useViewport } from '../../_General/Viewport/ViewportProvider';
 import * as THREE from 'three';
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils';
 
@@ -45,6 +45,7 @@ const ParticleCloud = () => {
 	const pointsRef = useRef();
 	const materialRef = useRef();
 	const [geometrySize, setGeometrySize] = useState(4);
+	const [geometryIndex, setGeometryIndex] = useState(0);
 	const mouse = useMouse();
 	const { isMobile } = useViewport();
 	const analyserRef = useRef(null);
@@ -154,6 +155,16 @@ const ParticleCloud = () => {
 		}
 	}, []);
 
+	// State for object geometries
+	const geometries = [
+		// eslint-disable-next-line react/jsx-key
+		<icosahedronGeometry args={[geometrySize, 30]} />,
+		// eslint-disable-next-line react/jsx-key
+		<torusKnotGeometry args={[geometrySize, 0.4, 128, 64, 1, 2]} />,
+		// eslint-disable-next-line react/jsx-key
+		//...objects.map((object) => <primitive object={object} />),
+	];
+
 	useEffect(() => {
 		const analyser = Howler.ctx.createAnalyser();
 		Howler.masterGain.connect(analyser);
@@ -184,7 +195,9 @@ const ParticleCloud = () => {
 			materialRef.current.uniforms.u_time.value += delta;
 		}
 
-		if (pointsRef.current) {
+		setGeometryIndex(0);
+
+		if (pointsRef.current && geometryIndex === 0) {
 			pointsRef.current.rotation.y += 0.0005;
 			pointsRef.current.rotation.x += 0.0003;
 			pointsRef.current.rotation.z += 0.0004;
@@ -265,7 +278,7 @@ const ParticleCloud = () => {
 	return (
 		<>
 			<points ref={pointsRef} position={[0, 0, 0]}>
-				<icosahedronGeometry args={[geometrySize, 30]} />
+				{geometries[geometryIndex]}
 				<blobShaderMaterial ref={materialRef} />
 			</points>
 		</>
