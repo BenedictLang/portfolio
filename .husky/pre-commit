@@ -1,5 +1,1 @@
-#! /bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-# Dein neuer Befehl hier
 pnpm lint-staged

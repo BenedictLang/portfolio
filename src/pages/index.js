@@ -8,6 +8,8 @@ import Modal from '../components/Modal';
 import OSXWindow from '../components/ContainerElements/OSXWindow';
 import Terminal from '../components/Terminal';
 import { useRouter } from 'next/router';
+import { ThreeSceneContext } from '../components/3D/ThreeSceneProvider';
+import { Vector3 } from 'three';
 
 export default function Start() {
 	const { playSound, stopSound } = useContext(AudioContext);
@@ -15,6 +17,11 @@ export default function Start() {
 	const [isModalVisible, setModalVisible] = useState(false);
 	const [terminalChildren, setTerminalChildren] = useState(null);
 	const router = useRouter();
+	const { setCameraTarget } = useContext(ThreeSceneContext);
+
+	useEffect(() => {
+		setCameraTarget(new Vector3());
+	}, [setCameraTarget]);
 
 	const changeParticles = useCallback(() => {
 		setShape(shape === 'sphere' ? 'cube' : 'sphere');

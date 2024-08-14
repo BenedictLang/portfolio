@@ -13,8 +13,12 @@ import { ThreeSceneContext } from '../components/3D/ThreeSceneProvider';
 import { Vector3 } from 'three';
 import { useViewport } from '../components/_General/Viewport/ViewportProvider';
 import Hero from '../components/Sections/Heros/Hero';
+import LogoSlider from '../components/Slider/LogoSlider';
+import Image from 'next/image';
+import CustomLink from '../components/Link';
+import { getAllCustomers } from '../lib/customers';
 
-export default function Home({ posts, pagination }) {
+export default function Home({ posts, pagination, customers }) {
 	const { metadata = {} } = useSite();
 	const { title } = metadata;
 	const { isMobile } = useViewport();
@@ -34,6 +38,17 @@ export default function Home({ posts, pagination }) {
 		<Layout>
 			<WebsiteJsonLd siteTitle={title} />
 			<Hero />
+			<LogoSlider>
+				{customers.map((customer) => {
+					return (
+						<CustomLink key={customer.id} href={customer.site} className={styles.customerLink}>
+							<div className={styles.customerLogo}>
+								<Image src={customer.logo.url} alt={customer.logo.alt} width={53} height={33} />
+							</div>
+						</CustomLink>
+					);
+				})}
+			</LogoSlider>
 			<Section>
 				<Container>
 					<h2 className="sr-only">Posts</h2>
@@ -64,8 +79,11 @@ export async function getStaticProps() {
 	const { posts, pagination } = await getPaginatedPosts({
 		queryIncludes: 'archive',
 	});
+	const { customers } = await getAllCustomers();
+	console.log(customers);
 	return {
 		props: {
+			customers,
 			posts,
 			pagination: {
 				...pagination,
