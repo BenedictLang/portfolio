@@ -80,7 +80,6 @@ export async function getStaticProps() {
 		queryIncludes: 'archive',
 	});
 	const { customers } = await getAllCustomers();
-	console.log(customers);
 	return {
 		props: {
 			customers,

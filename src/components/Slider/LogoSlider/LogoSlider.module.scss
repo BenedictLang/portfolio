@@ -1,5 +1,93 @@
 @import '../../../styles/settings/__settings';
 
-.container {
+$animationSpeed: 50s;
+
+@keyframes scroll {
+	0% {
+		transform: translateX(0);
+	}
+	100% {
+		transform: translateX(calc(-1 * (var(--logo-width) + (var(--logo-margin) * 2) - 0px) * (var(--logo-cards))));
+	} //(card lengths + margins) * amount o. cards
+}
+
+.sliderWrapper {
+	// Default values, overridden by React
+	--logo-cards: 1;
+	--logo-margin: 15vw;
+	--logo-width: 155px;
+
+	position: relative;
 	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background: $color-bg-transparent;
+	overflow: hidden;
+	width: 100vw;
+	height: 15vh;
+	padding: $space-small 0;
+}
+
+.slider {
+	position: relative;
+	display: flex;
+	height: 100%;
+	align-items: center;
+	cursor: grab;
+	animation: scroll $animationSpeed linear infinite;
+
+	&:hover {
+		// reduce speed to half
+	}
+
+	& > * {
+		box-sizing: content-box;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+		max-width: var(--logo-width);
+		min-width: var(--logo-width);
+		padding: 0 var(--logo-margin);
+		-webkit-user-drag: none;
+
+		& > * {
+			height: 100%;
+			max-width: var(--logo-width);
+			min-width: var(--logo-width);
+			user-select: none;
+			-webkit-user-drag: none;
+			pointer-events: auto;
+			& > * {
+				height: 100%;
+				width: var(--logo-width);
+				user-select: none;
+				-webkit-user-drag: none;
+			}
+		}
+	}
+}
+
+.overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	background: linear-gradient(
+		90deg,
+		rgba($color-bg, 1) 0%,
+		rgba($color-bg, 0) 10%,
+		rgba($color-bg, 0) 90%,
+		rgba($color-bg, 1) 100%
+	);
+}
+
+.sliderWrapper:active .slider {
+	animation-play-state: paused;
+}
+
+.sliderWrapper::-webkit-scrollbar {
+	display: none;
 }

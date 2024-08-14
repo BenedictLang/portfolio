@@ -27,6 +27,7 @@
 	}
 	&.overGlow {
 		&:before {
+			background-size: 500%;
 			animation:
 				glowing 15s ease-in-out infinite,
 				rotating 15s ease-in-out infinite;

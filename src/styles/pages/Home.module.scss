@@ -1,8 +1,25 @@
 @import '../../styles/settings/__settings';
 
+.customerLink {
+	margin: 0 20px;
+	user-select: none;
+	-webkit-user-drag: none;
+	pointer-events: auto;
+}
+
 .customerLogo {
-	width: auto;
-	height: 10vh;
+	filter: grayscale(100%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	user-select: none;
+	-webkit-user-drag: none;
+	pointer-events: auto;
+	& > * {
+		user-select: none;
+		-webkit-user-drag: none;
+		pointer-events: auto;
+	}
 }
 
 .description {
