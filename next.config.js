@@ -33,6 +33,10 @@ const nextConfig = {
 		WORDPRESS_MENU_LOCATION_NAVIGATION: process.env.WORDPRESS_MENU_LOCATION_NAVIGATION || 'PRIMARY',
 		WORDPRESS_PLUGIN_SEO: parseEnvValue(process.env.WORDPRESS_PLUGIN_SEO, 'false'),
 	},
+	images: {
+		// The image optimization needs to be disabled in a static export
+		unoptimized: true,
+	},
 	output: 'export',
 };
 
