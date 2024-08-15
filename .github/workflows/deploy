@@ -1,0 +1,27 @@
+# This is a workflow for github - ftp host synchronization
+on: 
+  push:
+    branches: [ main ]
+    
+name: 🚀 Deploy website on push
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v2
+    - name: Current repo dir
+      run: |
+        echo test the checkout action,
+        ls -a
+    
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      with:
+          server: ${{ secrets.ftp_server }}
+          server-dir: ./portfolio/
+          dangerous-clean-slate: true
+          username: ${{ secrets.ftp_user }}
+          password: ${{ secrets.ftp_password }}
+          local-dir: ./build/
