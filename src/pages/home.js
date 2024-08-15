@@ -1,7 +1,7 @@
 import useSite from 'hooks/use-site';
 import { getPaginatedPosts } from 'lib/posts';
 import { WebsiteJsonLd } from 'lib/json-ld';
-import styles from 'styles/pages/home.module.scss';
+import styles from 'styles/pages/Home.module.scss';
 
 import Layout from 'components/Layouts/Layout';
 import Section from 'components/Sections/Section';
