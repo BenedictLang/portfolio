@@ -7,7 +7,6 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "export": "next export",
     "format": "pnpm lint --fix",
     "format:no-path": "pnpm lint:no-path --fix",
     "lint": "eslint .",
