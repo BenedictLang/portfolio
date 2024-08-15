@@ -49,6 +49,7 @@ export default function Home({ posts, pagination, customers }) {
 					);
 				})}
 			</LogoSlider>
+			<Section className={styles.heroSection}></Section>
 			<Section>
 				<Container>
 					<h2 className="sr-only">Posts</h2>
