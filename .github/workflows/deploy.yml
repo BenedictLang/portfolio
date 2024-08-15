@@ -43,29 +43,29 @@ jobs:
           # Install lftp if not available
           sudo apt-get update
           sudo apt-get install -y lftp
-
+      
           # Define FTP server details
           FTP_SERVER=${{ secrets.FTP_SERVER }}
           FTP_USER=${{ secrets.FTP_USER }}
           FTP_PASSWORD=${{ secrets.FTP_PASSWORD }}
           FTP_DIR=${{ secrets.FTP_DIR }}
           FTP_BAK_DIR=${{ secrets.FTP_BAK_DIR }}
-
+      
           # Clear backup directory
           lftp -u "$FTP_USER","$FTP_PASSWORD" ftps://$FTP_SERVER << EOF
           set ftp:ssl-allow yes
-          mirror --delete --verbose $FTP_BAK_DIR /tmp/empty-dir
-          rm -rf /tmp/empty-dir/*
-          mirror --reverse --verbose $FTP_BAK_DIR /tmp/empty-dir
+          cd $FTP_BAK_DIR
+          rm -rf *
           quit
           EOF
-
-          # Move files from FTP_DIR to FTP_BAK_DIR
+      
+          # Copy files from FTP_DIR to FTP_BAK_DIR
           lftp -u "$FTP_USER","$FTP_PASSWORD" ftps://$FTP_SERVER << EOF
           set ftp:ssl-allow yes
-          mirror --reverse --verbose $FTP_DIR $FTP_BAK_DIR
+          mirror --reverse --verbose --no-perms --no-symlinks --parallel=2 $FTP_DIR $FTP_BAK_DIR
           quit
           EOF
+        timeout-minutes: 30
           
       #- name: 📂 Sync files
       #  uses: SamKirkland/FTP-Deploy-Action@4.3.5
