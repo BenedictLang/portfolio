@@ -14,7 +14,7 @@ jobs:
 
       - uses: pnpm/action-setup@v2
         with:
-          version: 7
+          version: 9
 
       - uses: actions/setup-node@v2
         with:
@@ -35,14 +35,14 @@ jobs:
 
       - uses: pnpm/action-setup@v2
         with:
-          version: 7
+          version: 9
 
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
 
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile --reporter=ndjson
 
       - run: pnpm build && pnpm export
         env:
