@@ -16,6 +16,11 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v2
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
       - name: ℹ️ Current repo dir
         run: |
           echo "Testing the checkout action..."
