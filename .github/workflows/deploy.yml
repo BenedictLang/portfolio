@@ -8,23 +8,67 @@ on:
       - completed
 
 jobs:
-  web-deploy:
-    name: 🎉 Deploy
+  deploy:
+    name: 🎉 Deploy to FTP
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v2
-    - name: Current repo dir
-      run: |
-        echo test the checkout action,
-        ls -a
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v2
+
+      - name: ℹ️ Current repo dir
+        run: |
+          echo "Testing the checkout action..."
+          ls -a
+
+      - name: 🚧 Build project
+        run: |
+          echo "Building the project..."
+          pnpm install
+          pnpm build
+          mkdir -p build
+          echo "Exporting to /build ..."
+          cp -r .next static public build/
+        env:
+          WORDPRESS_GRAPHQL_ENDPOINT: ${{ secrets.WORDPRESS_GRAPHQL_ENDPOINT }}
+
     
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.1.0
-      with:
-          server: ${{ secrets.FTP_SERVER }}
-          server-dir: ${{ secrets.FTP_DIR }}
-          dangerous-clean-slate: true
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./build/
+      - name: 💾 Backup files on FTP
+        run: |
+          # Install lftp if not available
+          sudo apt-get update
+          sudo apt-get install -y lftp
+
+          # Define FTP server details
+          FTP_SERVER=${{ secrets.FTP_SERVER }}
+          FTP_USER=${{ secrets.FTP_USER }}
+          FTP_PASSWORD=${{ secrets.FTP_PASSWORD }}
+          FTP_DIR=${{ secrets.FTP_DIR }}
+          FTP_BAK_DIR=${{ secrets.FTP_BAK_DIR }}
+
+          # Clear backup directory
+          lftp -u "$FTP_USER","$FTP_PASSWORD" ftps://$FTP_SERVER << EOF
+          set ftp:ssl-allow yes
+          mirror --delete --verbose $FTP_BAK_DIR /tmp/empty-dir
+          rm -rf /tmp/empty-dir/*
+          mirror --reverse --verbose $FTP_BAK_DIR /tmp/empty-dir
+          quit
+          EOF
+
+          # Move files from FTP_DIR to FTP_BAK_DIR
+          lftp -u "$FTP_USER","$FTP_PASSWORD" ftps://$FTP_SERVER << EOF
+          set ftp:ssl-allow yes
+          mirror --reverse --verbose $FTP_DIR $FTP_BAK_DIR
+          quit
+          EOF
+          
+      #- name: 📂 Sync files
+      #  uses: SamKirkland/FTP-Deploy-Action@4.3.5
+      #  with:
+          #server: ${{ secrets.FTP_SERVER }}
+          #server-dir: ${{ secrets.FTP_DIR }}
+          #dangerous-clean-slate: true
+          #username: ${{ secrets.FTP_USER }}
+          #password: ${{ secrets.FTP_PASSWORD }}
+          #local-dir: ./build/
+          #protocol: ftps
