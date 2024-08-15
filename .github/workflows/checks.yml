@@ -44,6 +44,6 @@ jobs:
 
       - run: pnpm install --frozen-lockfile --reporter=ndjson
 
-      - run: pnpm build && pnpm export
+      - run: pnpm build
         env:
           WORDPRESS_GRAPHQL_ENDPOINT: ${{ secrets.WORDPRESS_GRAPHQL_ENDPOINT }}
