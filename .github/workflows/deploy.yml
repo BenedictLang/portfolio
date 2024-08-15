@@ -1,9 +1,12 @@
 # This is a workflow for github - ftp host synchronization
-on: 
-  push:
-    branches: [ main ]
-    
-name: 🚀 Deploy website on push
+name: 🚀 FTP Deploy
+
+on:
+  workflow_run:
+    workflows: ["Checks", "CodeQL"]
+    types:
+      - completed
+
 jobs:
   web-deploy:
     name: 🎉 Deploy
@@ -20,7 +23,7 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@4.1.0
       with:
           server: ${{ secrets.ftp_server }}
-          server-dir: ./portfolio/
+          server-dir: ./frontend/
           dangerous-clean-slate: true
           username: ${{ secrets.ftp_user }}
           password: ${{ secrets.ftp_password }}
