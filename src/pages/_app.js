@@ -6,7 +6,6 @@ import { getRecentPosts } from 'lib/posts';
 import { getCategories } from 'lib/categories';
 import NextNProgress from 'nextjs-progressbar';
 import { getAllMenus } from 'lib/menus';
-import 'styles/globals.css';
 import 'styles/globals.scss';
 import 'styles/wordpress.scss';
 import styles from 'styles/pages/App.module.scss';
