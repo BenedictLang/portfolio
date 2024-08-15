@@ -33,7 +33,7 @@ jobs:
           pnpm build
           mkdir -p build
           echo "Exporting to /build ..."
-          cp -r .next static public build/
+          cp -r .next public build/
         env:
           WORDPRESS_GRAPHQL_ENDPOINT: ${{ secrets.WORDPRESS_GRAPHQL_ENDPOINT }}
 
