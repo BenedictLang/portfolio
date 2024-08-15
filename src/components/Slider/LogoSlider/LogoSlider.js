@@ -62,8 +62,8 @@ const LogoSlider = ({ children }) => {
 				className={styles.sliderWrapper}
 				style={{
 					'--logo-cards': childCount,
-					'--logo-margin': 'calc(6vh + 5vw)',
-					'--logo-width': 'calc(7vh + 5vw)',
+					'--logo-margin': 'calc(5vh + 5vw)',
+					'--logo-width': 'calc(9vh + 4vw)',
 				}}
 				ref={sliderRef}
 				onMouseDown={handleMouseDown}

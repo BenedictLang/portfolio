@@ -34,7 +34,7 @@
 			height: 1px;
 			max-height: 20px;
 			width: 2px;
-			background-color: $color-text-passive;
+			background-color: $color-primary;
 			opacity: 1;
 			animation-play-state: running;
 			animation-direction: alternate;
@@ -68,17 +68,29 @@
 		}
 	}
 
-	.noSound > .soundBar {
-		transition: all ease-out $duration-middle;
-		max-height: 1px;
-	}
-
 	&:hover {
 		span {
-			color: $color-primary;
+			color: $color-text;
 		}
 		.soundBars {
 			.soundBar {
+				background-color: $color-text;
+			}
+		}
+	}
+
+	& .noSound {
+		.soundBar {
+			transition: all ease-out $duration-middle;
+			max-height: 1px;
+			background-color: $color-text-passive;
+		}
+		&:hover {
+			span {
+				color: $color-primary;
+			}
+			.soundBar {
+				max-height: 4px;
 				background-color: $color-primary;
 			}
 		}

@@ -1,6 +1,7 @@
+/* ================ FONT FAMILY ================ */
 @font-face {
 	font-family: Geologica;
-	src: url('/fonts/Geologica-VariableFont_CRSV,SHRP,slnt,wght.ttf') format('ttf');
+	src: url('public/fonts/Geologica-VariableFont_CRSV,SHRP,slnt,wght.ttf') format('ttf');
 	font-weight: 500;
 	font-display: swap;
 }
@@ -15,5 +16,10 @@ $font-family-default:
 	Bitstream Vera Sans Mono,
 	Courier New,
 	monospace;
-$font-size: 1em;
-$font-size-passive: 0.9em;
+
+/* ================ FONT SIZE ================ */
+$font-size-h1: clamp(0.9em, 0.5em + 13vw, 6em);
+$font-size-h2: clamp(0.4em, 7vw, 1.5em);
+$font-size-p: clamp(0.7em, calc(0.5em + 3vw), 1em);
+
+$font-size-passive: clamp(0.6em, calc(0.1em + 3vw), 0.9em);

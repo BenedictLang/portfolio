@@ -45,6 +45,7 @@ const ParticleCloud = () => {
 	const pointsRef = useRef();
 	const materialRef = useRef();
 	const [geometrySize, setGeometrySize] = useState(4);
+	const [geometryResolutionFactor, setGeometryResolutionFactor] = useState(1);
 	const [geometryIndex, setGeometryIndex] = useState(0);
 	const mouse = useMouse();
 	const { isMobile } = useViewport();
@@ -64,7 +65,9 @@ const ParticleCloud = () => {
 
 	useEffect(() => {
 		const adjustedGeometrySize = isMobile ? 3 : 4;
+		const adjustedGeometryResolutionFactor = isMobile ? 0.5 : 1;
 		setGeometrySize(adjustedGeometrySize);
+		setGeometryResolutionFactor(adjustedGeometryResolutionFactor);
 
 		if (materialRef.current) {
 			materialRef.current.uniforms.u_interactionRadius.value = isMobile ? radiusRef.current * 0.75 : radiusRef.current;
@@ -158,7 +161,7 @@ const ParticleCloud = () => {
 	// State for object geometries
 	const geometries = [
 		// eslint-disable-next-line react/jsx-key
-		<icosahedronGeometry args={[geometrySize, 30]} />,
+		<icosahedronGeometry args={[geometrySize, Math.round(20 * geometryResolutionFactor)]} />,
 		// eslint-disable-next-line react/jsx-key
 		<torusKnotGeometry args={[geometrySize, 0.4, 128, 64, 1, 2]} />,
 		// eslint-disable-next-line react/jsx-key

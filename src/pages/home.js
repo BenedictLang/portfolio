@@ -27,9 +27,9 @@ export default function Home({ posts, pagination, customers }) {
 	useEffect(() => {
 		const newTarget = new Vector3();
 		if (isMobile) {
-			newTarget.y = 3;
+			newTarget.y = -7;
 		} else {
-			newTarget.x = -5;
+			newTarget.x = 5;
 		}
 		setCameraTarget(newTarget);
 	}, [isMobile, setCameraTarget]);
@@ -49,7 +49,7 @@ export default function Home({ posts, pagination, customers }) {
 					);
 				})}
 			</LogoSlider>
-			<Section className={styles.heroSection}></Section>
+			<Section className={styles.tileSection}></Section>
 			<Section>
 				<Container>
 					<h2 className="sr-only">Posts</h2>

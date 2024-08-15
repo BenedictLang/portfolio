@@ -1,11 +1,13 @@
 /* Dimensions */
 /* Breakpoints */
+/* ================ FONT FAMILY ================ */
 @font-face {
   font-family: Geologica;
-  src: url("/fonts/Geologica-VariableFont_CRSV,SHRP,slnt,wght.ttf") format("ttf");
+  src: url("public/fonts/Geologica-VariableFont_CRSV,SHRP,slnt,wght.ttf") format("ttf");
   font-weight: 500;
   font-display: swap;
 }
+/* ================ FONT SIZE ================ */
 .soundToggle {
   position: relative;
   display: flex;
@@ -18,7 +20,7 @@
   z-index: 1000;
 }
 .soundToggle span {
-  font-size: 0.9em;
+  font-size: clamp(0.6em, 0.1em + 3vw, 0.9em);
   color: #333e4a;
   transition: color 0.7s ease-in-out;
 }
@@ -38,7 +40,7 @@
   height: 1px;
   max-height: 20px;
   width: 2px;
-  background-color: #333e4a;
+  background-color: rgb(10, 230, 236);
   opacity: 1;
   animation-play-state: running;
   animation-direction: alternate;
@@ -66,14 +68,22 @@
   animation-duration: 1000ms;
   animation-delay: 600ms;
 }
-.soundToggle .noSound > .soundBar {
-  transition: all ease-out 0.7s;
-  max-height: 1px;
-}
 .soundToggle:hover span {
-  color: rgb(10, 230, 236);
+  color: #f3f8ff;
 }
 .soundToggle:hover .soundBars .soundBar {
+  background-color: #f3f8ff;
+}
+.soundToggle .noSound .soundBar {
+  transition: all ease-out 0.7s;
+  max-height: 1px;
+  background-color: #333e4a;
+}
+.soundToggle .noSound:hover span {
+  color: rgb(10, 230, 236);
+}
+.soundToggle .noSound:hover .soundBar {
+  max-height: 4px;
   background-color: rgb(10, 230, 236);
 }
 @keyframes growShrink1 {

@@ -1,12 +1,11 @@
 @import '../../../styles/settings/__settings';
 
-$animationSpeed: 50s;
-
 .container {
+	--animationSpeed: 30s;
 	position: relative;
 	width: 100%;
 	height: fit-content;
-	background: $color-bg-transparent;
+	background: $color-bg-transparent-light;
 
 	&:before {
 		content: '';
@@ -52,7 +51,7 @@ $animationSpeed: 50s;
 	height: 100%;
 	align-items: center;
 	cursor: grab;
-	animation: scroll $animationSpeed linear infinite;
+	animation: scroll var(--animationSpeed) linear infinite;
 
 	&:hover {
 		// reduce speed to half

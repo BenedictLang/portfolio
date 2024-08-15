@@ -5,11 +5,12 @@
 	width: 100%;
 	height: 100vh;
 	align-items: center;
+	padding-top: 20vh;
 
 	.textBox {
 		display: flex;
 		flex-direction: column;
-		align-items: end;
+		align-items: start;
 		gap: $space-small;
 
 		hr {
@@ -17,17 +18,12 @@
 		}
 		h1 {
 			margin: 0;
-			line-height: 1.15;
-			font-size: 6em;
-			font-weight: 600;
 		}
 		h2 {
-			font-size: 1.5em;
 			color: $color-text-transparent-light;
-			font-weight: 700;
 		}
 		p {
-			font-size: 1.4em;
+			font-size: clamp(0.7em, calc(0.5em + 3vw), 1.5em);
 		}
 		.btn {
 			align-self: center;
@@ -37,12 +33,13 @@
 
 @include from-tablet {
 	.hero {
+		padding-top: 20vh;
 		.textBox {
 			p {
 				max-width: 50%;
 			}
 			.btn {
-				align-self: end;
+				align-self: start;
 			}
 		}
 	}

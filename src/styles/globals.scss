@@ -57,11 +57,19 @@ body {
 }
 
 h1 {
+	font-size: $font-size-h1;
 	font-family: Geologica, sans-serif;
+	line-height: 1.15;
+	font-weight: 600;
+}
+h2 {
+	font-size: $font-size-h2;
+	font-weight: 700;
 }
 
 p {
-	line-height: 1.6;
+	font-size: $font-size-p;
+	line-height: clamp(0.5rem, calc(1.5rem + 1vw), 3rem);
 	margin: 1.2em 0;
 }
 

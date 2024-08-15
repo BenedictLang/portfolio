@@ -1,14 +1,13 @@
 @import '../../styles/settings/__settings';
 
 .customerLink {
-	margin: 0 20px;
+	margin: 0;
 	user-select: none;
 	-webkit-user-drag: none;
 	pointer-events: auto;
 }
 
 .customerLogo {
-	filter: grayscale(100%);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -20,6 +19,12 @@
 		-webkit-user-drag: none;
 		pointer-events: auto;
 	}
+}
+
+.tileSection {
+	background: $color-bg-transparent;
+	backdrop-filter: blur(10em);
+	height: 100vh;
 }
 
 .description {
