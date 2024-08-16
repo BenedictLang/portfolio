@@ -7,6 +7,7 @@ import Container from '../../ContainerElements/Container';
 
 import styles from './Footer.module.scss';
 import CustomLink from '../../Link';
+import { FaSitemap, FaRssSquare } from 'react-icons/fa';
 
 const Footer = ({ minimal = false }) => {
 	const { recentPosts = [], categories = [] } = useSite();
@@ -56,19 +57,6 @@ const Footer = ({ minimal = false }) => {
 										</ul>
 									</li>
 								)}
-								<li>
-									<p className={styles.footerMenuTitle}>
-										<strong>More</strong>
-									</p>
-									<ul className={styles.footerMenuItems}>
-										<li>
-											<a href="/feed.xml">RSS</a>
-										</li>
-										<li>
-											<a href="/sitemap.xml">Sitemap</a>
-										</li>
-									</ul>
-								</li>
 							</ul>
 						</Container>
 					</Section>
@@ -87,6 +75,20 @@ const Footer = ({ minimal = false }) => {
 						<CustomLink href={'https://lang-familie.de/impressum/'}>Imprint</CustomLink>
 						<CustomLink href={'https://lang-familie.de/datenschutzerklaerung/'}>Privacy Policy</CustomLink>
 					</div>
+				)}
+				{!minimal && (
+					<ul className={styles.footerAccessibles}>
+						<li>
+							<a href="/feed.xml" aria-details="RSS">
+								<FaRssSquare />
+							</a>
+						</li>
+						<li>
+							<a href="/sitemap.xml" aria-details="Sitemap">
+								<FaSitemap />
+							</a>
+						</li>
+					</ul>
 				)}
 			</Section>
 		</footer>

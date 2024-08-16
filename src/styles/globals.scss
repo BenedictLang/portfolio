@@ -70,10 +70,14 @@ h2 {
 	font-size: $font-size-h2;
 	font-weight: 700;
 }
+h3 {
+	font-size: $font-size-h3;
+	font-weight: 700;
+}
 
 p {
 	font-size: $font-size-p;
-	line-height: clamp(0.5rem, calc(1.5rem + 1vw), 3rem);
+	line-height: clamp(0.5rem, calc(1.2rem + 2vw + 1vh), 3rem);
 	margin: 1.2em 0;
 }
 

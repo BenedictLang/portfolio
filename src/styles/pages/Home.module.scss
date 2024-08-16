@@ -21,10 +21,88 @@
 	}
 }
 
-.tileSection {
+.aboutSection {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
 	background: $color-bg-transparent;
 	backdrop-filter: blur(10em);
-	height: 100vh;
+	min-height: 100vh;
+
+	.aboutContent {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: $space;
+		width: 100%;
+		align-items: center;
+
+		.aboutBlock {
+			display: flex;
+			gap: $space-small;
+
+			.image {
+				max-width: 100%;
+				height: auto;
+				object-fit: contain;
+			}
+		}
+
+		.numbers {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			flex-flow: row wrap;
+			justify-content: center;
+			gap: $space-medium;
+			align-items: center;
+			width: 100%;
+			max-width: 80%;
+
+			.infoBox {
+				display: flex;
+				flex-grow: 1;
+				flex-shrink: 1;
+				flex-basis: max-content;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				text-align: center;
+				padding: 1rem;
+				gap: $space-medium;
+				background-color: $color-container;
+				border: $containerBorder;
+				border-radius: $border-radius-medium;
+				transition: (all 0.3s ease-in-out);
+				width: 100%;
+				max-width: 80%;
+				&:hover {
+					transform: scale(1.1);
+					box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+				}
+				line-height: 1.5rem;
+
+				.years {
+					font-weight: bold;
+					font-size: $font-size-h3;
+				}
+				.years + span {
+				}
+			}
+		}
+	}
+}
+
+.portfolioContent {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	.showWork {
+		margin: auto;
+		align-self: center;
+	}
 }
 
 .description {
@@ -33,20 +111,5 @@
 	font-size: 1.5rem;
 }
 
-.posts {
-	list-style: none;
-	padding-left: 0;
-	margin: -1rem 0;
-
-	& > li {
-		margin: 4em 0;
-
-		&:first-child {
-			margin-top: 0;
-		}
-
-		&:last-child {
-			margin-bottom: 0;
-		}
-	}
+@include from-tablet {
 }

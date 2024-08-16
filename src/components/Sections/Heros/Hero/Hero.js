@@ -9,6 +9,7 @@ import CustomLink from '../../../Link';
 import { FiGithub, FiLinkedin, FiDribbble } from 'react-icons/fi';
 import { RiStackOverflowFill } from 'react-icons/ri';
 import { CgScrollV } from 'react-icons/cg';
+import Image from 'next/image';
 
 const Hero = ({ children, className, scrollTo }) => {
 	const contentClassName = new ClassName();
@@ -59,6 +60,13 @@ const Hero = ({ children, className, scrollTo }) => {
 						<CgScrollV />
 					</ButtonGlow>
 				</div>
+				<Image
+					src={'/images/Profilbild.png'}
+					alt="Profile picture Benedict Lang"
+					className={styles.image}
+					width={500}
+					height={0}
+				/>
 				{children}
 			</Content>
 		</div>

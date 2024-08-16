@@ -9,9 +9,9 @@ $border-width-medium: 0.15em;
 $space-mini: 0.5em;
 $space-small: 1em;
 $space-medium: 2em;
-$space: 4rem;
+$space: calc(2rem + 4vw);
 
-$container-width: 80rem;
+$container-width: calc(60rem + 4vw);
 $content-width: 85rem;
 
 /* Breakpoints */

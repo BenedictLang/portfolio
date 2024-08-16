@@ -3,13 +3,15 @@
 .hero {
 	position: relative;
 	width: 100%;
-	height: 100vh;
+	min-height: 100vh;
 
 	.content {
 		display: flex;
 		flex-direction: column-reverse;
 		gap: $space;
 		align-items: center;
+		min-height: 95vh;
+		max-width: unset;
 
 		.socialLinks {
 			display: none;
@@ -32,11 +34,32 @@
 				color: $color-text-transparent-light;
 			}
 			p {
-				font-size: clamp(0.7em, calc(0.5em + 3vw), 1.5em);
+				font-size: clamp(0.7em, calc(0.1em + 4vw), 1.5em);
+				max-width: 100%;
 			}
 			.btn {
 				margin-top: $space-small;
-				align-self: center;
+				align-self: start;
+			}
+		}
+		.image {
+			//display: none;
+			position: absolute;
+			bottom: 0;
+			width: calc(240px + 8vw);
+			max-width: 500px;
+			right: 0;
+		}
+	}
+}
+
+@include up-to-tablet {
+	.hero {
+		.content {
+			.image {
+				display: block;
+				width: 45%;
+				right: 2vw;
 			}
 		}
 	}
@@ -46,6 +69,12 @@
 	.hero {
 		.content {
 			flex-direction: row;
+			min-height: 100vh;
+			.image {
+				display: block;
+				width: calc(370px + 4vw);
+				right: calc($space-mini + 4vw);
+			}
 
 			.socialLinks {
 				display: flex;
@@ -64,12 +93,9 @@
 			}
 			.textBox {
 				padding-top: 20vh;
-
+				padding-bottom: unset;
 				p {
-					max-width: 50%;
-				}
-				.btn {
-					align-self: start;
+					max-width: 60%;
 				}
 			}
 		}

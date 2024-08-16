@@ -1,10 +1,10 @@
 @import '../../../styles/settings/__settings';
 
 .button {
-	outline: none;
-	background: transparent;
-	cursor: pointer;
 	position: relative;
+	background: transparent;
+	font-size: $font-size-p;
+	outline: none;
 	z-index: 0;
 
 	&:before {
