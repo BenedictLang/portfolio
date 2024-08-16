@@ -3,6 +3,9 @@
 $fx-dropShadow:
 	0em 0.4em 1.4em 0.7em rgba(0, 0, 0, 0.4),
 	0em 0.4em 1.4em 0.7em rgba(0, 0, 0, 0.4);
+$fx-dropShadow-light:
+	0em 0.4em 1em 0.7em rgba(0, 0, 0, 0.1),
+	0em 0.2em 1em 0.4em rgba(0, 0, 0, 0.2);
 $fx-dropShadow-glow:
 	0 2em 4em 0 $color-primary,
 	0 3em 0.5em 0 $color-primary;
@@ -12,8 +15,10 @@ $blur: blur(45px);
 $blur-light: blur(2px);
 
 $duration-short: 0.3s;
-$duration-middle: 0.7s;
+$duration-middle: 0.5s;
 $duration-long: 1.5s;
+
+$containerBorder: 1px $color-container solid;
 
 @mixin glitch {
 	.glitch {

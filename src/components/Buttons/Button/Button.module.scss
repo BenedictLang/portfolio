@@ -10,11 +10,15 @@
 	border: $border-width-medium solid $color-text;
 	border-radius: $border-radius-medium;
 	box-shadow: $fx-dropShadow;
-	transition-duration: $duration-middle;
+	transition-duration: $duration-short;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
 	gap: $space-mini;
+
+	svg {
+		margin-bottom: -0.2em;
+	}
 
 	&:hover,
 	&:focus {

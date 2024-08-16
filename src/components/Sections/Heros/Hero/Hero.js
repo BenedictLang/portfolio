@@ -10,10 +10,15 @@ import { FiGithub, FiLinkedin, FiDribbble } from 'react-icons/fi';
 import { RiStackOverflowFill } from 'react-icons/ri';
 import { CgScrollV } from 'react-icons/cg';
 
-const Hero = ({ children, className }) => {
+const Hero = ({ children, className, scrollTo }) => {
 	const contentClassName = new ClassName();
-
 	contentClassName.addIf(className, className);
+
+	const handleScroll = () => {
+		if (scrollTo) {
+			scrollTo.scrollIntoView();
+		}
+	};
 
 	return (
 		<div className={`${contentClassName.toString()} ${styles.hero}`}>
@@ -49,7 +54,7 @@ const Hero = ({ children, className }) => {
 						As a full-stack software engineer and designer, I love to create digital experiences and optimizing IT
 						processes and security. I&apos;m ready for your <GradientText string={'challenge'} />.
 					</p>
-					<ButtonGlow href="/#clients" className={styles.btn} overglow={false}>
+					<ButtonGlow href="" onClick={handleScroll} scroll={false} className={styles.btn} overglow={false}>
 						Learn more
 						<CgScrollV />
 					</ButtonGlow>

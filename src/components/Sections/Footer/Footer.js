@@ -9,8 +9,7 @@ import styles from './Footer.module.scss';
 import CustomLink from '../../Link';
 
 const Footer = ({ minimal = false }) => {
-	const { metadata = {}, recentPosts = [], categories = [] } = useSite();
-	const { title } = metadata;
+	const { recentPosts = [], categories = [] } = useSite();
 
 	const hasRecentPosts = Array.isArray(recentPosts) && recentPosts.length > 0;
 	const hasRecentCategories = Array.isArray(categories) && categories.length > 0;
@@ -20,7 +19,6 @@ const Footer = ({ minimal = false }) => {
 		<footer className={styles.footer}>
 			{hasMenu && !minimal && (
 				<div>
-					<div>{title}</div>
 					<Section className={styles.footerMenu}>
 						<Container>
 							<ul className={styles.footerMenuColumns}>

@@ -118,6 +118,7 @@
 @include only-mobile {
 	.footerLegal {
 		flex-wrap: wrap;
+		padding-bottom: 15vh;
 		gap: $space-small;
 
 		.copyright {
