@@ -29,6 +29,15 @@
 		bottom: 0;
 		background: $color-bg;
 		box-shadow: $fx-dropShadow;
+		transition: all $duration-middle ease-in-out;
+
+		&.hidden {
+			transform: translateY(100%);
+		}
+
+		&.visible {
+			transform: translateY(0);
+		}
 	}
 }
 

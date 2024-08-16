@@ -16,9 +16,9 @@ const Header = ({ children, minimal = false }) => {
 
 	useEffect(() => {
 		const handleScroll = () => {
-			if (!isMobile) {
-				const currentScrollTop = window.scrollY || document.documentElement.scrollTop;
+			const currentScrollTop = window.scrollY || document.documentElement.scrollTop;
 
+			if (!isMobile) {
 				// Check if scrolled
 				if (currentScrollTop > 5) {
 					setIsScrolled(true);
@@ -26,7 +26,7 @@ const Header = ({ children, minimal = false }) => {
 					setIsScrolled(false);
 				}
 
-				// Check if scrolled more than 3rem
+				// Check if scrolled more than threshold
 				if (currentScrollTop > window.innerHeight * 0.5) {
 					setIsScrolledEnough(true);
 				} else {
@@ -39,11 +39,20 @@ const Header = ({ children, minimal = false }) => {
 				} else {
 					setIsVisible(true);
 				}
-
-				setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
 			} else {
-				//const currentScrollBottom = window.scrollY || document.documentElement.scrollTop;
+				const docHeight = document.documentElement.scrollHeight;
+				const windowHeight = window.innerHeight;
+				const scrollBottom = docHeight - (currentScrollTop + windowHeight);
+
+				// Check if near the bottom of the page
+				if (scrollBottom < 100) {
+					setIsVisible(false);
+				} else {
+					setIsVisible(true);
+				}
 			}
+
+			setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
 		};
 
 		window.addEventListener('scroll', handleScroll);
