@@ -38,42 +38,42 @@ jobs:
           WORDPRESS_GRAPHQL_ENDPOINT: ${{ secrets.WORDPRESS_GRAPHQL_ENDPOINT }}
 
     
-      - name: 💾 Backup files on FTP
-        run: |
-          # Install lftp if not available
-          sudo apt-get update
-          sudo apt-get install -y lftp
+      #- name: 💾 Backup files on FTP
+      #  run: |
+      #    # Install lftp if not available
+      #   sudo apt-get update
+      #    sudo apt-get install -y lftp
       
           # Define FTP server details
-          FTP_SERVER=${{ secrets.FTP_SERVER }}
-          FTP_USER=${{ secrets.FTP_USER }}
-          FTP_PASSWORD=${{ secrets.FTP_PASSWORD }}
-          FTP_DIR=${{ secrets.FTP_DIR }}
-          FTP_BAK_DIR=${{ secrets.FTP_BAK_DIR }}
+      #    FTP_SERVER=${{ secrets.FTP_SERVER }}
+      #    FTP_USER=${{ secrets.FTP_USER }}
+      #    FTP_PASSWORD=${{ secrets.FTP_PASSWORD }}
+      #    FTP_DIR=${{ secrets.FTP_DIR }}
+      #    FTP_BAK_DIR=${{ secrets.FTP_BAK_DIR }}
       
           # Clear backup directory
-          lftp -u "$FTP_USER","$FTP_PASSWORD" ftps://$FTP_SERVER << EOF
-          set ftp:ssl-allow yes
-          cd $FTP_BAK_DIR
-          rm -rf *
-          quit
-          EOF
+      #    lftp -u "$FTP_USER","$FTP_PASSWORD" ftps://$FTP_SERVER << EOF
+      #    set ftp:ssl-allow yes
+      #    cd $FTP_BAK_DIR
+      #    rm -rf *
+      #    quit
+      #    EOF
       
           # Copy files from FTP_DIR to FTP_BAK_DIR
-          lftp -u "$FTP_USER","$FTP_PASSWORD" ftps://$FTP_SERVER << EOF
-          set ftp:ssl-allow yes
-          mirror --reverse --verbose --no-perms --no-symlinks --parallel=2 $FTP_DIR $FTP_BAK_DIR
-          quit
-          EOF
-        timeout-minutes: 30
+      #    lftp -u "$FTP_USER","$FTP_PASSWORD" ftps://$FTP_SERVER << EOF
+      #    set ftp:ssl-allow yes
+      #    mirror --reverse --verbose --no-perms --no-symlinks --parallel=2 $FTP_DIR $FTP_BAK_DIR
+      #    quit
+      #    EOF
+      #  timeout-minutes: 30
           
-      #- name: 📂 Sync files
-      #  uses: SamKirkland/FTP-Deploy-Action@4.3.5
-      #  with:
-          #server: ${{ secrets.FTP_SERVER }}
-          #server-dir: ${{ secrets.FTP_DIR }}
-          #dangerous-clean-slate: true
-          #username: ${{ secrets.FTP_USER }}
-          #password: ${{ secrets.FTP_PASSWORD }}
-          #local-dir: ./build/
-          #protocol: ftps
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          server-dir: ${{ secrets.FTP_DIR }}
+          dangerous-clean-slate: true
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./build/
+          protocol: ftps
