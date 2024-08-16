@@ -2,6 +2,8 @@
 
 .container {
 	--animationSpeed: 30s;
+	--hoverSpeedFactor: 0.5;
+
 	position: relative;
 	width: 100%;
 	height: fit-content;
@@ -52,9 +54,17 @@
 	align-items: center;
 	cursor: grab;
 	animation: scroll var(--animationSpeed) linear infinite;
+	// Animation does not render the duplicated children, might be some ID issue in the DOM or a bug.
+	// Otherwise this would play a mix of normal and slowed down animation on hover without any jumps.
+	//--scrollAnimation: scroll linear infinite;
+	//animation:
+	//	var(--scrollAnimation) var(--animationSpeed),
+	//	var(--scrollAnimation) calc(var(--animationSpeed)/var(--hoverSpeedFactor))
+	//	reverse paused;
+	//animation-composition: add;
 
 	&:hover {
-		// reduce speed to half
+		//	animation-play-state: running;
 	}
 
 	& .clickCatcher > * {

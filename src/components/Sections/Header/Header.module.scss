@@ -8,10 +8,16 @@
 	align-items: center;
 	width: 100%;
 	height: fit-content;
-	padding: $space-small $space-medium $space-small $space-medium;
+	padding: $space-small $space-medium;
 
 	.headerWrapper {
 		display: flex;
+	}
+
+	&:not(.minimal) {
+		bottom: 0;
+		background: $color-bg;
+		box-shadow: $fx-dropShadow;
 	}
 }
 
@@ -25,4 +31,15 @@
 
 .wrapper {
 	width: 100%;
+}
+
+@include from-tablet {
+	.header {
+		top: 0;
+		bottom: auto;
+		&:not(.minimal) {
+			background: unset;
+			box-shadow: unset;
+		}
+	}
 }

@@ -7,7 +7,7 @@ import ButtonAudio from '../../Audio/ButtonAudio';
 
 const Header = ({ children, minimal = false }) => {
 	return (
-		<header className={styles.header}>
+		<header className={`${styles.header} ${minimal ? styles.minimal : ''}`}>
 			<div className={styles.navLogo}>
 				<Logo />
 			</div>

@@ -12,12 +12,16 @@
 	box-shadow: $fx-dropShadow;
 	transition-duration: $duration-middle;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: $space-mini;
 
 	&:hover,
 	&:focus {
 		color: $color-bg;
 		background-color: $color-text;
 		transition-duration: $duration-short;
+		gap: $space-small;
 	}
 
 	&:active {

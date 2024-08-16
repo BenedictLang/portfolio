@@ -79,6 +79,7 @@ ul {
 
 a {
 	color: $color-primary;
+	transition: all $duration-short ease-in-out;
 }
 
 img {
