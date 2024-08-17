@@ -14,28 +14,60 @@ const LogoSlider = ({ children }) => {
 		}
 	}, [isDragging]);
 
-	const handleMouseDown = (e) => {
+	/**
+	 * Handles the start of a drag action (both mouse and touch).
+	 * Pauses the animation and stores the initial positions.
+	 */
+	const handleDragStart = (pageX) => {
 		setIsDragging(true);
 		sliderRef.current.style.animationPlayState = 'paused';
-		setStartX(e.pageX - sliderRef.current.offsetLeft);
+		setStartX(pageX - sliderRef.current.offsetLeft);
 		setScrollLeft(sliderRef.current.scrollLeft);
 		setDraggingDistance(0);
 	};
 
-	const handleMouseLeave = () => {
-		if (isDragging) {
-			setIsDragging(false);
-		}
+	/**
+	 * Handles the mouse down event to start dragging.
+	 */
+	const handleMouseDown = (e) => {
+		handleDragStart(e.pageX);
 	};
 
-	const handleMouseUp = () => {
+	/**
+	 * Handles the touch start event to start dragging.
+	 */
+	const handleTouchStart = (e) => {
+		handleDragStart(e.touches[0].pageX);
+	};
+
+	/**
+	 * Ends the drag action (both mouse and touch).
+	 */
+	const handleDragEnd = () => {
 		setIsDragging(false);
 	};
 
+	/**
+	 * Handles the mouse move event to drag the slider.
+	 */
 	const handleMouseMove = (e) => {
+		handleDragMove(e.pageX);
+	};
+
+	/**
+	 * Handles the touch move event to drag the slider.
+	 */
+	const handleTouchMove = (e) => {
+		handleDragMove(e.touches[0].pageX);
+	};
+
+	/**
+	 * Handles the movement during dragging (both mouse and touch).
+	 * Updates the scroll position of the slider.
+	 */
+	const handleDragMove = (pageX) => {
 		if (!isDragging) return;
-		e.preventDefault();
-		const x = e.pageX - sliderRef.current.offsetLeft;
+		const x = pageX - sliderRef.current.offsetLeft;
 		const walk = x - startX;
 		setDraggingDistance(Math.abs(walk));
 		sliderRef.current.scrollLeft = scrollLeft - walk;
@@ -48,6 +80,9 @@ const LogoSlider = ({ children }) => {
 		}
 	};
 
+	/**
+	 * Prevents the default click behavior if the slider was dragged.
+	 */
 	const handleClick = (e) => {
 		if (draggingDistance > 5) {
 			e.preventDefault();
@@ -67,9 +102,12 @@ const LogoSlider = ({ children }) => {
 				}}
 				ref={sliderRef}
 				onMouseDown={handleMouseDown}
-				onMouseLeave={handleMouseLeave}
-				onMouseUp={handleMouseUp}
+				onMouseLeave={handleDragEnd}
+				onMouseUp={handleDragEnd}
 				onMouseMove={handleMouseMove}
+				onTouchStart={handleTouchStart}
+				onTouchEnd={handleDragEnd}
+				onTouchMove={handleTouchMove}
 			>
 				<div className={styles.slider}>
 					{React.Children.map(children, (child) => (
