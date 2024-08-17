@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 export const QUERY_ALL_CUSTOMERS = gql`
 	query AllCustomers {
-		customers(where: { orderby: { field: DATE, order: ASC } }, first: 1000) {
+		customers(where: { orderby: { field: DATE, order: ASC } }, first: 100) {
 			edges {
 				node {
 					id

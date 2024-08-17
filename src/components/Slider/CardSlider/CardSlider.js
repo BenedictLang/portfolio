@@ -116,9 +116,9 @@ const CardSlider = ({ cards }) => {
 						onClick={() => handleCardClick(index)}
 					>
 						<div className={styles['carousel-box']}>
-							<div className={styles.title}>{card.title}</div>
+							<div className={styles.title}>{card.name}</div>
 							<div className={styles.num}>{String(index + 1).padStart(2, '0')}</div>
-							<Image src={card.image} alt={card.title} width={200} height={400} />
+							<Image src={card.thumbnail.url} alt={card.thumbnail.alt} width={200} height={400} />
 						</div>
 					</div>
 				);
@@ -131,8 +131,8 @@ CardSlider.propTypes = {
 	cards: PropTypes.arrayOf(
 		PropTypes.shape({
 			id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-			title: PropTypes.string.isRequired,
-			image: PropTypes.string.isRequired,
+			name: PropTypes.string.isRequired,
+			thumbnail: PropTypes.object.isRequired,
 		}),
 	).isRequired,
 };

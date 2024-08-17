@@ -18,52 +18,15 @@ import Button from '../components/Buttons/Button';
 import { IoArchiveOutline, IoMailUnreadOutline } from 'react-icons/io5';
 import CardSlider from '../components/Slider/CardSlider';
 import GradientText from '../components/Text/GradientText';
+import { getBestProjects } from '../lib/projects';
 
-export default function Home({ customers }) {
+export default function Home({ customers, bestProjects }) {
 	const { metadata = {} } = useSite();
 	const { title } = metadata;
 	const { isMobile } = useViewport();
 	const { setCameraTarget } = useContext(ThreeSceneContext);
 	const clientsRef = useRef(null);
 	const currentYear = new Date().getFullYear();
-	const projectCards = [
-		{
-			id: 1,
-			title: 'Paris',
-			image:
-				'https://media.istockphoto.com/id/184619832/it/foto/distretto-finanziario-al-crepuscolo-londra.jpg?s=612x612&w=0&k=20&c=RAThrJOBY6vhlT6-kQpu9-9jLEzWToYfdw46S8B0Mu0=',
-		},
-		{
-			id: 2,
-			title: 'Warsaw',
-			image:
-				'https://media.istockphoto.com/id/184619832/it/foto/distretto-finanziario-al-crepuscolo-londra.jpg?s=612x612&w=0&k=20&c=RAThrJOBY6vhlT6-kQpu9-9jLEzWToYfdw46S8B0Mu0=',
-		},
-		{
-			id: 3,
-			title: 'Madrid',
-			image:
-				'https://media.istockphoto.com/id/184619832/it/foto/distretto-finanziario-al-crepuscolo-londra.jpg?s=612x612&w=0&k=20&c=RAThrJOBY6vhlT6-kQpu9-9jLEzWToYfdw46S8B0Mu0=',
-		},
-		{
-			id: 4,
-			title: 'Sydney',
-			image:
-				'https://media.istockphoto.com/id/184619832/it/foto/distretto-finanziario-al-crepuscolo-londra.jpg?s=612x612&w=0&k=20&c=RAThrJOBY6vhlT6-kQpu9-9jLEzWToYfdw46S8B0Mu0=',
-		},
-		{
-			id: 5,
-			title: 'Istanbul',
-			image:
-				'https://media.istockphoto.com/id/184619832/it/foto/distretto-finanziario-al-crepuscolo-londra.jpg?s=612x612&w=0&k=20&c=RAThrJOBY6vhlT6-kQpu9-9jLEzWToYfdw46S8B0Mu0=',
-		},
-		{
-			id: 6,
-			title: 'Prague',
-			image:
-				'https://media.istockphoto.com/id/184619832/it/foto/distretto-finanziario-al-crepuscolo-londra.jpg?s=612x612&w=0&k=20&c=RAThrJOBY6vhlT6-kQpu9-9jLEzWToYfdw46S8B0Mu0=',
-		},
-	];
 
 	useEffect(() => {
 		const newTarget = new Vector3();
@@ -142,7 +105,7 @@ export default function Home({ customers }) {
 			</Section>
 			<Section className={styles.portfolioSection}>
 				<Content className={styles.portfolioContent}>
-					<CardSlider className={styles.cardSlider} cards={projectCards} />
+					<CardSlider cards={bestProjects} />
 					<div className={styles.portfolioTextBlock}>
 						<h3>My Projects</h3>
 						<p>
@@ -174,9 +137,11 @@ export default function Home({ customers }) {
 
 export async function getStaticProps() {
 	const { customers } = await getAllCustomers();
+	const { projects: bestProjects = [] } = await getBestProjects();
 	return {
 		props: {
 			customers,
+			bestProjects,
 		},
 	};
 }
