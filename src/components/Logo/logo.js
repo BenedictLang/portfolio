@@ -6,7 +6,7 @@ const Logo = () => {
 	return (
 		<CustomLink href="/home" className={styles.logo}>
 			<div className={styles.logoImage}>
-				<Image src="/images/logos/Logo-BL.svg" alt="Logo" width={53} height={41} />
+				<Image className={styles.img} src="/images/logos/Logo-BL.svg" alt="Logo" width={53} height={41} />
 			</div>
 		</CustomLink>
 	);

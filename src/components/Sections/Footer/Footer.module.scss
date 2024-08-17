@@ -29,6 +29,7 @@
 	display: flex;
 	justify-content: flex-start;
 	flex-wrap: wrap;
+	gap: $space;
 	margin: 0 -2em;
 
 	@media (min-width: 480px) {

@@ -9,5 +9,8 @@
 	.logoImage {
 		width: auto;
 		height: auto;
+		.img {
+			height: $space;
+		}
 	}
 }

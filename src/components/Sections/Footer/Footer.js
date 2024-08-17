@@ -57,6 +57,21 @@ const Footer = ({ minimal = false }) => {
 										</ul>
 									</li>
 								)}
+								{!minimal && (
+									<li>
+										<div className={styles.footerMenuTitle}>
+											<strong>Legal</strong>
+										</div>
+										<ul className={styles.footerMenuItems}>
+											<li>
+												<CustomLink href={'https://lang-familie.de/impressum/'}>Imprint</CustomLink>
+											</li>
+											<li>
+												<CustomLink href={'https://lang-familie.de/datenschutzerklaerung/'}>Privacy Policy</CustomLink>
+											</li>
+										</ul>
+									</li>
+								)}
 							</ul>
 						</Container>
 					</Section>

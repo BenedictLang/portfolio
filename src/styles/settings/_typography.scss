@@ -18,13 +18,13 @@ $font-family-default:
 	monospace;
 
 /* ================ FONT SIZE ================ */
-$font-size-h1: clamp(0.8em, 0.1em + 13vw, 6em);
+$font-size-h1: clamp(0.5em, 12vw, 6em);
 $font-size-h2: clamp(0.4em, 0.1em + 5vw, 1.5em);
 $font-size-h3: clamp(0.4em, 0.5em + 9vw, 2em);
 $font-size-h4: clamp(0.4em, 7vw, 1.3em);
 $font-size-h5: clamp(0.4em, 7vw, 1.2em);
 
 $font-size-p: clamp(0.7em, calc(0.5em + 3vw), 1.2em);
-$font-size-btn: clamp(0.7em, calc(0.5em + 3vw), 1.1em);
+$font-size-btn: clamp(0.7em, calc(0.6em + 3vw), 1.1em);
 
 $font-size-passive: clamp(0.6em, calc(0.1em + 3vw), 0.9em);

@@ -28,7 +28,7 @@
 	width: 100%;
 	background: $color-bg-transparent;
 	backdrop-filter: blur(10em);
-	min-height: 100dvh;
+	min-height: 50dvh;
 
 	.aboutContent {
 		position: relative;
@@ -46,6 +46,7 @@
 				max-width: 100%;
 				height: auto;
 				object-fit: contain;
+				pointer-events: none;
 			}
 		}
 
@@ -98,6 +99,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	min-height: 50dvh;
 
 	.showWork {
 		margin: auto;

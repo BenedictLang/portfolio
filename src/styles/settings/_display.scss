@@ -7,9 +7,9 @@ $border-width-small: 0.05em;
 $border-width-medium: 0.15em;
 
 $space-mini: 0.5em;
-$space-small: 1em;
-$space-medium: 2em;
-$space: calc(2rem + 4vw);
+$space-small: clamp(0.5em, 2vw, 1em);
+$space-medium: clamp(0.8em, 5vw, 2em);
+$space: clamp(0.8em, 1em + 3vw, 6em);
 
 $container-width: calc(60rem + 4vw);
 $content-width: 85rem;
