@@ -15,8 +15,9 @@ import CustomLink from '../components/Link';
 import { getAllCustomers } from '../lib/customers';
 import Content from '../components/ContainerElements/Content';
 import Button from '../components/Buttons/Button';
-import { IoArchiveOutline } from 'react-icons/io5';
+import { IoArchiveOutline, IoMailUnreadOutline } from 'react-icons/io5';
 import CardSlider from '../components/Slider/CardSlider';
+import GradientText from '../components/Text/GradientText';
 
 export default function Home({ customers }) {
 	const { metadata = {} } = useSite();
@@ -152,6 +153,19 @@ export default function Home({ customers }) {
 					<Button href={'https://www.apps.benedict.lang-familie.de'} className={styles.showWork}>
 						View All Work <IoArchiveOutline />
 					</Button>
+				</Content>
+			</Section>
+			<Section className={styles.contactSection}>
+				<Content className={styles.contactContent}>
+					<div className={styles.contact}>
+						<h3>
+							Ready to take your digital presence to the <GradientText string={'next'} /> level?
+						</h3>
+						<p>Reach out to me and let&apos;s discuss how I can help you.</p>
+						<Button href={'mailto:benedict@lang-familie.de'} className={styles.showWork}>
+							Contact Now <IoMailUnreadOutline />
+						</Button>
+					</div>
 				</Content>
 			</Section>
 		</Layout>

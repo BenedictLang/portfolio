@@ -8,7 +8,7 @@
 	min-width: 50vw;
 	background: $color-bg-transparent-light;
 	border-radius: $border-radius-medium;
-	backdrop-filter: $blur;
+	@include blur;
 
 	.header {
 		position: relative;

@@ -16,7 +16,7 @@ const Footer = ({ minimal = false }) => {
 	const hasMenu = hasRecentPosts || hasRecentCategories;
 
 	return (
-		<footer className={styles.footer}>
+		<footer className={`${minimal ? styles.minimal : ''} ${styles.footer}`}>
 			{hasMenu && !minimal && (
 				<div>
 					<Section className={styles.footerMenu}>

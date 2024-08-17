@@ -25,8 +25,7 @@ $color-blue-1000: #060713;
 
 $color-green-300: rgb(10, 230, 236);
 $color-green-300-trans: rgba(10, 230, 236, 0.68);
-$color-green-300-trans-strong: rgba(0, 255, 224, 0.03);
-//$color-green-300-trans-strong: #3eb0d30f;
+$color-green-300-trans-strong: rgba(0, 255, 224, 0.06);
 
 $color-purple-300: #a663ca;
 $color-orange-300: #c67941;
@@ -34,6 +33,7 @@ $color-orange-300-trans: rgba(174, 95, 39, 0.69);
 
 $color-white-trans-light: rgba(243, 248, 255, 0.3);
 $color-white-trans: rgba(243, 248, 255, 0.1);
+$color-gray-trans-light: rgba(94, 94, 113, 0.3);
 $color-gray-trans: rgba(94, 94, 113, 0.15);
 
 $color-black-trans-full: rgba(3, 6, 11, 0);
@@ -53,6 +53,8 @@ $color-bg-transparent-light: $color-black-trans-light;
 $color-bg-transparent: $color-black-trans-full;
 
 $color-container: $color-gray-trans;
+$color-container-light: $color-gray-trans-light;
+$color-container-black-trans: rgba(0, 0, 0, 0.5);
 
 $color-text: $color-blue-50;
 $color-text-transparent-light: $color-white-trans-light;

@@ -1,5 +1,5 @@
-import styles from './ButtonGlow.module.scss';
 import stylesBtn from '../Button/Button.module.scss';
+import styles from './ButtonGlow.module.scss';
 import CustomLink from '../../Link';
 import { useEffect } from 'react';
 

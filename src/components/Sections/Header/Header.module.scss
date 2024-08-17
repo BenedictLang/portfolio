@@ -65,8 +65,7 @@
 			&.scrolled {
 				.headerWrapper {
 					background: $color-bg-transparent;
-					backdrop-filter: blur(0.7em);
-					-webkit-backdrop-filter: blur(0.7em);
+					@include blur-light;
 					border-bottom: $containerBorder;
 
 					&:before {
@@ -91,8 +90,7 @@
 					border: $containerBorder;
 					border-radius: $border-radius-big;
 					box-shadow: $fx-dropShadow-medium;
-					backdrop-filter: blur(0.7em);
-					-webkit-backdrop-filter: blur(0.7em);
+					@include blur;
 					transition: opacity $duration-short ease-in-out;
 
 					&:before {

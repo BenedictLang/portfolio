@@ -10,11 +10,11 @@
 	font-size: $font-size-btn;
 	font-family: inherit;
 	font-weight: 600;
-	background-color: $color-bg;
+	background-color: $color-container-black-trans;
 	padding: 0.7em 1.4em;
-	border: $border-width-medium solid $color-text-transparent-light;
+	border: $border-width-medium solid $color-container-light;
 	border-radius: $border-radius-medium;
-	box-shadow: $fx-dropShadow;
+	box-shadow: $fx-dropShadow-medium;
 	transition-duration: $duration-short;
 	cursor: pointer;
 

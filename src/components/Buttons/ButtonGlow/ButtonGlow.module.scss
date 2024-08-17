@@ -3,6 +3,7 @@
 .button {
 	position: relative;
 	background: transparent;
+	border: $border-width-medium solid $color-text;
 	font-size: $font-size-p;
 	outline: none;
 	z-index: 0;

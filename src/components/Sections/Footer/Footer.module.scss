@@ -4,8 +4,11 @@
 	position: relative;
 	width: 100%;
 	align-self: end;
-	backdrop-filter: blur(0.3em);
-	-webkit-backdrop-filter: blur(0.3em);
+	@include blur-light;
+
+	&:not(.minimal) {
+		border-top: $containerBorder;
+	}
 
 	&:before {
 		content: '';
