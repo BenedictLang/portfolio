@@ -14,60 +14,24 @@ const LogoSlider = ({ children }) => {
 		}
 	}, [isDragging]);
 
-	/**
-	 * Handles the start of a drag action (both mouse and touch).
-	 * Pauses the animation and stores the initial positions.
-	 */
-	const handleDragStart = (pageX) => {
+	// Unified function to handle the start of dragging (mouse or touch)
+	const handleDragStart = (position) => {
 		setIsDragging(true);
 		sliderRef.current.style.animationPlayState = 'paused';
-		setStartX(pageX - sliderRef.current.offsetLeft);
+		setStartX(position - sliderRef.current.offsetLeft);
 		setScrollLeft(sliderRef.current.scrollLeft);
 		setDraggingDistance(0);
 	};
 
-	/**
-	 * Handles the mouse down event to start dragging.
-	 */
-	const handleMouseDown = (e) => {
-		handleDragStart(e.pageX);
-	};
-
-	/**
-	 * Handles the touch start event to start dragging.
-	 */
-	const handleTouchStart = (e) => {
-		handleDragStart(e.touches[0].pageX);
-	};
-
-	/**
-	 * Ends the drag action (both mouse and touch).
-	 */
+	// Unified function to handle the end of dragging (mouse or touch)
 	const handleDragEnd = () => {
 		setIsDragging(false);
 	};
 
-	/**
-	 * Handles the mouse move event to drag the slider.
-	 */
-	const handleMouseMove = (e) => {
-		handleDragMove(e.pageX);
-	};
-
-	/**
-	 * Handles the touch move event to drag the slider.
-	 */
-	const handleTouchMove = (e) => {
-		handleDragMove(e.touches[0].pageX);
-	};
-
-	/**
-	 * Handles the movement during dragging (both mouse and touch).
-	 * Updates the scroll position of the slider.
-	 */
-	const handleDragMove = (pageX) => {
+	// Unified function to handle the dragging movement (mouse or touch)
+	const handleDragMove = (position) => {
 		if (!isDragging) return;
-		const x = pageX - sliderRef.current.offsetLeft;
+		const x = position - sliderRef.current.offsetLeft;
 		const walk = x - startX;
 		setDraggingDistance(Math.abs(walk));
 		sliderRef.current.scrollLeft = scrollLeft - walk;
@@ -80,9 +44,7 @@ const LogoSlider = ({ children }) => {
 		}
 	};
 
-	/**
-	 * Prevents the default click behavior if the slider was dragged.
-	 */
+	// Prevent click events if there was dragging
 	const handleClick = (e) => {
 		if (draggingDistance > 5) {
 			e.preventDefault();
@@ -101,13 +63,13 @@ const LogoSlider = ({ children }) => {
 					'--logo-width': 'calc(9vh + 4vw)',
 				}}
 				ref={sliderRef}
-				onMouseDown={handleMouseDown}
+				onMouseDown={(e) => handleDragStart(e.pageX)}
 				onMouseLeave={handleDragEnd}
 				onMouseUp={handleDragEnd}
-				onMouseMove={handleMouseMove}
-				onTouchStart={handleTouchStart}
+				onMouseMove={(e) => handleDragMove(e.pageX)}
+				onTouchStart={(e) => handleDragStart(e.touches[0].pageX)}
 				onTouchEnd={handleDragEnd}
-				onTouchMove={handleTouchMove}
+				onTouchMove={(e) => handleDragMove(e.touches[0].pageX)}
 			>
 				<div className={styles.slider}>
 					{React.Children.map(children, (child) => (
