@@ -1,6 +1,5 @@
 import useSite from '../../../hooks/use-site';
 import { postPathBySlug } from '../../../lib/posts';
-import { categoryPathBySlug } from '../../../lib/categories';
 
 import Section from '../Section';
 import Container from '../../ContainerElements/Container';
@@ -40,7 +39,7 @@ const Footer = ({ minimal = false }) => {
 										</ul>
 									</li>
 								)}
-								{hasRecentCategories && (
+								{/*{hasRecentCategories && (
 									<li>
 										<CustomLink href="/categories/" className={styles.footerMenuTitle}>
 											<strong>Categories</strong>
@@ -56,7 +55,7 @@ const Footer = ({ minimal = false }) => {
 											})}
 										</ul>
 									</li>
-								)}
+								)}*/}
 								{!minimal && (
 									<li>
 										<div className={styles.footerMenuTitle}>

@@ -90,7 +90,7 @@
 				.headerWrapper {
 					border: $containerBorder;
 					border-radius: $border-radius-big;
-					box-shadow: $fx-dropShadow-light;
+					box-shadow: $fx-dropShadow-medium;
 					backdrop-filter: blur(0.7em);
 					-webkit-backdrop-filter: blur(0.7em);
 					transition: opacity $duration-short ease-in-out;

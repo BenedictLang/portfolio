@@ -60,7 +60,7 @@ const LogoSlider = ({ children }) => {
 				style={{
 					'--logo-cards': childCount,
 					'--logo-margin': 'calc(5vh + 5vw)',
-					'--logo-width': 'calc(9vh + 4vw)',
+					'--logo-width': 'calc(11vh + 3vw)',
 				}}
 				ref={sliderRef}
 				onMouseDown={(e) => handleDragStart(e.pageX)}

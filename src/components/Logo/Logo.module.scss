@@ -10,7 +10,7 @@
 		width: auto;
 		height: auto;
 		.img {
-			height: $space;
+			height: clamp(0.9em, 1.5em + 3vw, 3em);
 		}
 	}
 }
