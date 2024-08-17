@@ -3,7 +3,7 @@
 .hero {
 	position: relative;
 	width: 100%;
-	min-height: 100vh;
+	min-height: 100dvh;
 
 	.content {
 		display: flex;
@@ -69,7 +69,7 @@
 	.hero {
 		.content {
 			flex-direction: row;
-			min-height: 100vh;
+			min-height: 100dvh;
 			.image {
 				display: block;
 				width: calc(370px + 4vw);

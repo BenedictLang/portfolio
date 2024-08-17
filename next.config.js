@@ -37,6 +37,7 @@ const nextConfig = {
 		// The image optimization needs to be disabled in a static export
 		unoptimized: true,
 	},
+	distDir: 'build',
 	output: 'export',
 };
 
