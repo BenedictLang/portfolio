@@ -16,6 +16,7 @@ import { getAllCustomers } from '../lib/customers';
 import Content from '../components/ContainerElements/Content';
 import Button from '../components/Buttons/Button';
 import { IoArchiveOutline } from 'react-icons/io5';
+import CardSlider from '../components/Slider/CardSlider';
 
 export default function Home({ customers }) {
 	const { metadata = {} } = useSite();
@@ -24,6 +25,44 @@ export default function Home({ customers }) {
 	const { setCameraTarget } = useContext(ThreeSceneContext);
 	const clientsRef = useRef(null);
 	const currentYear = new Date().getFullYear();
+	const projectCards = [
+		{
+			id: 1,
+			title: 'Paris',
+			image:
+				'https://media.istockphoto.com/id/184619832/it/foto/distretto-finanziario-al-crepuscolo-londra.jpg?s=612x612&w=0&k=20&c=RAThrJOBY6vhlT6-kQpu9-9jLEzWToYfdw46S8B0Mu0=',
+		},
+		{
+			id: 2,
+			title: 'Warsaw',
+			image:
+				'https://media.istockphoto.com/id/184619832/it/foto/distretto-finanziario-al-crepuscolo-londra.jpg?s=612x612&w=0&k=20&c=RAThrJOBY6vhlT6-kQpu9-9jLEzWToYfdw46S8B0Mu0=',
+		},
+		{
+			id: 3,
+			title: 'Madrid',
+			image:
+				'https://media.istockphoto.com/id/184619832/it/foto/distretto-finanziario-al-crepuscolo-londra.jpg?s=612x612&w=0&k=20&c=RAThrJOBY6vhlT6-kQpu9-9jLEzWToYfdw46S8B0Mu0=',
+		},
+		{
+			id: 4,
+			title: 'Sydney',
+			image:
+				'https://media.istockphoto.com/id/184619832/it/foto/distretto-finanziario-al-crepuscolo-londra.jpg?s=612x612&w=0&k=20&c=RAThrJOBY6vhlT6-kQpu9-9jLEzWToYfdw46S8B0Mu0=',
+		},
+		{
+			id: 5,
+			title: 'Istanbul',
+			image:
+				'https://media.istockphoto.com/id/184619832/it/foto/distretto-finanziario-al-crepuscolo-londra.jpg?s=612x612&w=0&k=20&c=RAThrJOBY6vhlT6-kQpu9-9jLEzWToYfdw46S8B0Mu0=',
+		},
+		{
+			id: 6,
+			title: 'Prague',
+			image:
+				'https://media.istockphoto.com/id/184619832/it/foto/distretto-finanziario-al-crepuscolo-londra.jpg?s=612x612&w=0&k=20&c=RAThrJOBY6vhlT6-kQpu9-9jLEzWToYfdw46S8B0Mu0=',
+		},
+	];
 
 	useEffect(() => {
 		const newTarget = new Vector3();
@@ -79,31 +118,39 @@ export default function Home({ customers }) {
 						<div className={styles.infoBox}>
 							<span className={styles.years}>{currentYear - 2014}</span>
 							<span>
-								Jahre <br />
-								Grafikdesign
+								Years <br />
+								Graphic Design
 							</span>
 						</div>
 						<div className={styles.infoBox}>
 							<span className={styles.years}>{currentYear - 2017}</span>
 							<span>
-								Jahre Web <br />
-								Entwicklung
+								Years Web <br />
+								Development
 							</span>
 						</div>
 						<div className={styles.infoBox}>
 							<span className={styles.years}>{currentYear - 2019}</span>
 							<span>
-								Jahre Software <br />
-								Entwicklung
+								Years Software <br />
+								Development
 							</span>
 						</div>
 					</div>
 				</Content>
 			</Section>
-			<Section>
+			<Section className={styles.portfolioSection}>
 				<Content className={styles.portfolioContent}>
+					<CardSlider className={styles.cardSlider} cards={projectCards} />
+					<div className={styles.portfolioTextBlock}>
+						<h3>My Projects</h3>
+						<p>
+							Take a look at some projects I have done or participated in. <br />
+							Head over to my archive if you like to see more.
+						</p>
+					</div>
 					<Button href={'https://www.apps.benedict.lang-familie.de'} className={styles.showWork}>
-						All Work <IoArchiveOutline />
+						View All Work <IoArchiveOutline />
 					</Button>
 				</Content>
 			</Section>
