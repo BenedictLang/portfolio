@@ -15,7 +15,7 @@ export function categoryPathBySlug(slug) {
  */
 
 export async function getAllCategories() {
-	const apolloClient = getApolloClient();
+	const apolloClient = await getApolloClient();
 
 	const data = await apolloClient.query({
 		query: QUERY_ALL_CATEGORIES,
@@ -33,7 +33,7 @@ export async function getAllCategories() {
  */
 
 export async function getCategoryBySlug(slug) {
-	const apolloClient = getApolloClient();
+	const apolloClient = await getApolloClient();
 	const apiHost = new URL(process.env.WORDPRESS_GRAPHQL_ENDPOINT).host;
 
 	let categoryData;

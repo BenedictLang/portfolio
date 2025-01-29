@@ -63,10 +63,10 @@ export default function Home({ customers, bestProjects }) {
 					<div>
 						<h3>About Me</h3>
 						<p>
-							I am a 24-year-old Bachelor student in Computer Science and Media at Media University Stuttgart (HdM),
-							Germany. As a full-stack developer, I enjoy optimizing processes using my IT knowledge and continually
-							learning new technologies to achieve that goal. Creating a secure and impressive user experience are
-							crucial parts to me.
+							I am a {currentYear - 2000}-year-old Bachelor student in Computer Science and Media at Media University
+							Stuttgart (HdM), Germany. As a full-stack developer, I enjoy optimizing processes using my IT knowledge
+							and continually learning new technologies to achieve that goal. Creating a secure and impressive user
+							experience are crucial parts to me.
 						</p>
 						<div className={styles.aboutBlock}>
 							<p>
@@ -74,7 +74,8 @@ export default function Home({ customers, bestProjects }) {
 								software projects. While explaining, things become even clearer for myself. As a student trainee I
 								gained insights in AI appliance at our institute IAAI for two semesters. Subsequently, when working on
 								software projects, I always advocated for appliance security and constantly developed my passion for
-								InfoSec while continuing my exciting journey at Porsche.
+								InfoSec while continuing my exciting journey at Porsche. In my thesis, I combined both areas to discover
+								the appliance of large language models in security incident management and digital forensics.
 							</p>
 						</div>
 					</div>

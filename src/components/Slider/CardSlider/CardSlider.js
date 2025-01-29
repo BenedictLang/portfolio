@@ -107,7 +107,7 @@ const CardSlider = ({ cards }) => {
 				return (
 					<div
 						key={card.id}
-						className={styles['carousel-item']}
+						className={`${styles['carousel-item']} ${index === activeIndex ? styles.active : ''}`}
 						style={{
 							'--active': index - activeIndex,
 							'--zIndex': cards.length - distance,

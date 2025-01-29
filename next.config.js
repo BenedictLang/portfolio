@@ -6,7 +6,6 @@ const sitemap = require('./plugins/sitemap');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	reactStrictMode: true,
-	swcMinify: true,
 
 	// By default, Next.js removes the trailing slash. One reason this would be good
 	// to include is by default, the `path` property of the router for the homepage

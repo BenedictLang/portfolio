@@ -1,9 +1,11 @@
 import React, { createContext, useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import sounds from './AudioManager';
+import { Howler } from 'howler';
 
 export const AudioContext = createContext(null);
 
 export const AudioProvider = ({ children }) => {
+	Howler.autoUnlock = false;
 	const soundIds = useRef({});
 	const soundPlayingStates = useRef(
 		Object.keys(sounds).reduce((acc, key) => {

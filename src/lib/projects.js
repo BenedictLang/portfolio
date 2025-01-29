@@ -61,7 +61,7 @@ export function projectSlugByName(name) {
  */
 
 export async function getAllProjects() {
-	const apolloClient = getApolloClient();
+	const apolloClient = await getApolloClient();
 
 	let projectsData;
 
@@ -85,7 +85,7 @@ export async function getAllProjects() {
  * getBestProjects
  */
 export async function getBestProjects() {
-	const apolloClient = getApolloClient();
+	const apolloClient = await getApolloClient();
 
 	let projectsData;
 
