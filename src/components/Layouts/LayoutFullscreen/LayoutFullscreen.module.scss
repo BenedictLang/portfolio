@@ -3,9 +3,10 @@
 .layoutContainer {
 	display: flex;
 	flex-direction: column;
-	min-height: 100dvh;
+	min-height: 100vh;
 	height: 100dvh;
 	width: 100%;
+	transition: height $duration-short ease-in-out;
 }
 
 .main {

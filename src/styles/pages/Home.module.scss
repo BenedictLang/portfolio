@@ -28,7 +28,7 @@
 	width: 100%;
 	background: $color-bg-transparent;
 	backdrop-filter: blur(10em);
-	min-height: 50dvh;
+	min-height: 50vh;
 
 	.aboutContent {
 		position: relative;
@@ -79,11 +79,12 @@
 				width: 100%;
 				max-width: 80%;
 				box-shadow: $fx-dropShadow-light;
+				line-height: 1.5rem;
+
 				&:hover {
 					transform: scale(1.1);
 					box-shadow: $fx-dropShadow-medium;
 				}
-				line-height: 1.5rem;
 
 				.years {
 					font-weight: bold;
@@ -112,7 +113,7 @@
 
 		.portfolioTextBlock {
 			width: 100%;
-			padding-top: 65dvh;
+			padding-top: 65vh;
 		}
 
 		.showWork {

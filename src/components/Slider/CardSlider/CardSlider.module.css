@@ -41,7 +41,12 @@
   background: black;
   pointer-events: all;
   transform: translate(var(--x), var(--y)) rotate(var(--rot));
-  transition: transform 0.8s cubic-bezier(0, 0.02, 0, 1);
+  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+}
+.carousel-item.active {
+  --width: clamp(100px, calc(200px + 40vw), 500px);
+  --height: clamp(250px, calc(50px + 40vh), 400px);
+  transition: transform 0.3s ease, width 1.5s ease, height 1.5s ease;
 }
 .carousel-item .carousel-box {
   position: absolute;
@@ -66,7 +71,7 @@
 .carousel-item .title {
   position: absolute;
   z-index: 1;
-  color: #fff;
+  color: #f3f8ff;
   bottom: 20px;
   left: 20px;
   transition: opacity 0.8s cubic-bezier(0, 0.02, 0, 1);
@@ -95,6 +100,10 @@
   .carousel-item {
     --width: clamp(250px, 30vw, 300px);
     --height: clamp(400px, 40vw, 400px);
+  }
+  .carousel-item.active {
+    --width: clamp(100px, calc(200px + 35vw), 700px);
+    --height: clamp(250px, calc(50px + 40vh), 400px);
   }
 }
 

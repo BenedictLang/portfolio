@@ -4,6 +4,7 @@
 	position: relative;
 	width: 100%;
 	min-height: 100dvh;
+	transition: height $duration-short ease-in-out;
 
 	.content {
 		display: flex;
@@ -66,6 +67,7 @@
 				display: block;
 				width: 45%;
 				right: 2vw;
+				z-index: -1;
 			}
 		}
 	}
@@ -98,7 +100,7 @@
 				}
 			}
 			.textBox {
-				padding-top: 20vh;
+				padding-top: 10vh;
 				padding-bottom: unset;
 				p {
 					max-width: 60%;
